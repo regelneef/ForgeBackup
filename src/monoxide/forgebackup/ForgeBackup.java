@@ -28,8 +28,12 @@ public class ForgeBackup implements ICommandSender {
 	}
 	
 	@Init
-	public void preInitialisation(FMLInitializationEvent event) {
+	public void initialisation(FMLInitializationEvent event) {
+		BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().logger);
+		
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.start", "en_US", "Starting a new backup.");
+		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.progress", "en_US", "Creating new backup of your world...");
+		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.aborted", "en_US", "Backup failed. Please check your server log for more information.");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.complete", "en_US", "Backup complete!");
 		
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.save.force", "en_US", "Forcing an updated save...");

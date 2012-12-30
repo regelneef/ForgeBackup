@@ -1,8 +1,7 @@
 package monoxide.forgebackup;
 
 import java.util.Iterator;
-
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import java.util.logging.Level;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -10,6 +9,7 @@ import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public abstract class CommandBackupBase extends CommandBase {
 	protected final MinecraftServer server;
@@ -20,6 +20,10 @@ public abstract class CommandBackupBase extends CommandBase {
 	}
 	
 	public void notifyBackupAdmins(ICommandSender sender, String translationKey, Object... parameters) {
+		notifyBackupAdmins(sender, Level.INFO, translationKey, parameters);
+	}
+	
+	public void notifyBackupAdmins(ICommandSender sender, Level level, String translationKey, Object... parameters) {
 		boolean var5 = true;
 		String message = String.format(LanguageRegistry.instance().getStringLocalization(translationKey), parameters);
 		
@@ -45,7 +49,7 @@ public abstract class CommandBackupBase extends CommandBase {
 		
 		if (sender != MinecraftServer.getServer())
 		{
-			MinecraftServer.logger.info(sender.getCommandSenderName() + ": " + message);
+			BackupLog.log(level, message);
 		}
 	}
 }

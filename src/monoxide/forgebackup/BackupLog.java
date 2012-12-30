@@ -14,6 +14,10 @@ public abstract class BackupLog {
 		logger.setParent(FMLLog.getLogger());	
 	}
 	
+	protected static void setLoggerParent(Logger parent) {
+		logger.setParent(parent);
+	}
+	
 	public static Logger getLogger() {
 		return logger;
 	}
@@ -23,7 +27,10 @@ public abstract class BackupLog {
 	}
 	
 	public static void log(Level logLevel, Throwable e, String message, Object... params) {
+		Logger old = logger.getParent();
+		logger.setParent(FMLLog.getLogger());
 		logger.log(logLevel, String.format(message, params), e);
+		logger.setParent(old);
 	}
 	
 	public static void error(String message, Object... params) {
