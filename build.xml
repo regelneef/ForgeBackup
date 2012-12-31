@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ForgeBackup" default="setup-forge">
+    <target name="download-forge" depends="setupvars" unless="forge.downloaded">
+        <echo>Downloading Minecraft Forge...</echo>
+        <delete dir="${forge.base}" />
+        <get src="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${minecraft.version}-${forge.version}.zip" dest="${mod.base}/minecraftforge-src-${minecraft.version}-${forge.version}.zip" />
+    </target>
+    <target name="setup-forge" depends="download-forge" unless="forge.installed">
+        <echo>Installing Minecraft Forge...</echo>
+        <unzip src="${mod.base}/minecraftforge-src-${minecraft.version}-${forge.version}.zip" dest="${mod.base}" />
+        <exec executable="${python.exe}" dir="${forge.base}">
+            <arg value="${forge.base}/install.py" />
+        </exec>
+    </target>
+    <target name="build" depends="setup-forge" />
+    <target name="reobfuscate" depends="build" />
+
+    <target name="setupvars" unless="vars.setup">
+        <property name="vars.setup" value="true" />
+        <echo>Setting up values...</echo>
+
+        <property environment="env" />
+        <property name="modname" value="chargepads" />
+
+        <property name="mod.base" location="${basedir}" />
+        <property name="mod.src" location="${mod.base}/src" />
+
+        <property name="forge.base" location="${mod.base}/forge" />
+        <condition property="mcp.base" value="/tmp/${env.BUILD_ID}" else="${forge.base}/mcp">
+            <isset property="env.BUILD_ID" />
+        </condition>
+        <property name="mcp.reobf" location="${mcp.base}/reobf/minecraft" />
+
+        <condition property="python.exe" value="${forge.base}/fml/python/python_fml" else="python">
+            <os family="Windows" />
+        </condition>
+
+        <condition property="version.build" value="${env.BUILD_NUMBER}" else="dev">
+            <isset property="env.BUILD_NUMBER" />
+        </condition>
+        <propertyfile file="${mod.src}/version.properties">
+            <entry key="mod.build.build.number" type="int" value="${version.build}" />
+        </propertyfile>
+        <property file="${mod.src}/version.properties" />
+        <property name="build.version" value="${mod.build.major.number}.${mod.build.minor.number}.${mod.build.revision.number}" />
+        <property name="version.minecraft" value="${mod.build.mcversion}" />
+        <property name="version.major" value="${mod.build.major.number}" />
+        <property name="version.minor" value="${mod.build.minor.number}" />
+        <property name="version.rev" value="${mod.build.revision.number}" />
+        <property name="version" value="${version.major}.${version.minor}.${version.rev}.${version.build}" />
+        <property name="minecraft.version" value="${mod.build.mcversion}" />
+
+        <property name="forge.version" value="${mod.build.forgeversion}" />
+        <condition property="forge.downloaded" value="true">
+            <resourceexists>
+                <file file="${mod.base}/minecraftforge-src-${minecraft.version}-${forge.version}.zip" />
+            </resourceexists>
+        </condition>
+        <condition property="forge.installed" value="true">
+            <and>
+                <isset property="forge.downloaded" />
+                <resourceexists>
+                    <file file="${mod.base}/forge"/>
+                </resourceexists>
+             </and>
+        </condition>
+    </target>
+</project>

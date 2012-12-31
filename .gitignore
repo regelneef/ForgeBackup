@@ -1,2 +1,5 @@
 eclipse
 forge
+
+*.jar
+*.zip
