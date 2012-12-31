@@ -16,7 +16,7 @@
         <delete dir="${mcp.base}/bin" />
         <mkdir dir="${mcp.bin}" />
         <echo>Building ${modname}.</echo>
-        <javac encoding="UTF-8" compiler="modern" source="1.6" target="1.6" deprecation="false"
+        <javac  encoding="UTF-8" compiler="modern" source="1.6" target="1.6" deprecation="false"
                 destdir="${mcp.bin}" includeantruntime="false" includejavaruntime="true" debug="true">
             <compilerarg value="-Xlint:-options" />
             <classpath>
@@ -34,7 +34,7 @@
         </javac>
     </target>
     <target name="reobfuscate" depends="build">
-        <echo message="Reobfuscating..." level="info" />
+        <echo message="Reobfuscating ${modname}." level="info" />
         <exec executable="${python.exe}" dir="${mcp.base}" failonerror="true" errorproperty="reobf.errors">
             <arg value="${mcp.base}/runtime/reobfuscate.py" />
             <arg value="--client" />
@@ -45,6 +45,28 @@
                 <contains string="${reobf.errors}" substring="!! Can not find client bins" casesensitive="true" />
             </condition>
         </fail>
+        <echo message="Building a release jar." />
+        <copy todir="${mcp.reobf}">
+            <fileset dir="${mod.src}">
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+        <jar destfile="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar">
+            <fileset dir="${mcp.reobf}" excludes="mcmod.info" />
+            <mappedresources>
+                <concat>
+                    <fileset dir="${mcp.reobf}" includes="mcmod.info" />
+                    <filterchain>
+                        <replacetokens>
+                            <token key="NAME" value="${ant.project.name}" />
+                            <token key="VERSION" value="${version}" />
+                            <token key="MCVERSION" value="${minecraft.version}" />
+                        </replacetokens>
+                    </filterchain>
+                </concat>
+                <mergemapper to="mcmod.info" />
+            </mappedresources>
+        </jar>
     </target>
 
     <target name="setupvars" unless="vars.setup">

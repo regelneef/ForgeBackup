@@ -1,0 +1,20 @@
+[
+{
+  "modid": "forgebackup",
+  "name": "@NAME@",
+  "version": "@VERSION@",
+  "description": "ForgeBackup creates automatic backups of your worlds.",
+  "mcversion": "@MCVERSION@",
+
+  "authorList": ["Monoxide"],
+  "url": "",
+
+  "parent":"",
+  "requiredMods": [
+    "Forge@[6.5.0,)",
+    "FML@[4.6,)",
+  ],
+  "dependencies": [],
+  "useDependencyInformation": "true"
+}
+]
