@@ -12,15 +12,47 @@
             <arg value="${forge.base}/install.py" />
         </exec>
     </target>
-    <target name="build" depends="setup-forge" />
-    <target name="reobfuscate" depends="build" />
+    <target name="build" depends="setup-forge">
+        <delete dir="${mcp.base}/bin" />
+        <mkdir dir="${mcp.bin}" />
+        <echo>Building ${modname}.</echo>
+        <javac encoding="UTF-8" compiler="modern" source="1.6" target="1.6" deprecation="false"
+                destdir="${mcp.bin}" includeantruntime="false" includejavaruntime="true" debug="true">
+            <compilerarg value="-Xlint:-options" />
+            <classpath>
+                <pathelement location="${mcp.lib}\argo-2.25.jar" />
+                <pathelement location="${mcp.lib}\asm-all-4.0.jar" />
+                <pathelement location="${mcp.lib}\bcprov-jdk15on-147.jar" />
+                <pathelement location="${mcp.lib}\guava-12.0.1.jar" />
+                <pathelement location="${mcp.jars}\bin\minecraft.jar" />
+                <pathelement location="${mcp.jars}\bin\jinput.jar" />
+                <pathelement location="${mcp.jars}\bin\lwjgl.jar" />
+                <pathelement location="${mcp.jars}\bin\lwjgl_util.jar" />
+            </classpath>
+            <src path="${mcp.src}" />
+            <src path="${mod.src}" />
+        </javac>
+    </target>
+    <target name="reobfuscate" depends="build">
+        <echo message="Reobfuscating..." level="info" />
+        <exec executable="${python.exe}" dir="${mcp.base}" failonerror="true" errorproperty="reobf.errors">
+            <arg value="${mcp.base}/runtime/reobfuscate.py" />
+            <arg value="--client" />
+        </exec>
+        <!-- Fail if an appropriate error string is found in the output (since reobfuscate.py doesn't ERRORLEVEL properly) -->
+        <fail message="Errors found during reobfuscation.${line.separator}${reobf.errors}">
+            <condition>
+                <contains string="${reobf.errors}" substring="!! Can not find client bins" casesensitive="true" />
+            </condition>
+        </fail>
+    </target>
 
     <target name="setupvars" unless="vars.setup">
         <property name="vars.setup" value="true" />
         <echo>Setting up values...</echo>
 
         <property environment="env" />
-        <property name="modname" value="chargepads" />
+        <property name="modname" value="forgebackup" />
 
         <property name="mod.base" location="${basedir}" />
         <property name="mod.src" location="${mod.base}/src" />
@@ -29,6 +61,10 @@
         <condition property="mcp.base" value="/tmp/${env.BUILD_ID}" else="${forge.base}/mcp">
             <isset property="env.BUILD_ID" />
         </condition>
+        <property name="mcp.bin" location="${mcp.base}/bin/minecraft" />
+        <property name="mcp.src" location="${mcp.base}/src/minecraft" />
+        <property name="mcp.jars" location="${mcp.base}/jars" />
+        <property name="mcp.lib" location="${mcp.base}/lib" />
         <property name="mcp.reobf" location="${mcp.base}/reobf/minecraft" />
 
         <condition property="python.exe" value="${forge.base}/fml/python/python_fml" else="python">
