@@ -58,9 +58,7 @@
         <property name="mod.src" location="${mod.base}/src" />
 
         <property name="forge.base" location="${mod.base}/forge" />
-        <condition property="mcp.base" value="/tmp/${env.BUILD_ID}" else="${forge.base}/mcp">
-            <isset property="env.BUILD_ID" />
-        </condition>
+        <property name="mcp.base" location="${forge.base}/mcp" />
         <property name="mcp.bin" location="${mcp.base}/bin/minecraft" />
         <property name="mcp.src" location="${mcp.base}/src/minecraft" />
         <property name="mcp.jars" location="${mcp.base}/jars" />
