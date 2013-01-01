@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.ServerCommandManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
@@ -34,7 +35,7 @@ public abstract class CommandBackupBase extends CommandBase {
 		
 		if (var5)
 		{
-			Iterator var6 = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+			Iterator var6 = server.getConfigurationManager().playerEntityList.iterator();
 			
 			while (var6.hasNext())
 			{
@@ -47,9 +48,12 @@ public abstract class CommandBackupBase extends CommandBase {
 			}
 		}
 		
-		if (sender != MinecraftServer.getServer())
+		if (sender != server)
 		{
 			BackupLog.log(level, message);
+		}
+		if (sender instanceof EntityPlayer && !server.isDedicatedServer()) {
+			((EntityPlayer)sender).sendChatToPlayer(message);
 		}
 	}
 }
