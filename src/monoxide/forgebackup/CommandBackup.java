@@ -34,11 +34,6 @@ public class CommandBackup extends CommandBackupBase {
 	}
 	
 	@Override
-	public int getRequiredPermissionLevel() {
-		return 4;
-	}
-	
-	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
 		if (sender instanceof EntityPlayer) {
 			if (!server.isDedicatedServer()) {

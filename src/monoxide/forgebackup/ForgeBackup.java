@@ -36,8 +36,22 @@ public class ForgeBackup implements ICommandSender {
 	@ConfigOption(comment = "Interval in minutes between automatic backup attempts.")
 	protected int backupInterval = 15;
 	
+	@ConfigOption(comment = "Only operators may manually run backups with /backup.")
+	protected boolean opsOnly = true;
+	
+	@ConfigOption(comment = "Allow command blocks to initiate a backup.")
+	protected boolean commandBlocksAllowed = false;
+	
 	public int getBackupInterval() {
 		return backupInterval;
+	}
+	
+	public boolean onlyOperatorsCanManuallyBackup() {
+		return opsOnly;
+	}
+	
+	public boolean canCommandBlocksUseCommands() {
+		return commandBlocksAllowed;
 	}
 	
 	@PreInit
