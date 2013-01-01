@@ -17,6 +17,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.ISaveHandler;
+import net.minecraft.world.storage.SaveHandler;
 
 import com.google.common.collect.Lists;
 
@@ -125,8 +127,14 @@ public class CommandBackup extends CommandBackupBase {
 		
 		File backupFile = new File(backupsFolder, getBackupFileName());
 		ZipOutputStream backup = new ZipOutputStream(new FileOutputStream(backupFile));
+		List<File> saveDirectories = Lists.newArrayList(server.getFile("config"));
 		
-		List<File> saveDirectories = Lists.newArrayList(server.getFile(server.worldServers[0].getSaveHandler().getSaveDirectoryName()), server.getFile("config"));
+		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
+		if (saveHandler instanceof SaveHandler) {
+			saveDirectories.add(((SaveHandler)saveHandler).getSaveDirectory());
+		} else {
+			saveDirectories.add(server.getFile(saveHandler.getSaveDirectoryName()));
+		}
 		byte[] buffer = new byte[4096];
 		int readBytes;
 		while (!saveDirectories.isEmpty()) {
