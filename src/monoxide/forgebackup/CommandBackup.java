@@ -123,13 +123,20 @@ public class CommandBackup extends CommandBackupBase {
 		
 		File backupFile = new File(backupsFolder, getBackupFileName());
 		ZipOutputStream backup = new ZipOutputStream(new FileOutputStream(backupFile));
-		List<File> saveDirectories = Lists.newArrayList(server.getFile("config"));
+		List<File> saveDirectories = Lists.newArrayList();
 		
-		if (saveHandler instanceof SaveHandler) {
-			saveDirectories.add(((SaveHandler)saveHandler).getSaveDirectory());
-		} else {
-			saveDirectories.add(server.getFile(saveHandler.getSaveDirectoryName()));
+		if (ForgeBackup.instance().config().willBackupConfiguration()) {
+			saveDirectories.add(server.getFile("config"));
 		}
+		
+		if (ForgeBackup.instance().config().willBackupWorld()) {
+			if (saveHandler instanceof SaveHandler) {
+				saveDirectories.add(((SaveHandler)saveHandler).getSaveDirectory());
+			} else {
+				saveDirectories.add(server.getFile(saveHandler.getSaveDirectoryName()));
+			}
+		}
+		
 		byte[] buffer = new byte[4096];
 		int readBytes;
 		while (!saveDirectories.isEmpty()) {

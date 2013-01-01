@@ -19,6 +19,18 @@ public class BackupConfiguration {
 	@ConfigOption(comment = "Folder name to store backups in. Each world's backups will be stored in subfolders of this one.")
 	protected String backupFolder = "backups";
 	
+	@ConfigOption(section = "backup", name = "configuration", comment = "Backup config folder.")
+	protected boolean backupConfiguration = true;
+	
+	@ConfigOption(section = "backup", name = "serverConfiguration", comment = "Backup server configuration files. eg. server.properties, whitelist.txt")
+	protected boolean backupServerConfiguration = false;
+	
+	@ConfigOption(section = "backup", name = "world", comment = "Backup world folder.")
+	protected boolean backupWorld = true;
+	
+	@ConfigOption(section = "backup", name = "mods", comment = "Backup mods folder.")
+	protected boolean backupMods = false;
+	
 	public int getBackupInterval() {
 		return backupInterval;
 	}
@@ -33,6 +45,22 @@ public class BackupConfiguration {
 	
 	public String getBackupFolderName() {
 		return backupFolder;
+	}
+	
+	public boolean willBackupConfiguration() {
+		return backupConfiguration;
+	}
+	
+	public boolean willBackupServerConfiguration() {
+		return backupServerConfiguration;
+	}
+	
+	public boolean willBackupWorld() {
+		return backupWorld;
+	}
+	
+	public boolean willBackupMods() {
+		return backupMods;
 	}
 	
 	public BackupConfiguration(File configFile) {
