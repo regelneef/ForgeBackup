@@ -38,78 +38,19 @@ public class CommandBackup extends CommandBackupBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		MinecraftServer server = MinecraftServer.getServer();
 		boolean failure = false;
 		notifyBackupAdmins(sender, "ForgeBackup.backup.start");
 		
 		notifyBackupAdmins(sender, "ForgeBackup.save.disabled");
-		for (int i = 0; i < server.worldServers.length; ++i)
-		{
-			if (server.worldServers[i] != null)
-			{
-				WorldServer worldServer = server.worldServers[i];
-				worldServer.canNotSave = true;
-			}
-		}
+		toggleSavability(false);
 		
 		try
 		{
 			notifyBackupAdmins(sender, "ForgeBackup.save.force");
-			if (server.getConfigurationManager() != null)
-			{
-				server.getConfigurationManager().saveAllPlayerData();
-			}
-			
-			for (int i = 0; i < server.worldServers.length; ++i)
-			{
-				if (server.worldServers[i] != null)
-				{
-					WorldServer var5 = server.worldServers[i];
-					boolean var6 = var5.canNotSave;
-					var5.canNotSave = false;
-					var5.saveAllChunks(true, (IProgressUpdate)null);
-					var5.canNotSave = var6;
-				}
-			}
+			forceSaveAllWorlds();
 			
 			notifyBackupAdmins(sender, "ForgeBackup.backup.progress");
-			File backupsFolder = server.getFile("backups");
-			if (backupsFolder.exists() && !backupsFolder.isDirectory()) {
-				notifyBackupAdmins(sender, Level.WARNING, "ForgeBackup.backup.folderExists");
-				return;
-			} else if (!backupsFolder.exists()) {
-				backupsFolder.mkdir();
-			}
-			
-			File backupFile = new File(backupsFolder, getBackupFileName());
-			ZipOutputStream backup = new ZipOutputStream(Files.newOutputStream(backupFile.toPath()));
-			
-			List<File> saveDirectories = Lists.newArrayList(server.getFile(server.worldServers[0].getSaveHandler().getSaveDirectoryName()), server.getFile("config"));
-			byte[] buffer = new byte[4096];
-			int readBytes;
-			while (!saveDirectories.isEmpty()) {
-				File current = saveDirectories.remove(0);
-				
-				for (File child : current.listFiles()) {
-					if (child.isDirectory()) {
-						saveDirectories.add(child);
-					} else {
-						backup.putNextEntry(new ZipEntry(child.getPath().substring(2)));
-						
-						try {
-							InputStream currentStream = Files.newInputStream(child.toPath(), StandardOpenOption.READ);
-							while ((readBytes = currentStream.read(buffer)) >= 0) {
-								backup.write(buffer, 0, readBytes);
-							}
-						} catch (AccessDeniedException e) {
-							BackupLog.warning("Couldn't backup file: %s", child.toPath());
-						}
-						backup.closeEntry();
-					}
-				}
-			}
-			
-			backup.close();
+			doBackup(sender);
 		}
 		catch (MinecraftException e)
 		{
@@ -122,17 +63,84 @@ public class CommandBackup extends CommandBackupBase {
 			return;
 		} finally {
 			notifyBackupAdmins(sender, "ForgeBackup.save.enabled");
-			for (int i = 0; i < server.worldServers.length; ++i)
+			toggleSavability(true);
+		}
+		
+		notifyBackupAdmins(sender, "ForgeBackup.backup.complete");
+	}
+
+	private void toggleSavability(boolean canSave) {
+		for (int i = 0; i < server.worldServers.length; ++i)
+		{
+			if (server.worldServers[i] != null)
 			{
-				if (server.worldServers[i] != null)
-				{
-					WorldServer worldServer = server.worldServers[i];
-					worldServer.canNotSave = true;
+				WorldServer worldServer = server.worldServers[i];
+				worldServer.canNotSave = !canSave;
+			}
+		}
+	}
+
+	private void forceSaveAllWorlds()
+	throws MinecraftException 
+	{
+		if (server.getConfigurationManager() != null)
+		{
+			server.getConfigurationManager().saveAllPlayerData();
+		}
+		
+		for (int i = 0; i < server.worldServers.length; ++i)
+		{
+			if (server.worldServers[i] != null)
+			{
+				WorldServer var5 = server.worldServers[i];
+				boolean var6 = var5.canNotSave;
+				var5.canNotSave = false;
+				var5.saveAllChunks(true, (IProgressUpdate)null);
+				var5.canNotSave = var6;
+			}
+		}
+	}
+
+	private void doBackup(ICommandSender sender)
+	throws IOException
+	{
+		File backupsFolder = server.getFile("backups");
+		if (backupsFolder.exists() && !backupsFolder.isDirectory()) {
+			notifyBackupAdmins(sender, Level.WARNING, "ForgeBackup.backup.folderExists");
+			return;
+		} else if (!backupsFolder.exists()) {
+			backupsFolder.mkdir();
+		}
+		
+		File backupFile = new File(backupsFolder, getBackupFileName());
+		ZipOutputStream backup = new ZipOutputStream(Files.newOutputStream(backupFile.toPath()));
+		
+		List<File> saveDirectories = Lists.newArrayList(server.getFile(server.worldServers[0].getSaveHandler().getSaveDirectoryName()), server.getFile("config"));
+		byte[] buffer = new byte[4096];
+		int readBytes;
+		while (!saveDirectories.isEmpty()) {
+			File current = saveDirectories.remove(0);
+			
+			for (File child : current.listFiles()) {
+				if (child.isDirectory()) {
+					saveDirectories.add(child);
+				} else {
+					backup.putNextEntry(new ZipEntry(child.getPath().substring(2)));
+					
+					try {
+						InputStream currentStream = Files.newInputStream(child.toPath(), StandardOpenOption.READ);
+						while ((readBytes = currentStream.read(buffer)) >= 0) {
+							backup.write(buffer, 0, readBytes);
+						}
+					} catch (IOException e) {
+						BackupLog.warning("Couldn't backup file: %s", child.toPath());
+					}
+					backup.closeEntry();
 				}
 			}
 		}
 		
-		notifyBackupAdmins(sender, "ForgeBackup.backup.complete");
+		backup.close();
 	}
 	
 	private String getBackupFileName() {
