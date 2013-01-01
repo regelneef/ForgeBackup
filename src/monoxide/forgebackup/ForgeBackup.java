@@ -42,6 +42,9 @@ public class ForgeBackup implements ICommandSender {
 	@ConfigOption(comment = "Allow command blocks to initiate a backup.")
 	protected boolean commandBlocksAllowed = false;
 	
+	@ConfigOption(comment = "Folder name to store backups in. Each world's backups will be stored in subfolders of this one.")
+	protected String backupFolder = "backups";
+	
 	public int getBackupInterval() {
 		return backupInterval;
 	}
@@ -52,6 +55,10 @@ public class ForgeBackup implements ICommandSender {
 	
 	public boolean canCommandBlocksUseCommands() {
 		return commandBlocksAllowed;
+	}
+	
+	public String getBackupFolderName() {
+		return backupFolder;
 	}
 	
 	@PreInit

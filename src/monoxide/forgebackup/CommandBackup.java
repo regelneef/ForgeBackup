@@ -112,19 +112,19 @@ public class CommandBackup extends CommandBackupBase {
 	private void doBackup(ICommandSender sender)
 	throws IOException
 	{
-		File backupsFolder = server.getFile("backups");
+		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
+		File backupsFolder = server.getFile(ForgeBackup.instance().getBackupFolderName() + "/" + saveHandler.getSaveDirectoryName());
 		if (backupsFolder.exists() && !backupsFolder.isDirectory()) {
 			notifyBackupAdmins(sender, Level.WARNING, "ForgeBackup.backup.folderExists");
 			return;
 		} else if (!backupsFolder.exists()) {
-			backupsFolder.mkdir();
+			backupsFolder.mkdirs();
 		}
 		
 		File backupFile = new File(backupsFolder, getBackupFileName());
 		ZipOutputStream backup = new ZipOutputStream(new FileOutputStream(backupFile));
 		List<File> saveDirectories = Lists.newArrayList(server.getFile("config"));
 		
-		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
 		if (saveHandler instanceof SaveHandler) {
 			saveDirectories.add(((SaveHandler)saveHandler).getSaveDirectory());
 		} else {
