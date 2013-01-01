@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,6 +12,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.MinecraftException;
@@ -34,6 +34,17 @@ public class CommandBackup extends CommandBackupBase {
 	@Override
 	public int getRequiredPermissionLevel() {
 		return 4;
+	}
+	
+	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender sender) {
+		if (sender instanceof EntityPlayer) {
+			if (!server.isDedicatedServer()) {
+				return true;
+			}
+		}
+		
+		return super.canCommandSenderUseCommand(sender);
 	}
 	
 	@Override

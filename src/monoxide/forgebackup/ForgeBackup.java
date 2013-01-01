@@ -14,6 +14,7 @@ import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(name = "ForgeBackup", modid = "forgebackup", useMetadata = true)
 public class ForgeBackup implements ICommandSender {
@@ -29,7 +30,11 @@ public class ForgeBackup implements ICommandSender {
 	
 	@Init
 	public void initialisation(FMLInitializationEvent event) {
-		BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().logger);
+		if (event.getSide() == Side.SERVER) {
+			// Only assign ourselves to the Minecraft logger if we're on the server
+			// If we do this in SSP, our logs will be completely hidden.
+			BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().logger);
+		}
 		
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.start", "en_US", "Starting a new backup.");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.progress", "en_US", "Creating new backup of your world...");
