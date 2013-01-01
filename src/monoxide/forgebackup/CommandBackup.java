@@ -1,11 +1,11 @@
 package monoxide.forgebackup;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.AccessDeniedException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -113,7 +113,7 @@ public class CommandBackup extends CommandBackupBase {
 		}
 		
 		File backupFile = new File(backupsFolder, getBackupFileName());
-		ZipOutputStream backup = new ZipOutputStream(Files.newOutputStream(backupFile.toPath()));
+		ZipOutputStream backup = new ZipOutputStream(new FileOutputStream(backupFile));
 		
 		List<File> saveDirectories = Lists.newArrayList(server.getFile(server.worldServers[0].getSaveHandler().getSaveDirectoryName()), server.getFile("config"));
 		byte[] buffer = new byte[4096];
@@ -128,12 +128,13 @@ public class CommandBackup extends CommandBackupBase {
 					backup.putNextEntry(new ZipEntry(child.getPath().substring(2)));
 					
 					try {
-						InputStream currentStream = Files.newInputStream(child.toPath(), StandardOpenOption.READ);
+						InputStream currentStream = new FileInputStream(child);
 						while ((readBytes = currentStream.read(buffer)) >= 0) {
 							backup.write(buffer, 0, readBytes);
 						}
+						currentStream.close();
 					} catch (IOException e) {
-						BackupLog.warning("Couldn't backup file: %s", child.toPath());
+						BackupLog.warning("Couldn't backup file: %s", child.getPath());
 					}
 					backup.closeEntry();
 				}
