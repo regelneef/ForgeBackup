@@ -11,8 +11,8 @@
 
   "parent":"",
   "requiredMods": [
-    "Forge@[6.5.0,)",
-    "FML@[4.6,)",
+    "Forge@[6.6.0,)",
+    "FML@[4.7.3,)"
   ],
   "dependencies": [],
   "useDependencyInformation": "true"

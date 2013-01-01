@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "ForgeBackup", modid = "forgebackup", useMetadata = true, version = "0.1")
+@Mod(name = "ForgeBackup", modid = "forgebackup", useMetadata = true)
 public class ForgeBackup implements ICommandSender {
 	
 	private Timer backupTimer;
