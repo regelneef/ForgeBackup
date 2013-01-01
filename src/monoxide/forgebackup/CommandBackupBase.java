@@ -53,7 +53,7 @@ public abstract class CommandBackupBase extends CommandBase {
 			BackupLog.log(level, message);
 		}
 		if (sender instanceof EntityPlayer && !server.isDedicatedServer()) {
-			((EntityPlayer)sender).sendChatToPlayer(message);
+			((EntityPlayer)sender).sendChatToPlayer("\u00a77\u00a7o" + message);
 		}
 	}
 }

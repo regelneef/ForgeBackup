@@ -144,7 +144,7 @@ public class CommandBackup extends CommandBackupBase {
 				if (child.isDirectory()) {
 					saveDirectories.add(child);
 				} else {
-					backup.putNextEntry(new ZipEntry(child.getPath().substring(2)));
+					backup.putNextEntry(new ZipEntry(cleanZipPath(child.getCanonicalPath())));
 					
 					try {
 						InputStream currentStream = new FileInputStream(child);
@@ -168,4 +168,14 @@ public class CommandBackup extends CommandBackupBase {
 		return String.format("%TY%Tm%Td-%TH%TM%TS.zip", now, now, now, now, now, now);
 	}
 	
+	private String cleanZipPath(String path)
+	throws IOException
+	{
+		String dataDirectory = server.getFile(".").getCanonicalPath();
+		if (path.substring(0, dataDirectory.length()).equals(dataDirectory)) {
+			return path.substring(dataDirectory.length()+1);
+		}
+		
+		return path;
+	}
 }
