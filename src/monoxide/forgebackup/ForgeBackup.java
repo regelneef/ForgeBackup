@@ -1,14 +1,11 @@
 package monoxide.forgebackup;
 
-import java.lang.reflect.Field;
 import java.util.Timer;
-import java.util.logging.Level;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StringTranslate;
-import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
