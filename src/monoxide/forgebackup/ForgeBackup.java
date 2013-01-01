@@ -27,7 +27,7 @@ public class ForgeBackup implements ICommandSender {
 	private Configuration config;
 	private Timer backupTimer;
 	
-	@Instance("forgebackup")
+	@Instance("mono_backup")
 	private static ForgeBackup instance;
 	public static ForgeBackup instance() {
 		return instance;
