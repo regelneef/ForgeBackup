@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class ForgeBackup implements ICommandSender {
 	
 	private Timer backupTimer;
-	private int timeBetween = 20 * 1000;
+	private int timeBetween = 15 * 60 * 1000;
 	
 	@Instance("forgebackup")
 	private static ForgeBackup instance;
@@ -33,6 +33,7 @@ public class ForgeBackup implements ICommandSender {
 		
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.start", "en_US", "Starting a new backup.");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.progress", "en_US", "Creating new backup of your world...");
+		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.folderExists", "en_US", "Backup failed. Backup directory already exists and is not a directory.");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.aborted", "en_US", "Backup failed. Please check your server log for more information.");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.complete", "en_US", "Backup complete!");
 		
