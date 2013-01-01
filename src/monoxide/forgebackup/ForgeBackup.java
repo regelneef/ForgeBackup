@@ -26,12 +26,18 @@ public class ForgeBackup implements ICommandSender {
 	
 	private Configuration config;
 	private Timer backupTimer;
-	private int timeBetween = 15 * 60 * 1000;
 	
 	@Instance("forgebackup")
 	private static ForgeBackup instance;
 	public static ForgeBackup instance() {
 		return instance;
+	}
+	
+	@ConfigOption(comment = "Interval in minutes between automatic backup attempts.")
+	protected int backupInterval = 15;
+	
+	public int getBackupInterval() {
+		return backupInterval;
 	}
 	
 	@PreInit
@@ -105,7 +111,7 @@ public class ForgeBackup implements ICommandSender {
 		BackupLog.info("ForgeBackup starting...");
 		new CommandBackup(server);
 		backupTimer = new Timer(true);
-		backupTimer.scheduleAtFixedRate(new BackupTask(server), timeBetween, timeBetween);
+		backupTimer.scheduleAtFixedRate(new BackupTask(server), getBackupInterval() * 60 * 1000, getBackupInterval() * 60 * 1000);
 	}
 
 	@Override
