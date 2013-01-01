@@ -22,8 +22,8 @@ public abstract class CommandBackupBase extends CommandBase {
 	
 	@Override
 	public int getRequiredPermissionLevel() {
-		return !ForgeBackup.instance().onlyOperatorsCanManuallyBackup() ? 0 : 
-		       (ForgeBackup.instance().canCommandBlocksUseCommands() ? 3 : 2);
+		return !ForgeBackup.instance().config().onlyOperatorsCanManuallyBackup() ? 0 : 
+		       (ForgeBackup.instance().config().canCommandBlocksUseCommands() ? 3 : 2);
 	}
 	
 	public void notifyBackupAdmins(ICommandSender sender, String translationKey, Object... parameters) {
