@@ -50,7 +50,7 @@ public abstract class CommandBackupBase extends CommandBase {
 				if (server.getConfigurationManager().areCommandsAllowed(var7.username) && 
 				    (ForgeBackup.instance().config().verboseLogging() || level != Level.FINE))
 				{
-					var7.sendChatToPlayer("\u00a77\u00a7o[" + sender.getCommandSenderName() + ": " + message + "]");
+					var7.sendChatToPlayer("\u00a77\u00a7o[Backup: " + message + "]");
 				}
 			}
 		}
@@ -61,11 +61,6 @@ public abstract class CommandBackupBase extends CommandBase {
 				BackupLog.log(Level.INFO, message);
 			} else {
 				BackupLog.log(level, message);
-			}
-		}
-		if (sender instanceof EntityPlayer && !server.isDedicatedServer()) {
-			if (ForgeBackup.instance().config().verboseLogging() || level != Level.FINE) {
-				((EntityPlayer)sender).sendChatToPlayer("\u00a77\u00a7o[" + sender.getCommandSenderName() + ": " + message + "]");
 			}
 		}
 	}
