@@ -10,6 +10,9 @@ public class BackupConfiguration {
 	@ConfigOption(comment = "Interval in minutes between automatic backup attempts.")
 	protected int backupInterval = 15;
 	
+	@ConfigOption(comment = "Maximum backups to keep stored. Older backups will be deleted first. -1 will disable auto-cleanups.")
+	protected int maxBackups = -1;
+	
 	@ConfigOption(comment = "Only operators may manually run backups with /backup.")
 	protected boolean opsOnly = true;
 	
@@ -75,6 +78,10 @@ public class BackupConfiguration {
 	
 	public boolean verboseLogging() {
 		return verboseLogging;
+	}
+	
+	public int getMaximumBackups() {
+		return maxBackups;
 	}
 	
 	public BackupConfiguration(File configFile) {

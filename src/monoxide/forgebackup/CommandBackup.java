@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -119,6 +120,17 @@ public class CommandBackup extends CommandBackupBase {
 			return;
 		} else if (!backupsFolder.exists()) {
 			backupsFolder.mkdirs();
+		}
+		
+		int maxBackups = ForgeBackup.instance().config().getMaximumBackups();
+		if (maxBackups > 0) {
+			List<File> backups = Lists.newArrayList(backupsFolder.listFiles());
+			Collections.sort(backups);
+			
+			while (backups.size() >= maxBackups) {
+				File backup = backups.remove(0);
+				backup.delete();
+			}
 		}
 		
 		List<File> thingsToSave = Lists.newArrayList();
