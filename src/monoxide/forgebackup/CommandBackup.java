@@ -113,7 +113,7 @@ public class CommandBackup extends CommandBackupBase {
 	throws IOException
 	{
 		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
-		File backupsFolder = server.getFile(ForgeBackup.instance().config().getBackupFolderName() + "/" + saveHandler.getSaveDirectoryName());
+		File backupsFolder = new File(getBackupFolder(), saveHandler.getSaveDirectoryName());
 		if (backupsFolder.exists() && !backupsFolder.isDirectory()) {
 			notifyBackupAdmins(sender, Level.WARNING, "ForgeBackup.backup.folderExists");
 			return;
@@ -183,6 +183,12 @@ public class CommandBackup extends CommandBackupBase {
 		}
 		
 		backup.close();
+	}
+	
+	private File getBackupFolder() {
+		String backupFolder = ForgeBackup.instance().config().getBackupFolderName();
+		File absoluteFile = new File(backupFolder);
+		return absoluteFile.getAbsolutePath() == backupFolder ? absoluteFile : server.getFile(backupFolder);
 	}
 	
 	private String getBackupFileName() {
