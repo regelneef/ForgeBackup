@@ -129,6 +129,11 @@ public class CommandBackup extends CommandBackupBase {
 			saveDirectories.add(server.getFile("config"));
 		}
 		
+		if (ForgeBackup.instance().config().willBackupMods()) {
+			saveDirectories.add(server.getFile("mods"));
+			saveDirectories.add(server.getFile("coremods"));
+		}
+		
 		if (ForgeBackup.instance().config().willBackupWorld()) {
 			if (saveHandler instanceof SaveHandler) {
 				saveDirectories.add(((SaveHandler)saveHandler).getSaveDirectory());
