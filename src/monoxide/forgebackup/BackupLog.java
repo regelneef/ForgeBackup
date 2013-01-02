@@ -23,7 +23,15 @@ public abstract class BackupLog {
 	}
 	
 	public static void log(Level logLevel, String message, Object... params) {
+		boolean lowLogLevel = logLevel == Level.FINE || logLevel == Level.FINER || logLevel == Level.FINEST;
+		Logger old = logger.getParent();
+		if (lowLogLevel) {
+			logger.setParent(FMLLog.getLogger());
+		}
 		logger.log(logLevel, String.format(message, params));
+		if (lowLogLevel) {
+			logger.setParent(old);
+		}
 	}
 	
 	public static void log(Level logLevel, Throwable e, String message, Object... params) {

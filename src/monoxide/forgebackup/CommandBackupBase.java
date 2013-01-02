@@ -47,7 +47,8 @@ public abstract class CommandBackupBase extends CommandBase {
 			{
 				EntityPlayerMP var7 = (EntityPlayerMP)var6.next();
 				
-				if (var7 != sender && server.getConfigurationManager().areCommandsAllowed(var7.username))
+				if ((var7 != sender && server.getConfigurationManager().areCommandsAllowed(var7.username)) && 
+				    (ForgeBackup.instance().config().verboseLogging() || level != Level.FINE))
 				{
 					var7.sendChatToPlayer("\u00a77\u00a7o[" + sender.getCommandSenderName() + ": " + message + "]");
 				}
