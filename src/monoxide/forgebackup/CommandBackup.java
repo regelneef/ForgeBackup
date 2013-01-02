@@ -133,7 +133,7 @@ public class CommandBackup extends CommandBackupBase {
 			}
 		}
 		
-		List<File> thingsToSave = Lists.newArrayList();
+		List<File> thingsToSave = Lists.newArrayList(ForgeBackup.instance().config().getExtraFilesToBackup(server));
 		
 		if (ForgeBackup.instance().config().willBackupWorld()) {
 			if (saveHandler instanceof SaveHandler) {

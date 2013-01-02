@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 
 public class BackupConfiguration {
@@ -39,6 +40,9 @@ public class BackupConfiguration {
 	
 	@ConfigOption(section = "backup", name = "mods", comment = "Backup mods folder.")
 	protected boolean backupMods = false;
+	
+	@ConfigOption(section = "backup", name = "other", comment = "Other files or directories to backup.")
+	protected String[] backupOthers = new String[] {};
 	
 	public int getBackupInterval() {
 		return backupInterval;
@@ -76,6 +80,14 @@ public class BackupConfiguration {
 		return backupMods;
 	}
 	
+	public File[] getExtraFilesToBackup(MinecraftServer server) {
+		File[] files = new File[backupOthers.length];
+		for (int i = 0; i < backupOthers.length; i++) {
+			files[i] = server.getFile(backupOthers[i]);
+		}
+		return files;
+	}
+	
 	public boolean verboseLogging() {
 		return verboseLogging;
 	}
@@ -104,17 +116,33 @@ public class BackupConfiguration {
 					boolean value = field.getBoolean(this);
 					value = config.get(option.section(), name, value, comment).getBoolean(value);
 					field.set(this, value);
+				} else if (fieldType == boolean[].class) {
+					boolean[] value = (boolean[])field.get(this);
+					value = config.get(option.section(), name, value, comment).getBooleanList();
+					field.set(this, value);
 				} else if (fieldType == int.class) {
 					int value = field.getInt(this);
 					value = config.get(option.section(), name, value, comment).getInt(value);
+					field.set(this, value);
+				} else if (fieldType == int[].class) {
+					int[] value = (int[])field.get(this);
+					value = config.get(option.section(), name, value, comment).getIntList();
 					field.set(this, value);
 				} else if (fieldType == double.class) {
 					double value = field.getDouble(this);
 					value = config.get(option.section(), name, value, comment).getDouble(value);
 					field.set(this, value);
+				} else if (fieldType == double[].class) {
+					double[] value = (double[])field.get(this);
+					value = config.get(option.section(), name, value, comment).getDoubleList();
+					field.set(this, value);
 				} else if (fieldType == String.class) {
 					String value = (String)field.get(this);
 					value = config.get(option.section(), name, value, comment).value;
+					field.set(this, value);
+				} else if (fieldType == String[].class) {
+					String[] value = (String[])field.get(this);
+					value = config.get(option.section(), name, value, comment).valueList;
 					field.set(this, value);
 				} else {
 					BackupLog.warning("Skipping @ConfigOption \"%s\" with unknown type: %s", field.getName(), fieldType.getCanonicalName());
