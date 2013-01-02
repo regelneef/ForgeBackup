@@ -19,6 +19,9 @@ public class BackupConfiguration {
 	@ConfigOption(comment = "Folder name to store backups in. Each world's backups will be stored in subfolders of this one.")
 	protected String backupFolder = "backups";
 	
+	@ConfigOption(comment = "Only run automated backups when there is a player connected to the server. No effect in SSP.")
+	protected boolean backupOnlyWithPlayer = true ;
+	
 	@ConfigOption(section = "backup", name = "configuration", comment = "Backup config folder.")
 	protected boolean backupConfiguration = true;
 	
@@ -37,6 +40,10 @@ public class BackupConfiguration {
 	
 	public boolean onlyOperatorsCanManuallyBackup() {
 		return opsOnly;
+	}
+	
+	public boolean onlyRunBackupsWithPlayersOnline() {
+		return backupOnlyWithPlayer;
 	}
 	
 	public boolean canCommandBlocksUseCommands() {
