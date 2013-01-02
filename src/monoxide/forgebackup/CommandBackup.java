@@ -49,15 +49,15 @@ public class CommandBackup extends CommandBackupBase {
 		boolean failure = false;
 		notifyBackupAdmins(sender, "ForgeBackup.backup.start");
 		
-		notifyBackupAdmins(sender, "ForgeBackup.save.disabled");
+		notifyBackupAdmins(sender, Level.FINE, "ForgeBackup.save.disabled");
 		toggleSavability(false);
 		
 		try
 		{
-			notifyBackupAdmins(sender, "ForgeBackup.save.force");
+			notifyBackupAdmins(sender, Level.FINE, "ForgeBackup.save.force");
 			forceSaveAllWorlds();
 			
-			notifyBackupAdmins(sender, "ForgeBackup.backup.progress");
+			notifyBackupAdmins(sender, Level.FINE, "ForgeBackup.backup.progress");
 			doBackup(sender);
 		}
 		catch (MinecraftException e)
@@ -70,7 +70,7 @@ public class CommandBackup extends CommandBackupBase {
 			BackupLog.log(Level.SEVERE, e, e.getMessage());
 			return;
 		} finally {
-			notifyBackupAdmins(sender, "ForgeBackup.save.enabled");
+			notifyBackupAdmins(sender, Level.FINE, "ForgeBackup.save.enabled");
 			toggleSavability(true);
 		}
 		

@@ -56,10 +56,16 @@ public abstract class CommandBackupBase extends CommandBase {
 		
 		if (sender != server)
 		{
-			BackupLog.log(level, message);
+			if (ForgeBackup.instance().config().verboseLogging() && level == Level.FINE) {
+				BackupLog.log(Level.INFO, message);
+			} else {
+				BackupLog.log(level, message);
+			}
 		}
 		if (sender instanceof EntityPlayer && !server.isDedicatedServer()) {
-			((EntityPlayer)sender).sendChatToPlayer("\u00a77\u00a7o" + message);
+			if (ForgeBackup.instance().config().verboseLogging() || level != Level.FINE) {
+				((EntityPlayer)sender).sendChatToPlayer("\u00a77\u00a7o" + message);
+			}
 		}
 	}
 }

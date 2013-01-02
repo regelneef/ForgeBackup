@@ -20,7 +20,10 @@ public class BackupConfiguration {
 	protected String backupFolder = "backups";
 	
 	@ConfigOption(comment = "Only run automated backups when there is a player connected to the server. No effect in SSP.")
-	protected boolean backupOnlyWithPlayer = true ;
+	protected boolean backupOnlyWithPlayer = true;
+	
+	@ConfigOption(comment = "Output extra information while backing up.")
+	protected boolean verboseLogging = false;
 	
 	@ConfigOption(section = "backup", name = "configuration", comment = "Backup config folder.")
 	protected boolean backupConfiguration = true;
@@ -68,6 +71,10 @@ public class BackupConfiguration {
 	
 	public boolean willBackupMods() {
 		return backupMods;
+	}
+	
+	public boolean verboseLogging() {
+		return verboseLogging;
 	}
 	
 	public BackupConfiguration(File configFile) {
