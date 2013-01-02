@@ -121,49 +121,55 @@ public class CommandBackup extends CommandBackupBase {
 			backupsFolder.mkdirs();
 		}
 		
-		File backupFile = new File(backupsFolder, getBackupFileName());
-		ZipOutputStream backup = new ZipOutputStream(new FileOutputStream(backupFile));
-		List<File> saveDirectories = Lists.newArrayList();
-		
-		if (ForgeBackup.instance().config().willBackupConfiguration()) {
-			saveDirectories.add(server.getFile("config"));
-		}
-		
-		if (ForgeBackup.instance().config().willBackupMods()) {
-			saveDirectories.add(server.getFile("mods"));
-			saveDirectories.add(server.getFile("coremods"));
-		}
+		List<File> thingsToSave = Lists.newArrayList();
 		
 		if (ForgeBackup.instance().config().willBackupWorld()) {
 			if (saveHandler instanceof SaveHandler) {
-				saveDirectories.add(((SaveHandler)saveHandler).getSaveDirectory());
+				thingsToSave.add(((SaveHandler)saveHandler).getSaveDirectory());
 			} else {
-				saveDirectories.add(server.getFile(saveHandler.getSaveDirectoryName()));
+				thingsToSave.add(server.getFile(saveHandler.getSaveDirectoryName()));
 			}
 		}
 		
+		if (ForgeBackup.instance().config().willBackupConfiguration()) {
+			thingsToSave.add(server.getFile("config"));
+		}
+		
+		if (ForgeBackup.instance().config().willBackupMods()) {
+			thingsToSave.add(server.getFile("mods"));
+			thingsToSave.add(server.getFile("coremods"));
+		}
+
+		File backupFile = new File(backupsFolder, getBackupFileName());
+		createNewBackup(backupFile, thingsToSave);
+	}
+	
+	private void createNewBackup(File backupFile, List<File> toBackup)
+	throws IOException
+	{
+		ZipOutputStream backup = new ZipOutputStream(new FileOutputStream(backupFile));
 		byte[] buffer = new byte[4096];
 		int readBytes;
-		while (!saveDirectories.isEmpty()) {
-			File current = saveDirectories.remove(0);
+		while (!toBackup.isEmpty()) {
+			File current = toBackup.remove(0);
 			
-			for (File child : current.listFiles()) {
-				if (child.isDirectory()) {
-					saveDirectories.add(child);
-				} else {
-					backup.putNextEntry(new ZipEntry(cleanZipPath(child.getCanonicalPath())));
-					
-					try {
-						InputStream currentStream = new FileInputStream(child);
-						while ((readBytes = currentStream.read(buffer)) >= 0) {
-							backup.write(buffer, 0, readBytes);
-						}
-						currentStream.close();
-					} catch (IOException e) {
-						BackupLog.warning("Couldn't backup file: %s", child.getPath());
-					}
-					backup.closeEntry();
+			if (current.isDirectory()) {
+				for (File child : current.listFiles()) {
+					toBackup.add(child);
 				}
+			} else {
+				backup.putNextEntry(new ZipEntry(cleanZipPath(current.getCanonicalPath())));
+				
+				try {
+					InputStream currentStream = new FileInputStream(current);
+					while ((readBytes = currentStream.read(buffer)) >= 0) {
+						backup.write(buffer, 0, readBytes);
+					}
+					currentStream.close();
+				} catch (IOException e) {
+					BackupLog.warning("Couldn't backup file: %s", current.getPath());
+				}
+				backup.closeEntry();
 			}
 		}
 		
