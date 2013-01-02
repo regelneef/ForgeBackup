@@ -18,13 +18,13 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(name = "ForgeBackup", modid = "mono_backup", useMetadata = true)
+@Mod(name = "ForgeBackup", modid = "forgebackup", useMetadata = true)
 public class ForgeBackup implements ICommandSender {
 	
 	private BackupConfiguration config;
 	private Timer backupTimer;
 	
-	@Instance("mono_backup")
+	@Instance("forgebackup")
 	private static ForgeBackup instance;
 	public static ForgeBackup instance() {
 		return instance;
