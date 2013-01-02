@@ -13,6 +13,7 @@ import net.minecraft.world.WorldServer;
 public class BackupTask extends TimerTask {
 	
 	private final MinecraftServer server;
+	public static boolean lastRunHadPlayers = false; 
 	
 	public BackupTask(MinecraftServer server) {
 		this.server = server;
@@ -21,7 +22,12 @@ public class BackupTask extends TimerTask {
 	@Override
 	public void run() {
 		if (ForgeBackup.instance().config().onlyRunBackupsWithPlayersOnline() && !playerLoggedIn()) {
-			return;
+			boolean realLastRun = lastRunHadPlayers;
+			lastRunHadPlayers = false;
+			
+			if (!realLastRun) { return; }
+		} else {
+			lastRunHadPlayers = true;
 		}
 		
 		server.getCommandManager().executeCommand(ForgeBackup.instance(), "backup");
