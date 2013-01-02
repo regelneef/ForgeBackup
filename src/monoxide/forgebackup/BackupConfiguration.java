@@ -2,7 +2,10 @@ package monoxide.forgebackup;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.logging.Level;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
@@ -37,6 +40,9 @@ public class BackupConfiguration {
 	
 	@ConfigOption(section = "backup", name = "world", comment = "Backup world folder.")
 	protected boolean backupWorld = true;
+	
+	@ConfigOption(section = "backup", comment = "List of dimension id's to *not* backup. Use this to disable dimensions that are large or unneeded.")
+	protected int[] disabledDimensions = new int[] {};
 	
 	@ConfigOption(section = "backup", name = "mods", comment = "Backup mods folder.")
 	protected boolean backupMods = false;
@@ -86,6 +92,18 @@ public class BackupConfiguration {
 			files[i] = server.getFile(backupOthers[i]);
 		}
 		return files;
+	}
+	
+	public List<Integer> getDisabledDimensions() {
+		List<Integer> dimensions = Lists.newArrayList();
+		for (int i : disabledDimensions) {
+			if (i == 0) {
+				BackupLog.warning("Cannot disable overworld from backups.");
+				continue;
+			}
+			dimensions.add(i);
+		}
+		return dimensions;
 	}
 	
 	public boolean verboseLogging() {

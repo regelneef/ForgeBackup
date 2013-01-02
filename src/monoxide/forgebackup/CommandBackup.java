@@ -170,13 +170,24 @@ public class CommandBackup extends CommandBackupBase {
 		ZipOutputStream backup = new ZipOutputStream(new FileOutputStream(backupFile));
 		byte[] buffer = new byte[4096];
 		int readBytes;
+		List<Integer> disabledDimensions = ForgeBackup.instance().config().getDisabledDimensions();
+		
 		while (!toBackup.isEmpty()) {
 			File current = toBackup.remove(0);
 			if (!current.exists()) { continue; }
 			
 			if (current.isDirectory()) {
-				for (File child : current.listFiles()) {
-					toBackup.add(child);
+				boolean disabled = false;
+				for (int dimension : disabledDimensions) {
+					if (current.getName().equals(String.format("DIM%d", dimension))) {
+						disabled = true;
+					}
+				}
+				
+				if (!disabled) {
+					for (File child : current.listFiles()) {
+						toBackup.add(child);
+					}
 				}
 			} else {
 				backup.putNextEntry(new ZipEntry(cleanZipPath(current.getCanonicalPath())));
