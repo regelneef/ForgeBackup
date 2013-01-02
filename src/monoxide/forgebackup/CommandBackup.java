@@ -139,6 +139,14 @@ public class CommandBackup extends CommandBackupBase {
 			thingsToSave.add(server.getFile("mods"));
 			thingsToSave.add(server.getFile("coremods"));
 		}
+		
+		if (ForgeBackup.instance().config().willBackupServerConfiguration()) {
+			thingsToSave.add(server.getFile("banned-ips.txt"));
+			thingsToSave.add(server.getFile("banned-players.txt"));
+			thingsToSave.add(server.getFile("ops.txt"));
+			thingsToSave.add(server.getFile("server.properties"));
+			thingsToSave.add(server.getFile("white-list.txt"));
+		}
 
 		File backupFile = new File(backupsFolder, getBackupFileName());
 		createNewBackup(backupFile, thingsToSave);
@@ -152,6 +160,7 @@ public class CommandBackup extends CommandBackupBase {
 		int readBytes;
 		while (!toBackup.isEmpty()) {
 			File current = toBackup.remove(0);
+			if (!current.exists()) { continue; }
 			
 			if (current.isDirectory()) {
 				for (File child : current.listFiles()) {
