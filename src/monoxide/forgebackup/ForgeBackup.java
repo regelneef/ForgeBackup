@@ -69,7 +69,7 @@ public class ForgeBackup implements ICommandSender {
 
 	@Override
 	public String getCommandSenderName() {
-		return "ForgeBackup";
+		return "Backup";
 	}
 
 	@Override
