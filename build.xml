@@ -71,7 +71,8 @@
                 <mergemapper to="mcmod.info" />
             </mappedresources>
         </jar>
-        <echo file="VERSION">${version}</echo>
+        <echo file="VERSION">MC: ${minecraft.version}
+${version}</echo>
     </target>
 
     <target name="setupvars" unless="vars.setup">
