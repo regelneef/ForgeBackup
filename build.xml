@@ -2,8 +2,8 @@
 <project name="ForgeBackup" default="setup-forge">
     <target name="download-forge" depends="setupvars" unless="forge.downloaded">
         <echo>Downloading Minecraft Forge...</echo>
-        <delete includeEmptyDirs="true">
-            <fileset dir="${forge.base}" />
+        <delete dir="${forge.base}" />
+        <delete>
             <fileset dir="${mod.base}" includes="minecraftforge-src-*.zip" />
         </delete>
         <get src="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${minecraft.version}-${forge.version}.zip" dest="${mod.base}/minecraftforge-src-${minecraft.version}-${forge.version}.zip" />
@@ -11,7 +11,7 @@
     <target name="setup-forge" depends="download-forge" unless="forge.installed">
         <echo>Installing Minecraft Forge...</echo>
         <unzip src="${mod.base}/minecraftforge-src-${minecraft.version}-${forge.version}.zip" dest="${mod.base}" />
-        <exec executable="${python.exe}" dir="${forge.base}">
+        <exec executable="${python.exe}" dir="${forge.base}" failonerror="true">
             <arg value="${forge.base}/install.py" />
         </exec>
     </target>
