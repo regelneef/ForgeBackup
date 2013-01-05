@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="ForgeBackup" default="setup-forge">
+<project name="ForgeBackup" default="build-forge">
     <target name="download-forge" depends="setupvars" unless="forge.downloaded">
         <echo>Downloading Minecraft Forge...</echo>
         <delete dir="${forge.base}" />
@@ -15,11 +15,11 @@
             <arg value="${forge.base}/install.py" />
         </exec>
     </target>
-    <target name="build" depends="setup-forge">
-        <delete file="VERSION" />
+    <target name="build-forge" depends="setup-forge" unless="forge.built">
         <delete dir="${mcp.base}/bin" />
+        <delete file="${mod.base}/minecraftforge-built.jar" />
         <mkdir dir="${mcp.bin}" />
-        <echo>Building ${modname}.</echo>
+        <echo>Building Minecraft and Minecraft Forge.</echo>
         <javac  encoding="UTF-8" compiler="modern" source="1.6" target="1.6" deprecation="false"
                 destdir="${mcp.bin}" includeantruntime="false" includejavaruntime="true" debug="true">
             <compilerarg value="-Xlint:-options" />
@@ -34,6 +34,31 @@
                 <pathelement location="${mcp.jars}\bin\lwjgl_util.jar" />
             </classpath>
             <src path="${mcp.src}" />
+        </javac>
+        <jar destfile="${mod.base}/minecraftforge-built.jar">
+            <fileset dir="${mcp.bin}" includes="**/*.class" />
+        </jar>
+    </target>
+    <target name="build" depends="build-forge">
+        <delete file="VERSION" />
+        <delete dir="${mod.bin}" />
+        <mkdir dir="${mod.bin}" />
+        <echo>Building ${modname}.</echo>
+        <javac  encoding="UTF-8" compiler="modern" source="1.6" target="1.6" deprecation="false"
+                destdir="${mod.bin}" includeantruntime="false" includejavaruntime="true" debug="true">
+            <compilerarg value="-Xlint:-options" />
+            <compilerarg value="-Xlint:deprecation" />
+            <compilerarg value="-Xlint:unchecked" />
+            <classpath>
+                <pathelement location="${mod.base}\minecraftforge-built.jar" />
+                <pathelement location="${mcp.lib}\argo-2.25.jar" />
+                <pathelement location="${mcp.lib}\asm-all-4.0.jar" />
+                <pathelement location="${mcp.lib}\bcprov-jdk15on-147.jar" />
+                <pathelement location="${mcp.lib}\guava-12.0.1.jar" />
+                <pathelement location="${mcp.jars}\bin\jinput.jar" />
+                <pathelement location="${mcp.jars}\bin\lwjgl.jar" />
+                <pathelement location="${mcp.jars}\bin\lwjgl_util.jar" />
+            </classpath>
             <src path="${mod.src}" />
         </javac>
     </target>
@@ -83,6 +108,7 @@
 
         <property name="mod.base" location="${basedir}" />
         <property name="mod.src" location="${mod.base}/src" />
+        <property name="mod.bin" location="${mod.base}/bin" />
 
         <property name="forge.base" location="${mod.base}/forge" />
         <property name="mcp.base" location="${forge.base}/mcp" />
@@ -122,6 +148,14 @@
                 <isset property="forge.downloaded" />
                 <resourceexists>
                     <file file="${mod.base}/forge"/>
+                </resourceexists>
+             </and>
+        </condition>
+        <condition property="forge.built" value="true">
+            <and>
+                <isset property="forge.installed" />
+                <resourceexists>
+                    <file file="${mod.base}/minecraftforge-built.jar"/>
                 </resourceexists>
              </and>
         </condition>
