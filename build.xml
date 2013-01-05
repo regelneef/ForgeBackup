@@ -16,6 +16,7 @@
         </exec>
     </target>
     <target name="build" depends="setup-forge">
+        <delete file="VERSION" />
         <delete dir="${mcp.base}/bin" />
         <mkdir dir="${mcp.bin}" />
         <echo>Building ${modname}.</echo>
@@ -70,6 +71,7 @@
                 <mergemapper to="mcmod.info" />
             </mappedresources>
         </jar>
+        <echo file="VERSION">${version}</echo>
     </target>
 
     <target name="setupvars" unless="vars.setup">
