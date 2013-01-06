@@ -69,7 +69,10 @@
                 <exclude name="**/*.java" />
             </fileset>
         </copy>
-        <property name="mod.jar.mcdeob" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}-mcdeob.jar" />
+        <delete>
+            <fileset dir="${mod.base}" includes="${modname}-mcdeob-*.jar" />
+        </delete>
+        <property name="mod.jar.mcdeob" location="${mod.base}/${modname}-mcdeob-universal-${minecraft.version}-${version}.jar" />
         <property name="mod.jar.release" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar" />
         <jar destfile="${mod.jar.mcdeob}">
             <fileset dir="${mod.bin}" excludes="mcmod.info" />
