@@ -63,28 +63,19 @@
         </javac>
     </target>
     <target name="reobfuscate" depends="build">
-        <echo message="Reobfuscating ${modname}." level="info" />
-        <exec executable="${python.exe}" dir="${mcp.base}" failonerror="true" errorproperty="reobf.errors">
-            <arg value="${mcp.base}/runtime/reobfuscate.py" />
-            <arg value="--client" />
-        </exec>
-        <!-- Fail if an appropriate error string is found in the output (since reobfuscate.py doesn't ERRORLEVEL properly) -->
-        <fail message="Errors found during reobfuscation.${line.separator}${reobf.errors}">
-            <condition>
-                <contains string="${reobf.errors}" substring="!! Can not find client bins" casesensitive="true" />
-            </condition>
-        </fail>
         <echo message="Building a release jar." />
-        <copy todir="${mcp.reobf}">
+        <copy todir="${mod.bin}">
             <fileset dir="${mod.src}">
                 <exclude name="**/*.java" />
             </fileset>
         </copy>
-        <jar destfile="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar">
-            <fileset dir="${mcp.reobf}" excludes="mcmod.info" />
+        <property name="mod.jar.mcdeob" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}-mcdeob.jar" />
+        <property name="mod.jar.release" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar" />
+        <jar destfile="${mod.jar.mcdeob}">
+            <fileset dir="${mod.bin}" excludes="mcmod.info" />
             <mappedresources>
                 <concat>
-                    <fileset dir="${mcp.reobf}" includes="mcmod.info" />
+                    <fileset dir="${mod.bin}" includes="mcmod.info" />
                     <filterchain>
                         <replacetokens>
                             <token key="NAME" value="${ant.project.name}" />
@@ -96,6 +87,19 @@
                 <mergemapper to="mcmod.info" />
             </mappedresources>
         </jar>
+        <echo message="Reobfuscating ${modname}." level="info" />
+        <exec executable="java" dir="${mod.base}" failonerror="true">
+            <arg value="-cp" />
+            <arg value="${env.BON_HOME}\bon.jar" />
+            <arg value="immibis.beardedoctonemesis.Main" />
+            <arg value="${mod.jar.mcdeob}" />
+            <arg value="${mod.jar.release}" />
+            <arg value="${mcp.conf}" />
+            <arg value="packaged" />
+            <arg value="reob" />
+            <arg value="${mod.base}\minecraftforge-built.jar" />
+        </exec>
+        <delete file="${mod.jar.mcdeob}" />
         <echo file="VERSION">${minecraft.version} -- v${version}</echo>
     </target>
 
@@ -114,6 +118,7 @@
         <property name="mcp.base" location="${forge.base}/mcp" />
         <property name="mcp.bin" location="${mcp.base}/bin/minecraft" />
         <property name="mcp.src" location="${mcp.base}/src/minecraft" />
+        <property name="mcp.conf" location="${mcp.base}/conf" />
         <property name="mcp.jars" location="${mcp.base}/jars" />
         <property name="mcp.lib" location="${mcp.base}/lib" />
         <property name="mcp.reobf" location="${mcp.base}/reobf/minecraft" />
