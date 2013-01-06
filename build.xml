@@ -17,7 +17,7 @@
     </target>
     <target name="build-forge" depends="setup-forge" unless="forge.built">
         <delete dir="${mcp.base}/bin" />
-        <delete file="${mod.base}/minecraftforge-built.jar" />
+        <delete file="${forge.jar.built}" />
         <mkdir dir="${mcp.bin}" />
         <echo>Building Minecraft and Minecraft Forge.</echo>
         <javac  encoding="UTF-8" compiler="modern" source="1.6" target="1.6" deprecation="false"
@@ -35,7 +35,7 @@
             </classpath>
             <src path="${mcp.src}" />
         </javac>
-        <jar destfile="${mod.base}/minecraftforge-built.jar">
+        <jar destfile="${forge.jar.built}">
             <fileset dir="${mcp.bin}" includes="**/*.class" />
         </jar>
     </target>
@@ -93,14 +93,14 @@
         <echo message="Reobfuscating ${modname}." level="info" />
         <exec executable="java" dir="${mod.base}" failonerror="true">
             <arg value="-cp" />
-            <arg value="${env.BON_HOME}\bon.jar" />
+            <arg value="${bon.jar}" />
             <arg value="immibis.beardedoctonemesis.Main" />
             <arg value="${mod.jar.mcdeob}" />
             <arg value="${mod.jar.release}" />
             <arg value="${mcp.conf}" />
             <arg value="packaged" />
             <arg value="reob" />
-            <arg value="${mod.base}\minecraftforge-built.jar" />
+            <arg value="${forge.jar.built}" />
         </exec>
         <delete file="${mod.jar.mcdeob}" />
         <echo file="VERSION">${minecraft.version} -- v${version}</echo>
@@ -118,6 +118,7 @@
         <property name="mod.bin" location="${mod.base}/bin" />
 
         <property name="forge.base" location="${mod.base}/forge" />
+        <property name="forge.jar.built" location="${mod.base}/minecraftforge-built.jar" />
         <property name="mcp.base" location="${forge.base}/mcp" />
         <property name="mcp.bin" location="${mcp.base}/bin/minecraft" />
         <property name="mcp.src" location="${mcp.base}/src/minecraft" />
@@ -125,6 +126,8 @@
         <property name="mcp.jars" location="${mcp.base}/jars" />
         <property name="mcp.lib" location="${mcp.base}/lib" />
         <property name="mcp.reobf" location="${mcp.base}/reobf/minecraft" />
+
+        <property name="bon.jar" location="${env.BON_HOME}/bon.jar" />
 
         <condition property="python.exe" value="${forge.base}/fml/python/python_fml" else="python">
             <os family="Windows" />
@@ -163,7 +166,7 @@
             <and>
                 <isset property="forge.installed" />
                 <resourceexists>
-                    <file file="${mod.base}/minecraftforge-built.jar"/>
+                    <file file="${forge.jar.built}"/>
                 </resourceexists>
              </and>
         </condition>
