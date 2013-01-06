@@ -51,10 +51,10 @@ public class BackupTask extends TimerTask {
 		
 		for (WorldServer world : server.worldServers) {
 			try {
-				Set<EntityTrackerEntry> entities = (Set)entitySetField.get(world.getEntityTracker());
+				Set entities = (Set)entitySetField.get(world.getEntityTracker());
 				
-				for (EntityTrackerEntry entry : entities) {
-					if (entry.myEntity instanceof EntityPlayer) {
+				for (Object entry : entities) {
+					if (((EntityTrackerEntry)entry).myEntity instanceof EntityPlayer) {
 						return true;
 					}
 				}
