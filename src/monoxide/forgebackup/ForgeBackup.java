@@ -12,10 +12,12 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarted;
+import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -60,11 +62,16 @@ public class ForgeBackup implements ICommandSender {
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.save.enabled", "en_US", "Re-enabling saving...");
 	}
 	
+	@ServerStarting
+	public void serverStarting(FMLServerStartingEvent event) {
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		event.registerServerCommand(new CommandBackup(event));
+	}
+	
 	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getSaveDirectoryName());
-		new CommandBackup(server);
 		backupTimer = new Timer(true);
 		backupTimer.scheduleAtFixedRate(new BackupTask(server), config.getBackupInterval() * 60 * 1000, config.getBackupInterval() * 60 * 1000);
 	}

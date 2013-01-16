@@ -23,10 +23,12 @@ import net.minecraft.world.storage.SaveHandler;
 
 import com.google.common.collect.Lists;
 
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+
 public class CommandBackup extends CommandBackupBase {
 	
-	public CommandBackup(MinecraftServer server) {
-		super(server);
+	public CommandBackup(FMLServerStartingEvent event) {
+		super(event);
 	}
 	
 	@Override

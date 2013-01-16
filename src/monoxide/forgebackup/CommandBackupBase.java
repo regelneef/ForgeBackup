@@ -10,14 +10,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public abstract class CommandBackupBase extends CommandBase {
 	protected final MinecraftServer server;
 	
-	public CommandBackupBase(MinecraftServer server) {
-		this.server = MinecraftServer.getServer();
-		((ServerCommandManager) this.server.getCommandManager()).registerCommand(this);
+	public CommandBackupBase(FMLServerStartingEvent event) {
+		this.server = event.getServer();
 	}
 	
 	@Override
