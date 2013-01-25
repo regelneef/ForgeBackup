@@ -63,46 +63,33 @@
         </javac>
     </target>
     <target name="reobfuscate" depends="build">
+        <unzip src="${forge.jar.built}" dest="${mcp.bin}" />
+        <echo message="Reobfuscating ${modname}." level="info" />
+        <exec executable="${python.exe}" dir="${mcp.base}" failonerror="true">
+            <arg value="${mcp.base}/runtime/reobfuscate.py" />
+            <arg value="--client" />
+        </exec>
         <echo message="Building a release jar." />
-        <copy todir="${mod.bin}">
+        <jar destfile="${mod.jar.release}">
+            <fileset dir="${mcp.reobf}" includes="mechcraft/**/*.class" />
             <fileset dir="${mod.src}">
-                <exclude name="**/*.java" />
+                <exclude name="mcmod.info"/>
+                <exclude name="**/*.java"/>
             </fileset>
-        </copy>
-        <delete>
-            <fileset dir="${mod.base}" includes="${modname}-mcdeob-*.jar" />
-        </delete>
-        <property name="mod.jar.mcdeob" location="${mod.base}/${modname}-mcdeob-universal-${minecraft.version}-${version}.jar" />
-        <property name="mod.jar.release" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar" />
-        <jar destfile="${mod.jar.mcdeob}">
-            <fileset dir="${mod.bin}" excludes="mcmod.info" />
             <mappedresources>
                 <concat>
-                    <fileset dir="${mod.bin}" includes="mcmod.info" />
+                    <fileset dir="${mod.src}" includes="mcmod.info" />
                     <filterchain>
                         <replacetokens>
-                            <token key="NAME" value="${ant.project.name}" />
+                            <token key="NAME" value="${modname}" />
                             <token key="VERSION" value="${version}" />
-                            <token key="MCVERSION" value="${minecraft.version}" />
+                            <token key="MCVERSION" value="${mcversion}" />
                         </replacetokens>
                     </filterchain>
                 </concat>
                 <mergemapper to="mcmod.info" />
             </mappedresources>
         </jar>
-        <echo message="Reobfuscating ${modname}." level="info" />
-        <exec executable="java" dir="${mod.base}" failonerror="true">
-            <arg value="-cp" />
-            <arg value="${bon.jar}" />
-            <arg value="immibis.beardedoctonemesis.Main" />
-            <arg value="${mod.jar.mcdeob}" />
-            <arg value="${mod.jar.release}" />
-            <arg value="${mcp.conf}" />
-            <arg value="packaged" />
-            <arg value="reob" />
-            <arg value="${forge.jar.built}" />
-        </exec>
-        <delete file="${mod.jar.mcdeob}" />
         <echo file="VERSION">${minecraft.version} -- v${version}</echo>
     </target>
 
@@ -149,6 +136,9 @@
         <property name="minecraft.version" value="${mod.build.mcversion}" />
 
         <property name="forge.version" value="${mod.build.forgeversion}" />
+        
+        <property name="mod.jar.release" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar" />
+        
         <condition property="forge.downloaded" value="true">
             <resourceexists>
                 <file file="${mod.base}/minecraftforge-src-${minecraft.version}-${forge.version}.zip" />
