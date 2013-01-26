@@ -41,11 +41,13 @@
     </target>
     <target name="build" depends="build-forge">
         <delete file="VERSION" />
-        <delete dir="${mod.bin}" />
-        <mkdir dir="${mod.bin}" />
+        <delete dir="${mcp.bin}" />
         <echo>Building ${modname}.</echo>
+        <unzip src="${forge.jar.built}" dest="${mcp.bin}">
+            <patternset><exclude name="MANIFEST.MF" /></patternset>
+        </unzip>
         <javac  encoding="UTF-8" compiler="modern" source="1.6" target="1.6" deprecation="false"
-                destdir="${mod.bin}" includeantruntime="false" includejavaruntime="true" debug="true">
+                destdir="${mcp.bin}" includeantruntime="false" includejavaruntime="true" debug="true">
             <compilerarg value="-Xlint:-options" />
             <compilerarg value="-Xlint:deprecation" />
             <compilerarg value="-Xlint:unchecked" />
@@ -71,7 +73,7 @@
         </exec>
         <echo message="Building a release jar." />
         <jar destfile="${mod.jar.release}">
-            <fileset dir="${mcp.reobf}" includes="mechcraft/**/*.class" />
+            <fileset dir="${mcp.reobf}" includes="**/*.class" />
             <fileset dir="${mod.src}">
                 <exclude name="mcmod.info"/>
                 <exclude name="**/*.java"/>
