@@ -2,7 +2,7 @@ package monoxide.forgebackup.configuration;
 
 import net.minecraftforge.common.Configuration;
 
-public enum Sections {
+enum Sections {
 	GENERAL(Configuration.CATEGORY_GENERAL),
 	BLOCK(Configuration.CATEGORY_BLOCK),
 	ITEM(Configuration.CATEGORY_ITEM),

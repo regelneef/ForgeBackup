@@ -9,7 +9,7 @@ import net.minecraftforge.common.Configuration;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Option {
+@interface Option {
 	String name() default "";
 	String comment() default "";
 	Sections section() default Sections.GENERAL;

@@ -13,6 +13,9 @@ import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 
 public class BackupConfiguration {
+	////////////////////////////////////////////////////////
+	//                   GENERAL                          //
+	////////////////////////////////////////////////////////
 	@Section(section = Sections.GENERAL, comment = "General configuration options are here")
 	protected ConfigCategory general;
 	
@@ -37,6 +40,9 @@ public class BackupConfiguration {
 	@Option(comment = "Output extra information while backing up.")
 	protected boolean verboseLogging = false;
 	
+	////////////////////////////////////////////////////////
+	//                   BACKUP                           //
+	////////////////////////////////////////////////////////
 	@Section(section = Sections.BACKUP, comment = "These settings control what and how things are backed up.")
 	protected ConfigCategory backup;
 	
@@ -58,9 +64,30 @@ public class BackupConfiguration {
 	@Option(section = Sections.BACKUP, name = "other", comment = "Other files or directories to backup.")
 	protected String[] backupOthers = new String[] {};
 	
+	////////////////////////////////////////////////////////
+	//                   LONGTERM                         //
+	////////////////////////////////////////////////////////
 	@Section(section = Sections.LONGTERM_BACKUP, comment = "These settings control what and how things are backed up when doing an archival backup.")
 	protected ConfigCategory longtermBackup;
 	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "enabled", comment = "Whether to enable separate long-term backups.")
+	protected boolean longtermEnabled = false;
+	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "backupFolder", comment = "Folder name to store long-term backups in. Each world's archives will be stored in subfolders of this one.")
+	protected String longtermBackupFolder = "archives";
+	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "disabledDimensions", comment = "List of dimension id's to *not* backup. Use this to disable dimensions that are large or unneeded.")
+	protected int[] longtermDisabledDimensions = new int[] {};
+	
+	@Option(section = Sections.LONGTERM_BACKUP, comment = "The number of daily archival backups to keep.")
+	protected int maxDailyBackups = 7;
+	
+	@Option(section = Sections.LONGTERM_BACKUP, comment = "The number of weekly archival backups to keep.")
+	protected int maxWeeklyBackups = 14;
+	
+	////////////////////////////////////////////////////////
+	//                   GETTERS                          //
+	////////////////////////////////////////////////////////
 	public int getBackupInterval() {
 		return backupInterval;
 	}
@@ -124,6 +151,10 @@ public class BackupConfiguration {
 	public int getMaximumBackups() {
 		return maxBackups;
 	}
+	
+	////////////////////////////////////////////////////////
+	//                 /options section                   //
+	////////////////////////////////////////////////////////
 	
 	private Configuration config;
 	
