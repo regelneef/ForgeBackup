@@ -114,6 +114,10 @@ public class BackupConfiguration {
 	public BackupSettings getRegularBackupSettings(MinecraftServer server) {
 		return new BackupSettings(server, backupFolder, verboseLogging, maxBackups, backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers, disabledDimensions);
 	}
+
+	public BackupSettings getFullBackupSettings(MinecraftServer server) {
+		return new BackupSettings(server, backupFolder, verboseLogging, maxBackups, true, true, true, true, backupOthers, new Integer[] {});
+	}
 	
 	////////////////////////////////////////////////////////
 	//                 /options section                   //
