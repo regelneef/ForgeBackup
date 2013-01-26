@@ -1,4 +1,4 @@
-package monoxide.forgebackup;
+package monoxide.forgebackup.configuration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,8 +9,8 @@ import net.minecraftforge.common.Configuration;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ConfigOption {
+public @interface Option {
 	String name() default "";
 	String comment() default "";
-	String section() default Configuration.CATEGORY_GENERAL;
+	Sections section() default Sections.GENERAL;
 }
