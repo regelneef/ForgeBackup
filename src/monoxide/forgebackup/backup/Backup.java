@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.ISaveHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Backup {

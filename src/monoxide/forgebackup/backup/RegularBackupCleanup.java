@@ -16,15 +16,17 @@ public class RegularBackupCleanup implements IBackupCleanup {
 	
 	@Override
 	public boolean runBackupCleanup(File backupDirectory) {
-		if (maxBackups > 0) {
-			List<File> backups = Lists.newArrayList(backupDirectory.listFiles());
-			Collections.sort(backups);
-			
-			while (backups.size() >= maxBackups) {
-				File backup = backups.remove(0);
-				backup.delete();
-			}
+		if (maxBackups <= 0)
+		{ return true; }
+		
+		List<File> backups = Lists.newArrayList(backupDirectory.listFiles());
+		Collections.sort(backups);
+		
+		while (backups.size() >= maxBackups) {
+			File backup = backups.remove(0);
+			backup.delete();
 		}
+		
 		return true;
 	}
 
