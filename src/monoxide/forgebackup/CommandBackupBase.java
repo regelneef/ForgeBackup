@@ -55,13 +55,10 @@ public abstract class CommandBackupBase extends CommandBase {
 			}
 		}
 		
-		if (sender != server)
-		{
-			if (ForgeBackup.instance().config().verboseLogging() && level == Level.FINE) {
-				BackupLog.log(Level.INFO, message);
-			} else {
-				BackupLog.log(level, message);
-			}
+		if (ForgeBackup.instance().config().verboseLogging() && level == Level.FINE) {
+			BackupLog.log(Level.INFO, message);
+		} else {
+			BackupLog.log(level, message);
 		}
 	}
 }
