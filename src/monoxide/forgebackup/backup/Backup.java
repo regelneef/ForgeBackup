@@ -144,8 +144,9 @@ public class Backup {
 		
 		if (var5)
 		{
-			for (EntityPlayerMP player : (List<EntityPlayerMP>)settings.getServer().getConfigurationManager().playerEntityList)
+			for (Object playerObj : settings.getServer().getConfigurationManager().playerEntityList)
 			{
+				EntityPlayerMP player = (EntityPlayerMP)playerObj;
 				if ((settings.getServer().getConfigurationManager().areCommandsAllowed(player.username) || !settings.getServer().isDedicatedServer()) && 
 				    (settings.verboseLogging() || level != Level.FINE))
 				{
