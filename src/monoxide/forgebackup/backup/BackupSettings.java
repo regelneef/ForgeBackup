@@ -22,11 +22,12 @@ public class BackupSettings {
 	private final int[] disabledDimensions;
 	private final boolean verboseLogging;
 	private final MinecraftServer server;
+	private final ICompressionHandler compression;
 
 	public BackupSettings(
 			MinecraftServer server, String backupFolder, boolean verboseLogging, IBackupCleanup cleanup,
 			boolean backupWorld, boolean backupConfiguration, boolean backupMods, boolean backupServerConfiguration, String[] extraFiles,
-			int[] disabledDimensions
+			int[] disabledDimensions, ICompressionHandler compression
 	) {
 		this.server = server;
 		this.backupFolder = backupFolder;
@@ -38,6 +39,7 @@ public class BackupSettings {
 		this.backupServerConfiguration = backupServerConfiguration;
 		this.extraFiles = extraFiles;
 		this.disabledDimensions = disabledDimensions;
+		this.compression = compression;
 	}
 	
 	public IBackupCleanup getBackupCleanupHandler() {
@@ -90,14 +92,18 @@ public class BackupSettings {
 		return server;
 	}
 	
+	public ICompressionHandler getCompressionHandler() {
+		return compression;
+	}
+	
 	public File getBackupFolder() {
-		File absoluteFile = new File(backupFolder);
+		File absoluteFile = server.getFile(backupFolder);
 		return absoluteFile.getAbsolutePath() == backupFolder ? absoluteFile : server.getFile(backupFolder);
 	}
 	
 	public String getBackupFileName() {
 		Date now = new Date();
-		return String.format("%TY%Tm%Td-%TH%TM%TS.zip", now, now, now, now, now, now);
+		return String.format("%TY%Tm%Td-%TH%TM%TS.%s", now, now, now, now, now, now, getCompressionHandler().getFileExtension());
 	}
 
 	public List<File> getFilesToBackup(ISaveHandler saveHandler) {

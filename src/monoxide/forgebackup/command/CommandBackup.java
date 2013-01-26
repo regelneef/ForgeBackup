@@ -2,7 +2,6 @@ package monoxide.forgebackup.command;
 
 import monoxide.forgebackup.ForgeBackup;
 import monoxide.forgebackup.backup.Backup;
-import monoxide.forgebackup.backup.BackupSettings;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;

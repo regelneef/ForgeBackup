@@ -2,19 +2,18 @@ package monoxide.forgebackup.configuration;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.logging.Level;
 
 import monoxide.forgebackup.BackupLog;
 import monoxide.forgebackup.backup.BackupSettings;
+import monoxide.forgebackup.backup.ICompressionHandler;
 import monoxide.forgebackup.backup.RegularBackupCleanup;
+import monoxide.forgebackup.backup.ZipCompressionHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.common.Property.Type;
-
-import com.google.common.collect.Lists;
 
 public class BackupConfiguration {
 	////////////////////////////////////////////////////////
@@ -113,11 +112,15 @@ public class BackupConfiguration {
 	}
 
 	public BackupSettings getRegularBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers, disabledDimensions);
+		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers, disabledDimensions, getCompressionHandler(server));
 	}
 
 	public BackupSettings getFullBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), true, true, true, true, backupOthers, new int[] {});
+		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), true, true, true, true, backupOthers, new int[] {}, getCompressionHandler(server));
+	}
+
+	private ICompressionHandler getCompressionHandler(MinecraftServer server) {
+		return new ZipCompressionHandler(server);
 	}
 	
 	////////////////////////////////////////////////////////

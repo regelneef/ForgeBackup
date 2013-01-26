@@ -1,15 +1,9 @@
 package monoxide.forgebackup;
 
-import java.lang.reflect.Field;
-import java.util.Set;
 import java.util.TimerTask;
 
 import monoxide.forgebackup.backup.Backup;
-import net.minecraft.entity.EntityTracker;
-import net.minecraft.entity.EntityTrackerEntry;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldServer;
 
 public class BackupTask extends TimerTask {
 	private final MinecraftServer server;
