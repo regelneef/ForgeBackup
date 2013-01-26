@@ -5,14 +5,15 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.logging.Level;
 
-import com.google.common.collect.Lists;
-
 import monoxide.forgebackup.BackupLog;
+import monoxide.forgebackup.backup.BackupSettings;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.common.Property.Type;
+
+import com.google.common.collect.Lists;
 
 public class BackupConfiguration {
 	////////////////////////////////////////////////////////
@@ -106,52 +107,12 @@ public class BackupConfiguration {
 		return commandBlocksAllowed;
 	}
 	
-	public String getBackupFolderName() {
-		return backupFolder;
-	}
-	
-	public boolean willBackupConfiguration() {
-		return backupConfiguration;
-	}
-	
-	public boolean willBackupServerConfiguration() {
-		return backupServerConfiguration;
-	}
-	
-	public boolean willBackupWorld() {
-		return backupWorld;
-	}
-	
-	public boolean willBackupMods() {
-		return backupMods;
-	}
-	
-	public File[] getExtraFilesToBackup(MinecraftServer server) {
-		File[] files = new File[backupOthers.length];
-		for (int i = 0; i < backupOthers.length; i++) {
-			files[i] = server.getFile(backupOthers[i]);
-		}
-		return files;
-	}
-	
-	public List<Integer> getDisabledDimensions() {
-		List<Integer> dimensions = Lists.newArrayList();
-		for (int i : disabledDimensions) {
-			if (i == 0) {
-				BackupLog.warning("Cannot disable overworld from backups.");
-				continue;
-			}
-			dimensions.add(i);
-		}
-		return dimensions;
-	}
-	
 	public boolean verboseLogging() {
 		return verboseLogging;
 	}
-	
-	public int getMaximumBackups() {
-		return maxBackups;
+
+	public BackupSettings getRegularBackupSettings(MinecraftServer server) {
+		return new BackupSettings(server, backupFolder, verboseLogging, maxBackups, backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers, disabledDimensions);
 	}
 	
 	////////////////////////////////////////////////////////

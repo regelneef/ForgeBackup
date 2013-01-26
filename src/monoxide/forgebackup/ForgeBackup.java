@@ -2,6 +2,7 @@ package monoxide.forgebackup;
 
 import java.util.Timer;
 
+import monoxide.forgebackup.command.CommandBackup;
 import monoxide.forgebackup.configuration.BackupConfiguration;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
