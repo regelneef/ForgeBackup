@@ -11,6 +11,8 @@ import monoxide.forgebackup.BackupLog;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
+import net.minecraftforge.common.Property.Type;
 
 public class BackupConfiguration {
 	////////////////////////////////////////////////////////
@@ -31,10 +33,7 @@ public class BackupConfiguration {
 	@Option(comment = "Allow command blocks to initiate a backup.")
 	protected boolean commandBlocksAllowed = false;
 	
-	@Option(comment = "Folder name to store backups in. Each world's backups will be stored in subfolders of this one.")
-	protected String backupFolder = "backups";
-	
-	@Option(comment = "Only run automated backups when there is a player connected to the server. No effect in SSP.")
+	@Option(comment = "Only run automated backups when there is a player connected to the server. No effect in SSP. No effect on long-term backups.")
 	protected boolean backupOnlyWithPlayer = true;
 	
 	@Option(comment = "Output extra information while backing up.")
@@ -45,6 +44,9 @@ public class BackupConfiguration {
 	////////////////////////////////////////////////////////
 	@Section(section = Sections.BACKUP, comment = "These settings control what and how things are backed up.")
 	protected ConfigCategory backup;
+	
+	@Option(section = Sections.BACKUP, comment = "Folder name to store backups in. Each world's backups will be stored in subfolders of this one.")
+	protected String backupFolder = "backups";
 	
 	@Option(section = Sections.BACKUP, name = "configuration", comment = "Backup config folder.")
 	protected boolean backupConfiguration = true;
@@ -164,12 +166,22 @@ public class BackupConfiguration {
 			config.load();
 			Field[] fields = this.getClass().getDeclaredFields();
 			
+			migrateOption(Sections.GENERAL, "backupFolder", Sections.BACKUP, "backupFolder");
+			
 			processSections(fields);
 			processOptions(fields);
 			
 			config.save();
 		} catch (Exception e) {
 			BackupLog.log(Level.SEVERE, e, "There was a problem loading the configuration.");
+		}
+	}
+
+	private void migrateOption(Sections oldSection, String oldKey, Sections newSection, String newKey) {
+		if (config.getCategory(oldSection.getName()).containsKey(oldKey)) {
+			String folder = config.getCategory(oldSection.getName()).get(oldKey).value;
+			config.getCategory(newSection.getName()).set(newKey, new Property(newKey, folder, Type.STRING));
+			config.getCategory(oldSection.getName()).remove(oldKey);
 		}
 	}
 
