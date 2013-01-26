@@ -2,6 +2,7 @@ package monoxide.forgebackup.backup;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -25,5 +26,11 @@ public class RegularBackupCleanup implements IBackupCleanup {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public String getBackupFilename() {
+		Date now = new Date();
+		return String.format("%TY%Tm%Td-%TH%TM%TS", now, now, now, now, now, now);
 	}
 }

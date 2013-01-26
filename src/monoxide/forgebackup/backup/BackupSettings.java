@@ -1,7 +1,6 @@
 package monoxide.forgebackup.backup;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 import monoxide.forgebackup.BackupLog;
@@ -102,8 +101,7 @@ public class BackupSettings {
 	}
 	
 	public String getBackupFileName() {
-		Date now = new Date();
-		return String.format("%TY%Tm%Td-%TH%TM%TS.%s", now, now, now, now, now, now, getCompressionHandler().getFileExtension());
+		return getBackupCleanupHandler().getBackupFilename() + "." + getCompressionHandler().getFileExtension();
 	}
 
 	public List<File> getFilesToBackup(ISaveHandler saveHandler) {
