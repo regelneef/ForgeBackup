@@ -86,7 +86,7 @@ public class BackupConfiguration {
 	protected int maxDailyBackups = 7;
 	
 	@Option(section = Sections.LONGTERM_BACKUP, comment = "The number of weekly archival backups to keep.")
-	protected int maxWeeklyBackups = 14;
+	protected int maxWeeklyBackups = 2;
 	
 	////////////////////////////////////////////////////////
 	//                   GETTERS                          //
