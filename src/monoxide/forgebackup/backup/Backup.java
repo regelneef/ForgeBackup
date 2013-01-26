@@ -108,19 +108,10 @@ public class Backup {
 			backupsFolder.mkdirs();
 		}
 		
-		int maxBackups = settings.getMaximumBackups();
-		if (maxBackups > 0) {
-			List<File> backups = Lists.newArrayList(backupsFolder.listFiles());
-			Collections.sort(backups);
-			
-			while (backups.size() >= maxBackups) {
-				File backup = backups.remove(0);
-				backup.delete();
-			}
-		}
-		
+		settings.getBackupCleanupHandler().runBackupCleanup(backupsFolder);
 		List<File> thingsToSave = settings.getFilesToBackup(saveHandler);
 		File backupFile = new File(backupsFolder, settings.getBackupFileName());
+		
 		createNewBackup(backupFile, thingsToSave);
 	}
 	

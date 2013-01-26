@@ -7,6 +7,7 @@ import java.util.logging.Level;
 
 import monoxide.forgebackup.BackupLog;
 import monoxide.forgebackup.backup.BackupSettings;
+import monoxide.forgebackup.backup.RegularBackupCleanup;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
@@ -112,11 +113,11 @@ public class BackupConfiguration {
 	}
 
 	public BackupSettings getRegularBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, maxBackups, backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers, disabledDimensions);
+		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers, disabledDimensions);
 	}
 
 	public BackupSettings getFullBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, maxBackups, true, true, true, true, backupOthers, new int[] {});
+		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), true, true, true, true, backupOthers, new int[] {});
 	}
 	
 	////////////////////////////////////////////////////////

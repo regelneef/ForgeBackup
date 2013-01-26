@@ -12,7 +12,7 @@ import net.minecraft.world.storage.SaveHandler;
 import com.google.common.collect.Lists;
 
 public class BackupSettings {
-	private final int maximumBackups;
+	private final IBackupCleanup cleanup;
 	private final String backupFolder;
 	private final boolean backupWorld;
 	private final boolean backupConfiguration;
@@ -24,14 +24,14 @@ public class BackupSettings {
 	private final MinecraftServer server;
 
 	public BackupSettings(
-			MinecraftServer server, String backupFolder, boolean verboseLogging, int maximumBackups,
+			MinecraftServer server, String backupFolder, boolean verboseLogging, IBackupCleanup cleanup,
 			boolean backupWorld, boolean backupConfiguration, boolean backupMods, boolean backupServerConfiguration, String[] extraFiles,
 			int[] disabledDimensions
 	) {
 		this.server = server;
 		this.backupFolder = backupFolder;
 		this.verboseLogging = verboseLogging;
-		this.maximumBackups = maximumBackups;
+		this.cleanup = cleanup;
 		this.backupWorld = backupWorld;
 		this.backupConfiguration = backupConfiguration;
 		this.backupMods = backupMods;
@@ -40,8 +40,8 @@ public class BackupSettings {
 		this.disabledDimensions = disabledDimensions;
 	}
 	
-	public int getMaximumBackups() {
-		return maximumBackups;
+	public IBackupCleanup getBackupCleanupHandler() {
+		return cleanup;
 	}
 	
 	public boolean willBackupWorld() {
