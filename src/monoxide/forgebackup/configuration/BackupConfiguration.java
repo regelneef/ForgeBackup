@@ -116,7 +116,7 @@ public class BackupConfiguration {
 	}
 
 	public BackupSettings getFullBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, maxBackups, true, true, true, true, backupOthers, new Integer[] {});
+		return new BackupSettings(server, backupFolder, verboseLogging, maxBackups, true, true, true, true, backupOthers, new int[] {});
 	}
 	
 	////////////////////////////////////////////////////////
@@ -211,7 +211,7 @@ public class BackupConfiguration {
 				value = config.get(option.section().getName(), name, value, comment).valueList;
 				field.set(this, value);
 			} else {
-				BackupLog.warning("Skipping @ConfigOption \"%s\" with unknown type: %s", field.getName(), fieldType.getCanonicalName());
+				BackupLog.warning("Skipping @Option \"%s\" with unknown type: %s", field.getName(), fieldType.getCanonicalName());
 				continue;
 			}
 		}

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import monoxide.forgebackup.BackupLog;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
@@ -18,7 +19,7 @@ public class BackupSettings {
 	private final boolean backupMods;
 	private final boolean backupServerConfiguration;
 	private final String[] extraFiles;
-	private final Integer[] disabledDimensions;
+	private final int[] disabledDimensions;
 	private final boolean verboseLogging;
 	private final MinecraftServer server;
 
@@ -26,27 +27,6 @@ public class BackupSettings {
 			MinecraftServer server, String backupFolder, boolean verboseLogging, int maximumBackups,
 			boolean backupWorld, boolean backupConfiguration, boolean backupMods, boolean backupServerConfiguration, String[] extraFiles,
 			int[] disabledDimensions
-	) {
-		this.server = server;
-		this.backupFolder = backupFolder;
-		this.verboseLogging = verboseLogging;
-		this.maximumBackups = maximumBackups;
-		this.backupWorld = backupWorld;
-		this.backupConfiguration = backupConfiguration;
-		this.backupMods = backupMods;
-		this.backupServerConfiguration = backupServerConfiguration;
-		this.extraFiles = extraFiles;
-		this.disabledDimensions = new Integer[disabledDimensions.length];
-		
-		for (int i = 0; i < disabledDimensions.length; i++) {
-			this.disabledDimensions[i] = (Integer)disabledDimensions[i];
-		}
-	}
-	
-	public BackupSettings(
-			MinecraftServer server, String backupFolder, boolean verboseLogging, int maximumBackups,
-			boolean backupWorld, boolean backupConfiguration, boolean backupMods, boolean backupServerConfiguration, String[] extraFiles,
-			Integer[] disabledDimensions
 	) {
 		this.server = server;
 		this.backupFolder = backupFolder;
@@ -89,7 +69,17 @@ public class BackupSettings {
 	}
 	
 	public List<Integer> getDisabledDimensions() {
-		return Lists.newArrayList(disabledDimensions);
+		List<Integer> dimensions = Lists.newArrayList();
+		
+		for (int d : disabledDimensions) {
+			if (d == 0) {
+				BackupLog.warning("Cannot disable overworld from backups.");
+				continue;
+			}
+			dimensions.add(d);
+		}
+		
+		return dimensions;
 	}
 	
 	public boolean verboseLogging() {
