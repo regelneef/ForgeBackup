@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 
 import monoxide.forgebackup.BackupLog;
+import monoxide.forgebackup.backup.ArchiveBackupCleanup;
 import monoxide.forgebackup.backup.BackupSettings;
 import monoxide.forgebackup.backup.ICompressionHandler;
 import monoxide.forgebackup.backup.RegularBackupCleanup;
@@ -52,6 +53,9 @@ public class BackupConfiguration {
 	@Option(section = Sections.BACKUP, name = "configuration", comment = "Backup config folder.")
 	protected boolean backupConfiguration = true;
 	
+	@Option(section = Sections.BACKUP, name = "mods", comment = "Backup mods folder.")
+	protected boolean backupMods = false;
+	
 	@Option(section = Sections.BACKUP, name = "serverConfiguration", comment = "Backup server configuration files. eg. server.properties, whitelist.txt")
 	protected boolean backupServerConfiguration = false;
 	
@@ -61,16 +65,18 @@ public class BackupConfiguration {
 	@Option(section = Sections.BACKUP, comment = "List of dimension id's to *not* backup. Use this to disable dimensions that are large or unneeded.")
 	protected int[] disabledDimensions = new int[] {};
 	
-	@Option(section = Sections.BACKUP, name = "mods", comment = "Backup mods folder.")
-	protected boolean backupMods = false;
-	
 	@Option(section = Sections.BACKUP, name = "other", comment = "Other files or directories to backup.")
 	protected String[] backupOthers = new String[] {};
 	
 	////////////////////////////////////////////////////////
 	//                   LONGTERM                         //
 	////////////////////////////////////////////////////////
-	@Section(section = Sections.LONGTERM_BACKUP, comment = "These settings control what and how things are backed up when doing an archival backup.")
+	@Section(section = Sections.LONGTERM_BACKUP, comment =
+			"These settings control what and how things are backed up when doing an archival backup.\n" +
+			"The file group settings are cumulative with the regular backups. If you select to backup your world in\n" +
+			"the regular backup, it will be enabled for longterm backups no matter what. Disabled dimensions however\n" +
+			"do totally override the default settings."
+	)
 	protected ConfigCategory longtermBackup;
 	
 	@Option(section = Sections.LONGTERM_BACKUP, name = "enabled", comment = "Whether to enable separate long-term backups.")
@@ -78,6 +84,18 @@ public class BackupConfiguration {
 	
 	@Option(section = Sections.LONGTERM_BACKUP, name = "backupFolder", comment = "Folder name to store long-term backups in. Each world's archives will be stored in subfolders of this one.")
 	protected String longtermBackupFolder = "archives";
+	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "configuration", comment = "Backup config folder.")
+	protected boolean longtermBackupConfiguration = true;
+	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "mods", comment = "Backup mods folder.")
+	protected boolean longtermBackupMods = false;
+	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "serverConfiguration", comment = "Backup server configuration files. eg. server.properties, whitelist.txt")
+	protected boolean longtermBackupServerConfiguration = false;
+	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "world", comment = "Backup world folder.")
+	protected boolean longtermBackupWorld = true;
 	
 	@Option(section = Sections.LONGTERM_BACKUP, name = "disabledDimensions", comment = "List of dimension id's to *not* backup. Use this to disable dimensions that are large or unneeded.")
 	protected int[] longtermDisabledDimensions = new int[] {};
@@ -110,13 +128,29 @@ public class BackupConfiguration {
 	public boolean verboseLogging() {
 		return verboseLogging;
 	}
+	
+	public boolean longtermBackupsEnabled() {
+		return longtermEnabled;
+	}
 
 	public BackupSettings getRegularBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers, disabledDimensions, getCompressionHandler(server));
+		return new BackupSettings(
+				server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups),
+				backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers,
+				disabledDimensions, getCompressionHandler(server));
 	}
 
 	public BackupSettings getFullBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups), true, true, true, true, backupOthers, new int[] {}, getCompressionHandler(server));
+		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups),
+				true, true, true, true, backupOthers,
+				new int[] {}, getCompressionHandler(server));
+	}
+
+	public BackupSettings getArchiveBackupSettings(MinecraftServer server) {
+		return new BackupSettings(server, longtermBackupFolder, verboseLogging, new ArchiveBackupCleanup(maxDailyBackups, maxWeeklyBackups),
+				backupWorld || longtermBackupWorld, backupConfiguration || longtermBackupConfiguration,
+				backupMods || longtermBackupMods, backupServerConfiguration || longtermBackupServerConfiguration, backupOthers,
+				longtermDisabledDimensions, getCompressionHandler(server));
 	}
 
 	private ICompressionHandler getCompressionHandler(MinecraftServer server) {
