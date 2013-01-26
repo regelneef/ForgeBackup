@@ -2,6 +2,8 @@ package monoxide.forgebackup;
 
 import java.util.Timer;
 
+import monoxide.forgebackup.backup.ArchiveBackupTask;
+import monoxide.forgebackup.backup.BackupTask;
 import monoxide.forgebackup.command.CommandBackup;
 import monoxide.forgebackup.configuration.BackupConfiguration;
 import net.minecraft.command.ICommandSender;
@@ -76,6 +78,9 @@ public class ForgeBackup implements ICommandSender {
 		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getSaveDirectoryName());
 		backupTimer = new Timer(true);
 		backupTimer.scheduleAtFixedRate(new BackupTask(server), config.getBackupInterval() * 60 * 1000, config.getBackupInterval() * 60 * 1000);
+		if (config().longtermBackupsEnabled()) {
+			backupTimer.schedule(new ArchiveBackupTask(server), /* 30 seconds */ 30 * 1000);
+		}
 	}
 	
 	@ServerStopping

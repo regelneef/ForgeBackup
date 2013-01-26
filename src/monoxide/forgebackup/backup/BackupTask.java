@@ -1,10 +1,9 @@
-package monoxide.forgebackup;
+package monoxide.forgebackup.backup;
 
 import java.io.File;
 import java.util.TimerTask;
 
-import monoxide.forgebackup.backup.Backup;
-import monoxide.forgebackup.backup.BackupSettings;
+import monoxide.forgebackup.ForgeBackup;
 import monoxide.forgebackup.configuration.BackupConfiguration;
 import net.minecraft.server.MinecraftServer;
 
@@ -18,17 +17,17 @@ public class BackupTask extends TimerTask {
 
 	@Override
 	public void run() {
-		processArchiveBackups();
-		processRegularBackups();
+		processArchiveBackups(server);
+		processRegularBackups(server);
 	}
 
-	private void processArchiveBackups() {
+	public static void processArchiveBackups(MinecraftServer server) {
 		BackupConfiguration config = ForgeBackup.instance().config();
 		if (!config.longtermBackupsEnabled())
 		{ return; }
 		
 		BackupSettings archiveSettings = config.getArchiveBackupSettings(server);
-		File archiveBackup = new File(archiveSettings.getBackupFolder(), archiveSettings.getBackupFileName());
+		File archiveBackup = archiveSettings.getBackupFile();
 		
 		if (archiveBackup.exists())
 		{ return; }
@@ -37,9 +36,9 @@ public class BackupTask extends TimerTask {
 		backup.run(ForgeBackup.instance());
 	}
 
-	private void processRegularBackups() {
+	public static void processRegularBackups(MinecraftServer server) {
 		BackupConfiguration config = ForgeBackup.instance().config();
-		if (config.onlyRunBackupsWithPlayersOnline() && !playerLoggedIn()) {
+		if (config.onlyRunBackupsWithPlayersOnline() && !playerLoggedIn(server)) {
 			boolean realLastRun = lastRunHadPlayers;
 			lastRunHadPlayers = false;
 			
@@ -52,7 +51,7 @@ public class BackupTask extends TimerTask {
 		backup.run(ForgeBackup.instance());
 	}
 	
-	public boolean playerLoggedIn() {
+	public static boolean playerLoggedIn(MinecraftServer server) {
 		return !server.getConfigurationManager().playerEntityList.isEmpty();
 	}
 }

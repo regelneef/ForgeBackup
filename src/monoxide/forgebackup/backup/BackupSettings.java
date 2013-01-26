@@ -97,14 +97,22 @@ public class BackupSettings {
 	
 	public File getBackupFolder() {
 		File absoluteFile = server.getFile(backupFolder);
-		return absoluteFile.getAbsolutePath() == backupFolder ? absoluteFile : server.getFile(backupFolder);
+		File folder = absoluteFile.getAbsolutePath() == backupFolder ? absoluteFile : server.getFile(backupFolder);
+		
+		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
+		return new File(folder, saveHandler.getSaveDirectoryName());
 	}
 	
 	public String getBackupFileName() {
 		return getBackupCleanupHandler().getBackupFilename() + "." + getCompressionHandler().getFileExtension();
 	}
 
-	public List<File> getFilesToBackup(ISaveHandler saveHandler) {
+	public File getBackupFile() {
+		return new File(getBackupFolder(), getBackupFileName());
+	}
+
+	public List<File> getFilesToBackup() {
+		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
 		List<File> thingsToSave = Lists.newArrayList(getExtraFilesToBackup(server));
 	
 		if (willBackupWorld()) {

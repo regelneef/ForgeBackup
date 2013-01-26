@@ -88,8 +88,7 @@ public class Backup {
 	private void doBackup(ICommandSender sender)
 	throws IOException
 	{
-		ISaveHandler saveHandler = settings.getServer().worldServers[0].getSaveHandler();
-		File backupsFolder = new File(settings.getBackupFolder(), saveHandler.getSaveDirectoryName());
+		File backupsFolder = settings.getBackupFolder();
 		if (backupsFolder.exists() && !backupsFolder.isDirectory()) {
 			notifyAdmins(sender, Level.WARNING, "ForgeBackup.backup.folderExists");
 			return;
@@ -98,7 +97,7 @@ public class Backup {
 		}
 		
 		settings.getBackupCleanupHandler().runBackupCleanup(backupsFolder);
-		List<File> thingsToSave = settings.getFilesToBackup(saveHandler);
+		List<File> thingsToSave = settings.getFilesToBackup();
 		
 		File backupFile = new File(backupsFolder, settings.getBackupFileName());
 		List<Integer> disabledDimensions = settings.getDisabledDimensions();
