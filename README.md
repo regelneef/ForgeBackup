@@ -1,6 +1,6 @@
-# ForgeBackup v0.4.0 #
+# ForgeBackup v0.4.1 #
 
-ForgeBackup is a simple mod that sits and backs up your server or single player worlds as you play. No more corrupted worlds due to issues with mods or other issues with your computer, just restore a backup and most of your work will still be saved even if disaster should strike.
+ForgeBackup is a simple mod that sits and backs up your server or single player worlds as you play. No more corrupted worlds due to issues with mods or other issues with your computer, just restore a backup and most of your work will still be saved even if disaster should strike. The initial concept was based heavily on ideas gleaned from BukkitBackup ported to the Minecraft Forge API, however it has now taken on a life of it's own and implements many features not found in the original plugin.
 
 ## Installation: ##
 
@@ -24,6 +24,12 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 * Ability to totally configure what gets backed up. Backup mods, configuration and your world, or any other files or folders you may wish to.
 * Archival backups. These are long term backups which have their own folder and can optionally backup more than the regular backups do. These backups are for longer term storage if needed and are run daily, or on startup if one hasn't been run today yet, and a certain number of daily and weekly backups can be kept. Weekly backups are backups that were taken on Sunday.
 
+## Compatibility: ##
+
+ForgeBackup has a very low surface area that actually touches Minecraft. This means it should be highly compatible with just about any mod out there that isn't also trying to do backups. However, there has been some need for specific patches and so below is a list of other mods we've specifically made changes to accomodate or that we know don't work with Forgebackup.
+
+* ForgeEssentials: ForgeBackup is fully compatible. It overrides and hides the default Backups module from FE if it exists on the server. While ForgeBackup is compatible, there is currently no integration, so you won't be able to control ForgeBackup via ForgeEssentials.
+
 ## Bug Reports: ##
 
 Always happy to receive them, but I can't help you if you don't help me. If you
@@ -39,6 +45,10 @@ or ForgeModLoader-server-0.log) from your minecraft folder. Please
 
 ## Changelog: ##
 
+### 0.4.1 ###
+
+* ForgeEssentials compatibility. We provide a module to FE which overrides their built-in backup module. This means you'll only have one active backup module at any time.
+
 ### 0.4.0 ###
 
 * Many bug fixes, especially around notifying players of things.
@@ -48,7 +58,7 @@ or ForgeModLoader-server-0.log) from your minecraft folder. Please
 
 I'm not sure of the need for this section since this mod is only required on one side, either the server or the client. Old versions are here for those who want them though.
 
-### 1.4.7 ###
+### 1.4.6/1.4.7 ###
 
 * [forgebackup-universal-1.4.7-0.3.1.21.jar][b21]
 

@@ -73,10 +73,11 @@
         </exec>
         <echo message="Building a release jar." />
         <jar destfile="${mod.jar.release}">
-            <fileset dir="${mcp.reobf}" includes="**/*.class" />
+            <fileset dir="${mcp.reobf}" includes="monoxide/forgebackup/**/*.class" />
             <fileset dir="${mod.src}">
                 <exclude name="mcmod.info"/>
                 <exclude name="**/*.java"/>
+                <exclude name="com/" />
             </fileset>
             <mappedresources>
                 <concat>
