@@ -14,7 +14,9 @@
     "Forge@[6.6.0,)",
     "FML@[4.7.3,)"
   ],
-  "dependencies": [],
+  "dependencies": [
+    "ForgeEssentials"
+  ],
   "useDependencyInformation": "true"
 }
 ]
