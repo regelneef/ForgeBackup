@@ -17,7 +17,7 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 * Perform automatic backups of SMP and SSP worlds.
 * Perform manual backups using the /backup command. This command can be used by command blocks if you allow it in the config.
 * Basic permissions support to allow anyone or only ops to run backups manually.
-* ForgeBackup is only required to be downloaded on the server or SMP worlds. The same download is used for both the client (SSP) and the server.
+* ForgeBackup is only required to be downloaded on the server for SMP worlds. The same download is used for both the client (SSP) and the server.
 * Ability to store backups anywhere via the configuration file.
 * Automatically clean up old backups (disabled by default).
 * Disable certain dimensions from being backed up. Don't backup large dimensions that you don't need or want to.
