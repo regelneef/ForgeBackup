@@ -126,19 +126,20 @@
         <condition property="version.build" value="${env.BUILD_NUMBER}" else="dev">
             <isset property="env.BUILD_NUMBER" />
         </condition>
-        <propertyfile file="${mod.src}/version.properties">
-            <entry key="mod.build.build.number" type="int" value="${version.build}" />
-        </propertyfile>
         <property file="${mod.src}/version.properties" />
         <property name="build.version" value="${mod.build.major.number}.${mod.build.minor.number}.${mod.build.revision.number}" />
-        <property name="version.minecraft" value="${mod.build.mcversion}" />
-        <property name="version.major" value="${mod.build.major.number}" />
-        <property name="version.minor" value="${mod.build.minor.number}" />
-        <property name="version.rev" value="${mod.build.revision.number}" />
+        <property name="version.minecraft" value="${forgebackup.build.mcversion}" />
+        <property name="version.major" value="${forgebackup.build.major.number}" />
+        <property name="version.minor" value="${forgebackup.build.minor.number}" />
+        <property name="version.rev" value="${forgebackup.build.revision.number}" />
         <property name="version" value="${version.major}.${version.minor}.${version.rev}.${version.build}" />
-        <property name="minecraft.version" value="${mod.build.mcversion}" />
+        <property name="minecraft.version" value="${forgebackup.build.mcversion}" />
+        <propertyfile file="${mod.src}/version.properties">
+            <entry key="forgebackup.build.build.number" type="int" value="${version.build}" />
+            <entry key="forgebackup.version" type="string" value="${version}" />
+        </propertyfile>
 
-        <property name="forge.version" value="${mod.build.forgeversion}" />
+        <property name="forge.version" value="${forgebackup.build.forgeversion}" />
         
         <property name="mod.jar.release" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar" />
         
