@@ -10,7 +10,7 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ### 1.4.6/1.4.7 ###
 
-* [forgebackup-universal-1.4.7-0.3.1.21.jar][b21]
+* [forgebackup-universal-1.4.7-0.4.1.37.jar][b37]
 
 ## Features: ##
 
@@ -28,7 +28,7 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ForgeBackup has a very low surface area that actually touches Minecraft. This means it should be highly compatible with just about any mod out there that isn't also trying to do backups. However, there has been some need for specific patches and so below is a list of other mods we've specifically made changes to accomodate or that we know don't work with Forgebackup.
 
-* ForgeEssentials: ForgeBackup is fully compatible. It overrides and hides the default Backups module from FE if it exists on the server. While ForgeBackup is compatible, there is currently no integration, so you won't be able to control ForgeBackup via ForgeEssentials.
+* ForgeEssentials: ForgeBackup is fully compatible. It overrides and hides the default Backups module from FE if it exists on the server. While ForgeBackup is compatible, there is currently no integration, so you won't be able to control ForgeBackup via ForgeEssentials. This compatibility requires atleast betabuild #59.
 
 ## Bug Reports: ##
 
@@ -60,10 +60,13 @@ I'm not sure of the need for this section since this mod is only required on one
 
 ### 1.4.6/1.4.7 ###
 
+* [forgebackup-universal-1.4.7-0.4.1.37.jar][b37]
 * [forgebackup-universal-1.4.7-0.3.1.21.jar][b21]
 
 
   [b21]: http://bit.ly/12XW7gy
+  [b37]: http://bit.ly/10VgQxJ
+
   [gh]: https://github.com/monoxide0184/ForgeBackup
   [gh-issues]: https://github.com/monoxide0184/ForgeBackup/issues
   [license]: https://github.com/monoxide0184/ForgeBackup/blob/master/LICENSE.md
