@@ -8,8 +8,6 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ## Downloads: ##
 
-I still consider this mod somewhat beta quality code, however I use this mod regularly myself as do several of my testers.
-
 ### 1.4.6/1.4.7 ###
 
 * [forgebackup-universal-1.4.7-0.3.1.21.jar][b21]
