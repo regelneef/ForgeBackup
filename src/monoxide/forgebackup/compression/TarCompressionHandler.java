@@ -26,7 +26,7 @@ public abstract class TarCompressionHandler extends CompressionHandler {
 		// Tar supports adding directory entries, but they shouldn't have any data!
 		if (!file.isDirectory()) { 
 			try {
-				byte[] buffer = new byte[4096];
+				byte[] buffer = new byte[16384];
 				int readBytes;
 				InputStream inputStream = new FileInputStream(file);
 				while ((readBytes = inputStream.read(buffer)) >= 0) {

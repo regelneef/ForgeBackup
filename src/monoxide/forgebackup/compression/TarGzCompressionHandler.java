@@ -1,8 +1,10 @@
 package monoxide.forgebackup.compression;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import net.minecraft.server.MinecraftServer;
 
@@ -20,7 +22,8 @@ public class TarGzCompressionHandler extends TarCompressionHandler {
 	@Override
 	public void openFile(File backupFile) throws IOException {
 		try {
-			CompressorOutputStream gzipStream = new CompressorStreamFactory().createCompressorOutputStream(CompressorStreamFactory.GZIP, new FileOutputStream(backupFile));
+			OutputStream fileStream = new BufferedOutputStream(new FileOutputStream(backupFile));
+			CompressorOutputStream gzipStream = new CompressorStreamFactory().createCompressorOutputStream(CompressorStreamFactory.GZIP, fileStream);
 			tarStream = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, gzipStream);
 		} catch (ArchiveException e) {
 			throw new IOException("Unable to create tar stream.", e);
