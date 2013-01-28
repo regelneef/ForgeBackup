@@ -10,17 +10,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StringTranslate;
+
+import com.google.common.eventbus.Subscribe;
+
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarted;
-import cpw.mods.fml.common.Mod.ServerStarting;
-import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -28,7 +23,6 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(name = "ForgeBackup", modid = "forgebackup", useMetadata = true)
 public class ForgeBackup implements ICommandSender {
 	
 	private BackupConfiguration config;
@@ -44,7 +38,7 @@ public class ForgeBackup implements ICommandSender {
 		return config;
 	}
 	
-	@PreInit
+	@Subscribe
 	public void preInitialisation(FMLPreInitializationEvent event) {
 		if (event.getSide() == Side.SERVER) {
 			// Only assign ourselves to the Minecraft logger if we're on the server
@@ -55,7 +49,7 @@ public class ForgeBackup implements ICommandSender {
 		config = new BackupConfiguration(event.getSuggestedConfigurationFile());
 	}
 	
-	@Init
+	@Subscribe
 	public void initialisation(FMLInitializationEvent event) {
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.start", "en_US", "Starting a new backup.");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.progress", "en_US", "Creating new backup of your world...");
@@ -68,13 +62,13 @@ public class ForgeBackup implements ICommandSender {
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.save.enabled", "en_US", "Re-enabling saving...");
 	}
 	
-	@ServerStarting
+	@Subscribe
 	public void serverStarting(FMLServerStartingEvent event) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		event.registerServerCommand(new CommandBackup(event));
 	}
 	
-	@ServerStarted
+	@Subscribe
 	public void serverStarted(FMLServerStartedEvent event) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getSaveDirectoryName());
@@ -85,7 +79,7 @@ public class ForgeBackup implements ICommandSender {
 		}
 	}
 	
-	@ServerStopping
+	@Subscribe
 	public void serverStopping(FMLServerStoppingEvent event) {
 		backupTimer.cancel();
 		BackupLog.info("ForgeBackup stopped.");
