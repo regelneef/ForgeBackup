@@ -12,25 +12,25 @@ import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorOutputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 
-public class TarGzCompressionHandler extends TarCompressionHandler {
-	public TarGzCompressionHandler(MinecraftServer server) {
+public class TarBzCompressionHandler extends TarCompressionHandler {
+	public TarBzCompressionHandler(MinecraftServer server) {
 		super(server);
 	}
 	
 	@Override
 	public void openFile(File backupFile) throws IOException {
 		try {
-			CompressorOutputStream gzipStream = new CompressorStreamFactory().createCompressorOutputStream(CompressorStreamFactory.GZIP, new FileOutputStream(backupFile));
-			tarStream = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, gzipStream);
+			CompressorOutputStream bzipStream = new CompressorStreamFactory().createCompressorOutputStream(CompressorStreamFactory.BZIP2, new FileOutputStream(backupFile));
+			tarStream = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, bzipStream);
 		} catch (ArchiveException e) {
 			throw new IOException("Unable to create tar stream.", e);
 		} catch (CompressorException e) {
-			throw new IOException("Unable to create gzip stream.", e);
+			throw new IOException("Unable to create bzip stream.", e);
 		}
 	}
 	
 	@Override
 	public String getFileExtension() {
-		return "tar.gz";
+		return "tar.bz2";
 	}
 }

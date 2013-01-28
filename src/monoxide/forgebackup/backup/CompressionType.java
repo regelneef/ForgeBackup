@@ -1,7 +1,6 @@
 package monoxide.forgebackup.backup;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 
 import monoxide.forgebackup.BackupLog;
@@ -10,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 public enum CompressionType {
 	ZIP("zip", ZipCompressionHandler.class),
 	TAR_GZ("tgz", TarGzCompressionHandler.class),
-	TAR_BZ2("tbz2", null),
+	TAR_BZ2("tbz2", TarBzCompressionHandler.class),
 	GIT("git", null),
 	NONE("none", null)
 	;
