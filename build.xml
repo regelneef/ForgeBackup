@@ -14,6 +14,11 @@
         <exec executable="${python.exe}" dir="${forge.base}" failonerror="true">
             <arg value="${forge.base}/install.py" />
         </exec>
+        <jar destfile="${mcp.jars}/coremods/${modname}-dummy.jar">
+            <manifest>
+                <attribute name="FMLCorePlugin" value="monoxide.forgebackup.coremod.ForgeBackupLoader" />
+            </manifest>
+        </jar>
     </target>
     <target name="build-forge" depends="setup-forge" unless="forge.built">
         <delete dir="${mcp.base}/bin" />
@@ -73,6 +78,9 @@
         </exec>
         <echo message="Building a release jar." />
         <jar destfile="${mod.jar.release}">
+            <manifest>
+                <attribute name="FMLCorePlugin" value="monoxide.forgebackup.coremod.ForgeBackupLoader" />
+            </manifest>
             <fileset dir="${mcp.reobf}" includes="monoxide/forgebackup/**/*.class" />
             <fileset dir="${mod.src}">
                 <exclude name="mcmod.info"/>
