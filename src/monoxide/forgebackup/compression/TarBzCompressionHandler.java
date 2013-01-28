@@ -1,4 +1,4 @@
-package monoxide.forgebackup.backup;
+package monoxide.forgebackup.compression;
 
 import java.io.File;
 import java.io.FileOutputStream;

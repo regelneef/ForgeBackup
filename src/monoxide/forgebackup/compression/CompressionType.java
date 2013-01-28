@@ -1,4 +1,4 @@
-package monoxide.forgebackup.backup;
+package monoxide.forgebackup.compression;
 
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;

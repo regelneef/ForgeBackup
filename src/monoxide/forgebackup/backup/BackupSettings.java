@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import monoxide.forgebackup.BackupLog;
+import monoxide.forgebackup.compression.ICompressionHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
