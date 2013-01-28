@@ -31,6 +31,6 @@ public class TarGzCompressionHandler extends TarCompressionHandler {
 	
 	@Override
 	public String getFileExtension() {
-		return "tar.gz";
+		return ".tar.gz";
 	}
 }

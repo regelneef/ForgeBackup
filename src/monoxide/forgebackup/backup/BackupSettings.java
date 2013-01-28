@@ -105,7 +105,7 @@ public class BackupSettings {
 	}
 	
 	public String getBackupFileName() {
-		return getBackupCleanupHandler().getBackupFilename() + "." + getCompressionHandler().getFileExtension();
+		return getBackupCleanupHandler().getBackupFilename() + getCompressionHandler().getFileExtension();
 	}
 
 	public File getBackupFile() {

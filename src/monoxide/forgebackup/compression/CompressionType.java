@@ -11,7 +11,7 @@ public enum CompressionType {
 	TAR_GZ("tgz", TarGzCompressionHandler.class),
 	TAR_BZ2("tbz2", TarBzCompressionHandler.class),
 	GIT("git", null),
-	NONE("none", null)
+	NONE("none", FolderCompressionHandler.class)
 	;
 	
 	private String name;

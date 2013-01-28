@@ -54,6 +54,6 @@ public class ZipCompressionHandler extends CompressionHandler {
 	
 	@Override
 	public String getFileExtension() {
-		return "zip";
+		return ".zip";
 	}
 }

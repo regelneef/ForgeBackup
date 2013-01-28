@@ -24,7 +24,29 @@ public class RegularBackupCleanup implements IBackupCleanup {
 		
 		while (backups.size() >= maxBackups) {
 			File backup = backups.remove(0);
-			backup.delete();
+			if (!backup.isDirectory()) {
+				backup.delete();
+			} else {
+				List<File> files = Lists.newArrayList(backup);
+				List<File> directories = Lists.newArrayList();
+				
+				while (!files.isEmpty()) {
+					File file = files.remove(0);
+					
+					if (file.isDirectory()) {
+						directories.add(file);
+						for (File child : file.listFiles()) {
+							files.add(child);
+						}
+					} else {
+						file.delete();
+					}
+				}
+				
+				for (int i = directories.size() - 1; i >= 0; i--) {
+					directories.get(i).delete();
+				}
+			}
 		}
 		
 		return true;
