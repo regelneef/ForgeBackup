@@ -49,13 +49,13 @@ public enum CompressionType {
 	 * Get the default compression type on a given operating system.
 	 * 
 	 * Basically, this boils down to a check for Windows. We use zip by default
-	 * on Windows, tbz2 on everything else.
+	 * on Windows, tgz on everything else.
 	 */
 	public static CompressionType getDefault() {
 		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
 			return ZIP;
 		} else {
-			return TAR_BZ2;
+			return TAR_GZ;
 		}
 	}
 }
