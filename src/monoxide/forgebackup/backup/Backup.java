@@ -134,28 +134,28 @@ public class Backup {
 	}
 	
 	public void notifyAdmins(ICommandSender sender, Level level, String translationKey, Object... parameters) {
-		boolean var5 = true;
+		boolean sendPlayerNotifications = !(settings.getLoggingLevel() == 0);
 		String message = String.format(LanguageRegistry.instance().getStringLocalization(translationKey), parameters);
 		
 		if (sender instanceof TileEntityCommandBlock && !settings.getServer().worldServers[0].getGameRules().getGameRuleBooleanValue("commandBlockOutput"))
 		{
-			var5 = false;
+			sendPlayerNotifications = false;
 		}
 		
-		if (var5)
+		if (sendPlayerNotifications)
 		{
 			for (Object playerObj : settings.getServer().getConfigurationManager().playerEntityList)
 			{
 				EntityPlayerMP player = (EntityPlayerMP)playerObj;
 				if ((settings.getServer().getConfigurationManager().areCommandsAllowed(player.username) || !settings.getServer().isDedicatedServer()) && 
-				    (settings.verboseLogging() || level != Level.FINE))
+				    (settings.getLoggingLevel() == 1 || level != Level.FINE))
 				{
 					player.sendChatToPlayer("\u00a77\u00a7o[" + sender.getCommandSenderName() + ": " + message + "]");
 				}
 			}
 		}
 		
-		if (settings.verboseLogging() && level == Level.FINE) {
+		if (settings.getLoggingLevel() == 2 && level == Level.FINE) {
 			BackupLog.log(Level.INFO, message);
 		} else {
 			BackupLog.log(level, message);

@@ -20,18 +20,18 @@ public class BackupSettings {
 	private final boolean backupServerConfiguration;
 	private final String[] extraFiles;
 	private final int[] disabledDimensions;
-	private final boolean verboseLogging;
+	private final int loggingLevel;
 	private final MinecraftServer server;
 	private final ICompressionHandler compression;
 
 	public BackupSettings(
-			MinecraftServer server, String backupFolder, boolean verboseLogging, IBackupCleanup cleanup,
+			MinecraftServer server, String backupFolder, int loggingLevel, IBackupCleanup cleanup,
 			boolean backupWorld, boolean backupConfiguration, boolean backupMods, boolean backupServerConfiguration, String[] extraFiles,
 			int[] disabledDimensions, ICompressionHandler compression
 	) {
 		this.server = server;
 		this.backupFolder = backupFolder;
-		this.verboseLogging = verboseLogging;
+		this.loggingLevel = loggingLevel;
 		this.cleanup = cleanup;
 		this.backupWorld = backupWorld;
 		this.backupConfiguration = backupConfiguration;
@@ -84,8 +84,8 @@ public class BackupSettings {
 		return dimensions;
 	}
 	
-	public boolean verboseLogging() {
-		return verboseLogging;
+	public int getLoggingLevel() {
+		return loggingLevel;
 	}
 	
 	public MinecraftServer getServer() {

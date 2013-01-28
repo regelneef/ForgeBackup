@@ -37,8 +37,8 @@ public class BackupConfiguration {
 	@Option(comment = "Only run automated backups when there is a player connected to the server. No effect in SSP. No effect on long-term backups.")
 	protected boolean backupOnlyWithPlayer = true;
 	
-	@Option(comment = "Output extra information while backing up.")
-	protected boolean verboseLogging = false;
+	@Option(comment = "How much information to output while backing up. 0 = nothing, 1 = normal, 2 = debugging.")
+	protected int loggingLevel = 1;
 	
 	////////////////////////////////////////////////////////
 	//                   BACKUP                           //
@@ -130,8 +130,8 @@ public class BackupConfiguration {
 		return commandBlocksAllowed;
 	}
 	
-	public boolean verboseLogging() {
-		return verboseLogging;
+	public int getLoggingLevel() {
+		return loggingLevel;
 	}
 	
 	public boolean longtermBackupsEnabled() {
@@ -140,19 +140,19 @@ public class BackupConfiguration {
 
 	public BackupSettings getRegularBackupSettings(MinecraftServer server) {
 		return new BackupSettings(
-				server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups),
+				server, backupFolder, loggingLevel, new RegularBackupCleanup(maxBackups),
 				backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers,
 				disabledDimensions, compression.getCompressionHandler(server));
 	}
 
 	public BackupSettings getFullBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups),
+		return new BackupSettings(server, backupFolder, loggingLevel, new RegularBackupCleanup(maxBackups),
 				true, true, true, true, backupOthers,
 				new int[] {}, compression.getCompressionHandler(server));
 	}
 
 	public BackupSettings getArchiveBackupSettings(MinecraftServer server) {
-		return new BackupSettings(server, longtermBackupFolder, verboseLogging, new ArchiveBackupCleanup(maxDailyBackups, maxWeeklyBackups),
+		return new BackupSettings(server, longtermBackupFolder, loggingLevel, new ArchiveBackupCleanup(maxDailyBackups, maxWeeklyBackups),
 				backupWorld || longtermBackupWorld, backupConfiguration || longtermBackupConfiguration,
 				backupMods || longtermBackupMods, backupServerConfiguration || longtermBackupServerConfiguration, backupOthers,
 				longtermDisabledDimensions, longtermCompression.getCompressionHandler(server));
@@ -170,7 +170,7 @@ public class BackupConfiguration {
 			config.load();
 			Field[] fields = this.getClass().getDeclaredFields();
 			
-			migrateOption(Sections.GENERAL, "backupFolder", Sections.BACKUP, "backupFolder");
+			migrateOldOptions();
 			
 			processSections(fields);
 			processOptions(fields);
@@ -181,11 +181,17 @@ public class BackupConfiguration {
 		}
 	}
 
-	private void migrateOption(Sections oldSection, String oldKey, Sections newSection, String newKey) {
-		if (config.getCategory(oldSection.getName()).containsKey(oldKey)) {
-			String folder = config.getCategory(oldSection.getName()).get(oldKey).value;
-			config.getCategory(newSection.getName()).set(newKey, new Property(newKey, folder, Type.STRING));
-			config.getCategory(oldSection.getName()).remove(oldKey);
+	private void migrateOldOptions() {
+		if (config.getCategory(Sections.GENERAL.getName()).containsKey("backupFolder")) {
+			String folder = config.getCategory(Sections.GENERAL.getName()).get("backupFolder").value;
+			config.getCategory(Sections.BACKUP.getName()).set("backupFolder", new Property("backupFolder", folder, Type.STRING));
+			config.getCategory(Sections.GENERAL.getName()).remove("backupFolder");
+		}
+		
+		if (config.getCategory(Sections.GENERAL.getName()).containsKey("verboseLogging")) {
+			boolean verboseLogging = config.get(Sections.GENERAL.getName(), "verboseLogging", false).getBoolean(false);
+			config.getCategory(Sections.GENERAL.getName()).set("loggingLevel", new Property("loggingLevel", verboseLogging ? "2" : "1", Type.INTEGER));
+			config.getCategory(Sections.GENERAL.getName()).remove("verboseLogging");
 		}
 	}
 
