@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import monoxide.forgebackup.BackupLog;
 import monoxide.forgebackup.backup.ArchiveBackupCleanup;
 import monoxide.forgebackup.backup.BackupSettings;
+import monoxide.forgebackup.backup.CompressionType;
 import monoxide.forgebackup.backup.ICompressionHandler;
 import monoxide.forgebackup.backup.RegularBackupCleanup;
 import monoxide.forgebackup.backup.ZipCompressionHandler;
@@ -50,6 +51,9 @@ public class BackupConfiguration {
 	@Option(section = Sections.BACKUP, comment = "Folder name to store backups in. Each world's backups will be stored in subfolders of this one.")
 	protected String backupFolder = "backups";
 	
+	@Option(section = Sections.BACKUP, comment = "Type of compression to use when storing backups. Valid values: zip, tgz, tbz2, git, none")
+	protected CompressionType compression = CompressionType.getDefault();
+	
 	@Option(section = Sections.BACKUP, name = "configuration", comment = "Backup config folder.")
 	protected boolean backupConfiguration = true;
 	
@@ -84,6 +88,9 @@ public class BackupConfiguration {
 	
 	@Option(section = Sections.LONGTERM_BACKUP, name = "backupFolder", comment = "Folder name to store long-term backups in. Each world's archives will be stored in subfolders of this one.")
 	protected String longtermBackupFolder = "archives";
+	
+	@Option(section = Sections.LONGTERM_BACKUP, name = "compression", comment = "Type of compression to use when storing backups. Valid values: zip, tgz, tbz2, git, none")
+	protected CompressionType longtermCompression = CompressionType.getDefault();
 	
 	@Option(section = Sections.LONGTERM_BACKUP, name = "configuration", comment = "Backup config folder.")
 	protected boolean longtermBackupConfiguration = true;
@@ -137,24 +144,20 @@ public class BackupConfiguration {
 		return new BackupSettings(
 				server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups),
 				backupWorld, backupConfiguration, backupMods, backupServerConfiguration, backupOthers,
-				disabledDimensions, getCompressionHandler(server));
+				disabledDimensions, compression.getCompressionHandler(server));
 	}
 
 	public BackupSettings getFullBackupSettings(MinecraftServer server) {
 		return new BackupSettings(server, backupFolder, verboseLogging, new RegularBackupCleanup(maxBackups),
 				true, true, true, true, backupOthers,
-				new int[] {}, getCompressionHandler(server));
+				new int[] {}, compression.getCompressionHandler(server));
 	}
 
 	public BackupSettings getArchiveBackupSettings(MinecraftServer server) {
 		return new BackupSettings(server, longtermBackupFolder, verboseLogging, new ArchiveBackupCleanup(maxDailyBackups, maxWeeklyBackups),
 				backupWorld || longtermBackupWorld, backupConfiguration || longtermBackupConfiguration,
 				backupMods || longtermBackupMods, backupServerConfiguration || longtermBackupServerConfiguration, backupOthers,
-				longtermDisabledDimensions, getCompressionHandler(server));
-	}
-
-	private ICompressionHandler getCompressionHandler(MinecraftServer server) {
-		return new ZipCompressionHandler(server);
+				longtermDisabledDimensions, longtermCompression.getCompressionHandler(server));
 	}
 	
 	////////////////////////////////////////////////////////
@@ -248,6 +251,10 @@ public class BackupConfiguration {
 				String[] value = (String[])field.get(this);
 				value = config.get(option.section().getName(), name, value, comment).valueList;
 				field.set(this, value);
+			} else if (fieldType == CompressionType.class) {
+				String value = ((CompressionType)field.get(this)).getName();
+				value = config.get(option.section().getName(), name, value, comment).value;
+				field.set(this, CompressionType.getByName(value));
 			} else {
 				BackupLog.warning("Skipping @Option \"%s\" with unknown type: %s", field.getName(), fieldType.getCanonicalName());
 				continue;
