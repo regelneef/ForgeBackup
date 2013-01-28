@@ -11,18 +11,11 @@ import java.util.zip.ZipOutputStream;
 import monoxide.forgebackup.BackupLog;
 import net.minecraft.server.MinecraftServer;
 
-public class ZipCompressionHandler implements ICompressionHandler {
+public class ZipCompressionHandler extends CompressionHandler {
 	protected ZipOutputStream backup;
-	protected final String serverDataDirectory;
 	
 	public ZipCompressionHandler(MinecraftServer server) {
-		String directory;
-		try {
-			directory = server.getFile(".").getCanonicalPath();
-		} catch (IOException ex) {
-			directory = server.getFile(".").getAbsolutePath();
-		}
-		serverDataDirectory = directory;
+		super(server);
 	}
 	
 	@Override
@@ -40,7 +33,7 @@ public class ZipCompressionHandler implements ICompressionHandler {
 		
 		if (file.isDirectory()) { return; }
 		
-		backup.putNextEntry(new ZipEntry(cleanZipPath(file.getCanonicalPath())));
+		backup.putNextEntry(new ZipEntry(cleanPath(file.getCanonicalPath())));
 		try {
 			InputStream inputStream = new FileInputStream(file);
 			while ((readBytes = inputStream.read(buffer)) >= 0) {
@@ -62,14 +55,5 @@ public class ZipCompressionHandler implements ICompressionHandler {
 	@Override
 	public String getFileExtension() {
 		return "zip";
-	}
-	
-	protected String cleanZipPath(String path)
-	{
-		if (path.substring(0, serverDataDirectory.length()).equals(serverDataDirectory)) {
-			return path.substring(serverDataDirectory.length()+1);
-		}
-		
-		return path;
 	}
 }

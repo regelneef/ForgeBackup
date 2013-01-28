@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 
 public enum CompressionType {
 	ZIP("zip", ZipCompressionHandler.class),
-	TAR_GZ("tgz", null),
+	TAR_GZ("tgz", TarGzCompressionHandler.class),
 	TAR_BZ2("tbz2", null),
 	GIT("git", null),
 	NONE("none", null)
