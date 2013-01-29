@@ -1,6 +1,9 @@
 package monoxide.forgebackup.coremod;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.security.cert.Certificate;
 import java.util.List;
@@ -8,6 +11,9 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import monoxide.forgebackup.ForgeBackup;
+import argo.jdom.JdomParser;
+import argo.jdom.JsonNode;
+import argo.saj.InvalidSyntaxException;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -34,19 +40,29 @@ public class BackupModContainer implements ModContainer {
 	private EventBus eventBus;
 	
 	public BackupModContainer() throws InvalidVersionSpecificationException {
-		meta = new ModMetadata();
-		meta.modId = modid;
-		meta.name = "ForgeBackup";
-		meta.description = "";
-		meta.version = "1.0.0";
-		meta.requiredMods = Sets.newHashSet(
-			(ArtifactVersion)new DefaultArtifactVersion("Forge", VersionRange.createFromVersionSpec("[6.6.0,)")),
-			(ArtifactVersion)new DefaultArtifactVersion("FML", VersionRange.createFromVersionSpec("[4.7.3,)"))
-		);
-		meta.dependencies = Lists.newArrayList(
-			(ArtifactVersion)new DefaultArtifactVersion("ForgeEssentials", true)
-		);
-		meta.dependants = Lists.newArrayList();
+		InputStream modInfo = BackupModContainer.class.getClassLoader().getResourceAsStream("mcmod.info");
+		JsonNode modMetaData = null;
+		try {
+			modMetaData = new JdomParser().parse(new InputStreamReader(modInfo)).getNode(0);
+		}
+		catch (InvalidSyntaxException e) {}
+		catch (IOException e) {}
+		
+		if (modMetaData != null) {
+			meta = new ModMetadata(modMetaData);
+		} else {
+			FMLLog.warning("Mod forgebackup was unable to find it's metadata file.");
+			meta = new ModMetadata();
+			meta.modId = modid;
+			meta.name = "ForgeBackup";
+			meta.description = "";
+			meta.version = "undetermined";
+			meta.requiredMods = Sets.newHashSet();
+			meta.dependencies = Lists.newArrayList(
+				(ArtifactVersion)new DefaultArtifactVersion("ForgeEssentials", true)
+			);
+			meta.dependants = Lists.newArrayList();
+		}
 	}
 	
 	@Override
