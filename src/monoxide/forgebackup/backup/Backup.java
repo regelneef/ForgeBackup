@@ -155,7 +155,7 @@ public class Backup {
 			{
 				EntityPlayerMP player = (EntityPlayerMP)playerObj;
 				if ((settings.getServer().getConfigurationManager().areCommandsAllowed(player.username) || !settings.getServer().isDedicatedServer()) && 
-				    (settings.getLoggingLevel() == 1 || level != Level.FINE))
+				    (settings.getLoggingLevel() == 2 || level != Level.FINE))
 				{
 					player.sendChatToPlayer("\u00a77\u00a7o[" + sender.getCommandSenderName() + ": " + message + "]");
 				}
