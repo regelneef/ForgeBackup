@@ -4,13 +4,13 @@ ForgeBackup is a simple mod that sits and backs up your server or single player 
 
 ## Installation: ##
 
-Just download MinecraftForge and the appropriate version of this mod for your version of Minecraft from below and place this mod in your mods folder.
+Just download MinecraftForge and the appropriate version of this mod for your version of Minecraft from below and place this mod in your **coremods** folder. Again, please note that this is a coremod as of version 1.0 and needs to be placed in your coremods folder.
 
 ## Downloads: ##
 
 ### 1.4.6/1.4.7 ###
 
-* [forgebackup-universal-1.4.7-0.4.1.37.jar][b37]
+* [forgebackup-universal-1.4.7-1.0.0.58.jar][b58]
 
 ## Features: ##
 
@@ -18,11 +18,12 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 * Perform manual backups using the /backup command. This command can be used by command blocks if you allow it in the config.
 * Basic permissions support to allow anyone or only ops to run backups manually.
 * ForgeBackup is only required to be downloaded on the server for SMP worlds. The same download is used for both the client (SSP) and the server.
+* Archival backups. These are long term backups which have their own folder and can optionally backup more than the regular backups do. These backups are for longer term storage if needed and are run daily, or on startup if one hasn't been run today yet, and a certain number of daily and weekly backups can be kept. Weekly backups are backups that were taken on Sunday.
+* Backups can be created in many different formats, including one based on the `git` application which enables incremental backups. Beware with this, you may not get as much benefit from file-based incremental backups as you may think initially, though worst case this will still only use as much space as the 'none' option.
 * Ability to store backups anywhere via the configuration file.
 * Automatically clean up old backups (disabled by default).
 * Disable certain dimensions from being backed up. Don't backup large dimensions that you don't need or want to.
 * Ability to totally configure what gets backed up. Backup mods, configuration and your world, or any other files or folders you may wish to.
-* Archival backups. These are long term backups which have their own folder and can optionally backup more than the regular backups do. These backups are for longer term storage if needed and are run daily, or on startup if one hasn't been run today yet, and a certain number of daily and weekly backups can be kept. Weekly backups are backups that were taken on Sunday.
 
 ## Compatibility: ##
 
@@ -45,6 +46,14 @@ or ForgeModLoader-server-0.log) from your minecraft folder. Please
 
 ## Changelog: ##
 
+### 1.0.0 ###
+
+* ForgeBackup is now a **coremod** and must be placed in your coremods folder.
+* Different compression types have been implemented.
+  * Firstly, `tar.gz` and `tar.bz2`. `tar.gz` is the new default on non-Windows systems.
+  * There is a new git-based system. Please don't enable this if you do not have git installed on your pc, as you will not be able to restore backups older than the most recent one if you do. This will be resolved in a future version.
+* There is now an update reminder facility. This is disabled by default.
+
 ### 0.4.1 ###
 
 * ForgeEssentials compatibility. We provide a module to FE which overrides their built-in backup module. This means you'll only have one active backup module at any time.
@@ -60,12 +69,13 @@ I'm not sure of the need for this section since this mod is only required on one
 
 ### 1.4.6/1.4.7 ###
 
-* [forgebackup-universal-1.4.7-0.4.1.37.jar][b37]
-* [forgebackup-universal-1.4.7-0.3.1.21.jar][b21]
-
+* [forgebackup-universal-1.4.7-1.0.0.58.jar][b58]
+* [forgebackup-universal-1.4.7-0.4.1.37.jar][b37] (mods folder version)
+* [forgebackup-universal-1.4.7-0.3.1.21.jar][b21] (mods folder version)
 
   [b21]: http://bit.ly/12XW7gy
   [b37]: http://bit.ly/10VgQxJ
+  [b58]: http://bit.ly/WcNWuK
 
   [gh]: https://github.com/monoxide0184/ForgeBackup
   [gh-issues]: https://github.com/monoxide0184/ForgeBackup/issues
