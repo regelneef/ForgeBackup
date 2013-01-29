@@ -29,23 +29,31 @@ public class CommandBackup extends CommandBackupBase {
 	}
 	
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void processCommand(final ICommandSender sender, String[] args) {
+		final Backup backup;
+		
 		if (args.length == 0) {
 			server.getCommandManager().executeCommand(sender, "help " + this.getCommandName());
 			return;
 		}
 		
-		Backup backup;
 		if ("run".equals(args[0])) {
 			backup = new Backup(ForgeBackup.instance().config().getRegularBackupSettings(server));
 		} else if ("full".equals(args[0])) {
 			backup = new Backup(ForgeBackup.instance().config().getFullBackupSettings(server));
 		} else {
+			backup = null;
 			server.getCommandManager().executeCommand(sender, "help " + this.getCommandName());
-			return;
 		}
 		
-		backup.run(sender);
+		if (backup != null) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					backup.run(sender);
+				}
+			}).run();
+		}
 	}
 	
 	@Override
