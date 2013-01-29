@@ -60,7 +60,7 @@ public class GitCompressionHandler extends CompressionHandler {
 		File target = new File(git.getRepository().getWorkTree(), cleanPath);
 		if (!file.isDirectory()) {
 			Files.copy(file, target);
-		} else {
+		} else if (!target.isDirectory()) {
 			if (!target.mkdirs()) {
 				BackupLog.warning("Unable to create folder %s. This backup will likely fail soon.", target.getAbsoluteFile());
 			}
