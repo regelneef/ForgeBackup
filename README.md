@@ -1,4 +1,4 @@
-# ForgeBackup v0.4.1 #
+# ForgeBackup v1.0.0 #
 
 ForgeBackup is a simple mod that sits and backs up your server or single player worlds as you play. No more corrupted worlds due to issues with mods or other issues with your computer, just restore a backup and most of your work will still be saved even if disaster should strike. The initial concept was based heavily on ideas gleaned from BukkitBackup ported to the Minecraft Forge API, however it has now taken on a life of it's own and implements many features not found in the original plugin.
 
