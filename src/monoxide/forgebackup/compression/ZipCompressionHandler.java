@@ -11,7 +11,7 @@ import java.util.zip.ZipOutputStream;
 import monoxide.forgebackup.BackupLog;
 import net.minecraft.server.MinecraftServer;
 
-public class ZipCompressionHandler extends CompressionHandler {
+public class ZipCompressionHandler extends ArchiveCompressionHandler {
 	protected ZipOutputStream backup;
 	
 	public ZipCompressionHandler(MinecraftServer server) {
@@ -19,11 +19,11 @@ public class ZipCompressionHandler extends CompressionHandler {
 	}
 	
 	@Override
-	public void openFile(File backupFile) throws IOException {
+	public void openFile(File backupFolder, String backupFilename) throws IOException {
 		if (backup != null) {
 			throw new IOException("Cannot open a new backup while one is in progress using the same compression handler.");
 		}
-		backup = new ZipOutputStream(new FileOutputStream(backupFile));
+		backup = new ZipOutputStream(new FileOutputStream(new File(backupFolder, backupFilename)));
 	}
 	
 	@Override

@@ -95,12 +95,19 @@ public class Backup {
 			backupsFolder.mkdirs();
 		}
 		
-		settings.getBackupCleanupHandler().runBackupCleanup(backupsFolder);
-		List<File> thingsToSave = settings.getFilesToBackup();
+		if (!settings.getCompressionHandler().isValidTargetDirectory(backupsFolder)) {
+			notifyAdmins(sender, Level.WARNING, "ForgeBackup.backup.folderInvalid");
+			return;
+		}
 		
-		File backupFile = new File(backupsFolder, settings.getBackupFileName());
+		if (!settings.getCompressionHandler().isIncremental()) {
+			settings.getBackupCleanupHandler().runBackupCleanup(backupsFolder);
+		}
+		
+		List<File> thingsToSave = settings.getFilesToBackup();
 		List<Integer> disabledDimensions = settings.getDisabledDimensions();
-		settings.getCompressionHandler().openFile(backupFile);
+		
+		settings.getCompressionHandler().openFile(backupsFolder, settings.getBackupFileName());
 		
 		while (!thingsToSave.isEmpty()) {
 			File current = thingsToSave.remove(0);

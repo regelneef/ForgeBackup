@@ -11,7 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 
-public abstract class TarCompressionHandler extends CompressionHandler {
+public abstract class TarCompressionHandler extends ArchiveCompressionHandler {
 	protected ArchiveOutputStream tarStream;
 	
 	public TarCompressionHandler(MinecraftServer server) {

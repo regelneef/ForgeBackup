@@ -20,9 +20,9 @@ public class TarGzCompressionHandler extends TarCompressionHandler {
 	}
 	
 	@Override
-	public void openFile(File backupFile) throws IOException {
+	public void openFile(File backupFolder, String backupFilename) throws IOException {
 		try {
-			OutputStream fileStream = new BufferedOutputStream(new FileOutputStream(backupFile));
+			OutputStream fileStream = new BufferedOutputStream(new FileOutputStream(new File(backupFolder, backupFilename)));
 			CompressorOutputStream gzipStream = new CompressorStreamFactory().createCompressorOutputStream(CompressorStreamFactory.GZIP, fileStream);
 			tarStream = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, gzipStream);
 		} catch (ArchiveException e) {

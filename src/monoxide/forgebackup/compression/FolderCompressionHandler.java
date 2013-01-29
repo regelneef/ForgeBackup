@@ -16,11 +16,12 @@ public class FolderCompressionHandler extends CompressionHandler {
 	}
 	
 	@Override
-	public void openFile(File backupFile) throws IOException {
+	public void openFile(File backupFolder, String backupFilename) throws IOException {
+		File backupFile = new File(backupFolder, backupFilename);
 		if (!backupFile.mkdirs()) {
 			throw new IOException(String.format("Unable to create new backup folder: %s", backupFile.getAbsolutePath()));
 		}
-		backupFolder = backupFile;
+		this.backupFolder = backupFile;
 	}
 	
 	@Override
@@ -43,5 +44,15 @@ public class FolderCompressionHandler extends CompressionHandler {
 	@Override
 	public String getFileExtension() {
 		return "";
+	}
+	
+	@Override
+	public boolean isValidTargetDirectory(File directory) {
+		return true;
+	}
+	
+	@Override
+	public boolean isIncremental() {
+		return false;
 	}
 }
