@@ -38,7 +38,7 @@ public class BackupModContainer implements ModContainer {
 		meta.modId = modid;
 		meta.name = "ForgeBackup";
 		meta.description = "";
-		meta.version = "0.4.1";
+		meta.version = "1.0.0";
 		meta.requiredMods = Sets.newHashSet(
 			(ArtifactVersion)new DefaultArtifactVersion("Forge", VersionRange.createFromVersionSpec("[6.6.0,)")),
 			(ArtifactVersion)new DefaultArtifactVersion("FML", VersionRange.createFromVersionSpec("[4.7.3,)"))
