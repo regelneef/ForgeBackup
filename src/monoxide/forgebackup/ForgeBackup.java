@@ -6,6 +6,7 @@ import monoxide.forgebackup.backup.ArchiveBackupTask;
 import monoxide.forgebackup.backup.BackupTask;
 import monoxide.forgebackup.command.CommandBackup;
 import monoxide.forgebackup.configuration.BackupConfiguration;
+import monoxide.forgebackup.updates.UpdateThread;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
@@ -16,6 +17,7 @@ import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -27,6 +29,7 @@ public class ForgeBackup implements ICommandSender {
 	
 	private BackupConfiguration config;
 	private Timer backupTimer;
+	private String version;
 	
 	@Instance("forgebackup")
 	private static ForgeBackup instance;
@@ -37,6 +40,10 @@ public class ForgeBackup implements ICommandSender {
 	public BackupConfiguration config() {
 		return config;
 	}
+
+	public String getVersion() {
+		return version;
+	}
 	
 	@Subscribe
 	public void preInitialisation(FMLPreInitializationEvent event) {
@@ -46,6 +53,7 @@ public class ForgeBackup implements ICommandSender {
 			BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().logger);
 		}
 		
+		version = event.getModMetadata().version;
 		config = new BackupConfiguration(event.getSuggestedConfigurationFile());
 	}
 	
@@ -61,6 +69,13 @@ public class ForgeBackup implements ICommandSender {
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.save.force", "en_US", "Forcing an updated save...");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.save.disabled", "en_US", "Disabling saving...");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.save.enabled", "en_US", "Re-enabling saving...");
+	}
+	
+	@Subscribe
+	public void postInitialisation(FMLPostInitializationEvent event) {
+		if (config.shouldCheckForUpdates()) {
+			new Thread(new UpdateThread()).run();
+		}
 	}
 	
 	@Subscribe

@@ -40,6 +40,9 @@ public class BackupConfiguration {
 	@Option(comment = "How much information to output while backing up. 0 = nothing, 1 = normal, 2 = debugging.")
 	protected int loggingLevel = 1;
 	
+	@Option(comment = "Should we check online for updates?")
+	protected boolean checkUpdates = false;
+	
 	////////////////////////////////////////////////////////
 	//                   BACKUP                           //
 	////////////////////////////////////////////////////////
@@ -137,7 +140,11 @@ public class BackupConfiguration {
 	public boolean longtermBackupsEnabled() {
 		return longtermEnabled;
 	}
-
+	
+	public boolean shouldCheckForUpdates() {
+		return checkUpdates;
+	}
+	
 	public BackupSettings getRegularBackupSettings(MinecraftServer server) {
 		return new BackupSettings(
 				server, backupFolder, loggingLevel, new RegularBackupCleanup(maxBackups),
