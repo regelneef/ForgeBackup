@@ -1,7 +1,10 @@
 package monoxide.forgebackup.compression;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import monoxide.forgebackup.BackupLog;
 import net.minecraft.server.MinecraftServer;
@@ -12,6 +15,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.RepositoryBuilder;
 import org.eclipse.jgit.revwalk.RevCommit;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 public class GitCompressionHandler extends CompressionHandler {
@@ -46,6 +50,32 @@ public class GitCompressionHandler extends CompressionHandler {
 			
 			if (!newRepo && !git.status().call().isClean()) {
 				throw new IOException("Git repository is not clean, unable to continue.");
+			}
+			
+			List<File> files = Lists.newArrayList(backupFolder.listFiles(new FilenameFilter() {
+				@Override
+				public boolean accept(File dir, String file) {
+					return !".git".equals(file);
+				}
+			}));
+			List<File> directories = Lists.newArrayList();
+			
+			while (!files.isEmpty()) {
+				File file = files.remove(0);
+				
+				if (file.isDirectory()) {
+					directories.add(file);
+					for (File child : file.listFiles()) {
+						files.add(child);
+					}
+				} else {
+					git.rm().addFilepattern(cleanPath(file.getCanonicalPath())).call();
+					file.delete();
+				}
+			}
+			
+			for (int i = directories.size() - 1; i >= 0; i--) {
+				directories.get(i).delete();
 			}
 		} catch (GitAPIException e) {
 			throw new IOException("There was an error communicating with git.", e);
