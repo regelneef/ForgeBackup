@@ -1,7 +1,6 @@
 package monoxide.forgebackup.compression;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.minecraft.server.MinecraftServer;
 

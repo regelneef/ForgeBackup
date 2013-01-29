@@ -3,18 +3,16 @@ package monoxide.forgebackup.compression;
 import java.io.File;
 import java.io.IOException;
 
+import monoxide.forgebackup.BackupLog;
+import net.minecraft.server.MinecraftServer;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.InitCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.RepositoryBuilder;
-import org.eclipse.jgit.lib.RepositoryState;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 import com.google.common.io.Files;
-
-import monoxide.forgebackup.BackupLog;
-import net.minecraft.server.MinecraftServer;
 
 public class GitCompressionHandler extends CompressionHandler {
 	Git git;
