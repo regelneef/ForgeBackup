@@ -10,7 +10,7 @@ public enum CompressionType {
 	ZIP("zip", ZipCompressionHandler.class),
 	TAR_GZ("tgz", TarGzCompressionHandler.class),
 	TAR_BZ2("tbz2", TarBzCompressionHandler.class),
-	GIT("git", null),
+	GIT("git", GitCompressionHandler.class),
 	NONE("none", FolderCompressionHandler.class)
 	;
 	
