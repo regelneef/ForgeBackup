@@ -98,7 +98,7 @@ public class BackupSettings {
 	
 	public File getBackupFolder() {
 		File absoluteFile = server.getFile(backupFolder);
-		File folder = absoluteFile.getAbsolutePath() == backupFolder ? absoluteFile : server.getFile(backupFolder);
+		File folder = absoluteFile.getAbsolutePath().equals(backupFolder) ? absoluteFile : server.getFile(backupFolder);
 		
 		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
 		return new File(folder, saveHandler.getSaveDirectoryName());
