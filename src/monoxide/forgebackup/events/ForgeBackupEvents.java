@@ -1,5 +1,7 @@
 package monoxide.forgebackup.events;
 
+import java.awt.Dimension;
+
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 
@@ -14,6 +16,7 @@ public abstract class ForgeBackupEvents {
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
 		tabs.add("Status", new ServerGUI(server));
 		tabs.add("Backups", new ServerPane(server));
+		tabs.setPreferredSize(new Dimension(1200, 600));
 		return tabs;
 	}
 }
