@@ -68,14 +68,15 @@ public class ServerGuiTransformer implements IClassTransformer {
 						method.instructions.get(i).getOpcode() == Opcodes.NEW &&
 						((TypeInsnNode)method.instructions.get(i)).desc.equals(mapping.get("javaName"))
 					) {
-						for (int j = 0; j < 4; j++) {
-							method.instructions.remove(method.instructions.get(i+j));
+						while (method.instructions.get(i).getOpcode() != Opcodes.ICONST_1) {
+							method.instructions.remove(method.instructions.get(i));
 						}
 						
 						InsnList toInject = new InsnList();
 						
 						toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
 						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupEvents", "ServerGuiInitialising", mapping.get("callDesc")));
+						toInject.add(new VarInsnNode(Opcodes.ASTORE, 1));
 						
 						method.instructions.insertBefore(method.instructions.get(i), toInject);
 						

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+java -classpath "eclipse/Minecraft/bin/:forge/mcp/lib/asm-all-4.0.jar" org.objectweb.asm.util.ASMifier "$@"
+
