@@ -77,7 +77,7 @@ public class ServerGuiTransformer implements IClassTransformer {
 						toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
 						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupEvents", "ServerGuiInitialising", mapping.get("callDesc")));
 						
-						method.instructions.insert(method.instructions.get(i), toInject);
+						method.instructions.insertBefore(method.instructions.get(i), toInject);
 						
 						BackupLog.fine("Injected our event successfully.");
 						break;
