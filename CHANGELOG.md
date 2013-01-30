@@ -1,5 +1,10 @@
 # Changelog: #
 
+## 1.0.1 ##
+
+* Fix an issue with absolute paths used as a backup path
+* Various other small bug fixes
+
 ## 1.0.0 ##
 
 * ForgeBackup is now a **coremod** and must be placed in your coremods folder.
