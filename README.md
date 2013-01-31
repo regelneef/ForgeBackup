@@ -29,7 +29,7 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ForgeBackup has a very low surface area that actually touches Minecraft. This means it should be highly compatible with just about any mod out there that isn't also trying to do backups. However, there has been some need for specific patches and so below is a list of other mods we've specifically made changes to accomodate or that we know don't work with Forgebackup.
 
-* ForgeEssentials: ForgeBackup is fully compatible. It overrides and hides the default Backups module from FE if it exists on the server. While ForgeBackup is compatible, there is currently no integration, so you won't be able to control ForgeBackup via ForgeEssentials. This compatibility requires at least ForgeEssentials 1.1.
+* ForgeEssentials: ForgeBackup is fully compatible. It overrides and hides the default Backups module from FE if it exists on the server. While ForgeBackup is compatible, there is currently no integration, so you won't be able to control ForgeBackup via ForgeEssentials. This compatibility requires at least ForgeEssentials 1.1.1.
 
 ## Bug Reports: ##
 
