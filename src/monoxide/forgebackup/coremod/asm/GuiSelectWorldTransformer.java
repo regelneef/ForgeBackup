@@ -2,19 +2,12 @@ package monoxide.forgebackup.coremod.asm;
 
 import java.util.Map;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.relauncher.IClassTransformer;
-
-public class GuiSelectWorldTransformer implements IClassTransformer {
-	private final Map<String, Map<String, String>> mappings;
-	
+public class GuiSelectWorldTransformer extends AsmTransformer {
 	public GuiSelectWorldTransformer() {
-		mappings = Maps.newHashMap();
 		Map<String, String> tmp;
 		
 		// MCP version
@@ -36,22 +29,7 @@ public class GuiSelectWorldTransformer implements IClassTransformer {
 	}
 	
 	@Override
-	public byte[] transform(String name, byte[] bytes) {
-		if (mappings.containsKey(name)) {
-			return transformServerGui(bytes, mappings.get(name));
-		}
-		return bytes;
-	}
-	
-	public byte[] transformServerGui(byte[] bytes, Map<String, String> mapping) {
-		ClassNode classNode = new ClassNode();
-		ClassReader classReader = new ClassReader(bytes);
-		classReader.accept(classNode, 0);
-		
-		
-		
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		classNode.accept(writer);
-		return writer.toByteArray();
+	protected void doTransform(ClassNode classNode, Map<String, String> mapping) {
+		// TODO Auto-generated method stub
 	}
 }

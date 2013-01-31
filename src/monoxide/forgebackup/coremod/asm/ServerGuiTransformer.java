@@ -5,8 +5,6 @@ import java.util.Map;
 
 import monoxide.forgebackup.BackupLog;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
@@ -17,13 +15,8 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.relauncher.IClassTransformer;
-
-public class ServerGuiTransformer implements IClassTransformer {
-	private final Map<String, Map<String, String>> mappings;
-	
+public class ServerGuiTransformer extends AsmTransformer {
 	public ServerGuiTransformer() {
-		mappings = Maps.newHashMap();
 		Map<String, String> tmp;
 		
 		// MCP version
@@ -44,18 +37,7 @@ public class ServerGuiTransformer implements IClassTransformer {
 	}
 	
 	@Override
-	public byte[] transform(String name, byte[] bytes) {
-		if (mappings.containsKey(name)) {
-			return transformServerGui(bytes, mappings.get(name));
-		}
-		return bytes;
-	}
-	
-	private byte[] transformServerGui(byte[] bytes, Map<String, String> mapping) {
-		ClassNode classNode = new ClassNode();
-		ClassReader classReader = new ClassReader(bytes);
-		classReader.accept(classNode, 0);
-		
+	protected void doTransform(ClassNode classNode, Map<String, String> mapping) {
 		Iterator<MethodNode> methods = classNode.methods.iterator();
 		while (methods.hasNext()) {
 			MethodNode method = methods.next();
@@ -86,9 +68,5 @@ public class ServerGuiTransformer implements IClassTransformer {
 				}
 			}
 		}
-		
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		classNode.accept(writer);
-		return writer.toByteArray();
 	}
 }
