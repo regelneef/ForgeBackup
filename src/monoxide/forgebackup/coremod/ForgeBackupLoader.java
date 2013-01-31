@@ -2,6 +2,8 @@ package monoxide.forgebackup.coremod;
 
 import java.util.Map;
 
+import monoxide.forgebackup.BackupLog;
+
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
@@ -18,6 +20,7 @@ public class ForgeBackupLoader implements IFMLLoadingPlugin {
 	@Override
 	public String[] getASMTransformerClass() {
 		return new String[] {
+			"monoxide.forgebackup.coremod.asm.EssentialsBackupTransformer",
 		};
 	}
 	
