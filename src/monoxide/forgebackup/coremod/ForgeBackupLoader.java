@@ -22,6 +22,8 @@ public class ForgeBackupLoader implements IFMLLoadingPlugin {
 		return new String[] {
 			"monoxide.forgebackup.coremod.asm.EssentialsBackupTransformer",
 			"monoxide.forgebackup.coremod.asm.ServerGuiTransformer",
+			"monoxide.forgebackup.coremod.asm.GuiSelectWorldTransformer",
+			"monoxide.forgebackup.coremod.asm.BackupAccessTransformer",
 		};
 	}
 	

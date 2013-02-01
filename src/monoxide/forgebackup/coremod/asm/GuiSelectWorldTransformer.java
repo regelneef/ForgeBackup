@@ -1,8 +1,16 @@
 package monoxide.forgebackup.coremod.asm;
 
+import java.util.Iterator;
 import java.util.Map;
 
+import monoxide.forgebackup.BackupLog;
+
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 import com.google.common.collect.Maps;
 
@@ -22,14 +30,34 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 		tmp = Maps.newHashMap();
 		mappings.put("auo", tmp);
 		tmp.put("javaName", "auo");
-		// TODO: Not 100% on this, but didn't get an answer in #mcp if this is intended or not. Will need testing.
 		tmp.put("methodName", "A_");
 		tmp.put("methodDesc", "()V");
-		tmp.put("callDesc", "(Lauo;)V;");
+		tmp.put("callDesc", "(Lauo;)V");
 	}
 	
 	@Override
 	protected void doTransform(ClassNode classNode, Map<String, String> mapping) {
-		// TODO Auto-generated method stub
+		Iterator<MethodNode> methods = classNode.methods.iterator();
+		while (methods.hasNext()) {
+			MethodNode method = methods.next();
+			if (method.name.equals(mapping.get("methodName")) && method.desc.equals(mapping.get("methodDesc"))) {
+				BackupLog.fine("Found GuiSelectWorld.initGui");
+				
+				for (int i = 0; i < method.instructions.size(); i++) {
+					// Check for the call to initialise a new ServerGUI
+					if (method.instructions.get(i).getOpcode() == Opcodes.RETURN) {
+						InsnList toInject = new InsnList();
+						
+						toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
+						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupEvents", "modifyGuiSelectWorld", mapping.get("callDesc")));
+						
+						method.instructions.insertBefore(method.instructions.get(i), toInject);
+						
+						BackupLog.fine("Injected our event successfully.");
+						break;
+					}
+				}
+			}
+		}
 	}
 }

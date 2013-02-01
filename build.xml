@@ -10,7 +10,9 @@
     </target>
     <target name="setup-forge" depends="download-forge" unless="forge.installed">
         <echo>Installing Minecraft Forge...</echo>
+        <delete dir="${forge.base}" />
         <unzip src="${mod.base}/minecraftforge-src-${minecraft.version}-${forge.version}.zip" dest="${mod.base}" />
+        <copy file="${mod.at}" tofile="${forge.mod.at}" />
         <exec executable="${python.exe}" dir="${forge.base}" failonerror="true">
             <arg value="${forge.base}/install.py" />
         </exec>
@@ -116,8 +118,10 @@
         <property name="mod.base" location="${basedir}" />
         <property name="mod.src" location="${mod.base}/src" />
         <property name="mod.bin" location="${mod.base}/bin" />
+        <property name="mod.at" location="${mod.src}/${modname}_at.cfg" />
 
         <property name="forge.base" location="${mod.base}/forge" />
+        <property name="forge.mod.at" location="${forge.base}/accesstransformers/${modname}_at.cfg" />
         <property name="forge.jar.built" location="${mod.base}/minecraftforge-built.jar" />
         <property name="mcp.base" location="${forge.base}/mcp" />
         <property name="mcp.bin" location="${mcp.base}/bin/minecraft" />
@@ -164,6 +168,7 @@
                 <resourceexists>
                     <file file="${mod.base}/forge"/>
                 </resourceexists>
+                <uptodate srcfile="${mod.at}" targetfile="${forge.mod.at}" />
              </and>
         </condition>
         <condition property="forge.built" value="true">
