@@ -16,6 +16,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.gui.ServerGUI;
+import net.minecraft.world.storage.SaveFormatComparator;
 
 public abstract class ForgeBackupEvents {
 	public static final int RESTORE_BUTTON_ID = 8;
@@ -67,7 +68,7 @@ public abstract class ForgeBackupEvents {
 		catch (NoSuchFieldException e) {}
 	}
 	
-	public static GuiScreen getBackupListGui(GuiSelectWorld guiSelectWorld, List saves, int selectedWorld) {
+	public static GuiScreen getBackupListGui(GuiSelectWorld guiSelectWorld, List<SaveFormatComparator> saves, int selectedWorld) {
 		return null;
 	}
 }

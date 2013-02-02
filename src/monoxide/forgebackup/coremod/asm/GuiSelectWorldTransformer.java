@@ -108,11 +108,11 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 			
 			if (instruction.getOpcode() == Opcodes.BIPUSH && ((IntInsnNode)instruction).operand == 7) {
 				foundBranchSeven = true;
-				BackupLog.info("Found branch 7");
+				BackupLog.fine("Found branch 7");
 			}
 			
 			if (foundBranchSeven && insertionPoint == null && instruction.getOpcode() == Opcodes.GOTO) {
-				BackupLog.info("Found insertion point");
+				BackupLog.fine("Found insertion point");
 				insertionPoint = instruction;
 				while (insertionPoint.getType() != AbstractInsnNode.LABEL) {
 					insertionPoint = insertionPoint.getNext();
@@ -121,19 +121,18 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 			
 			// If this is a label, then update the exitif label. It's the last label in the function.
 			if (instruction.getType() == AbstractInsnNode.LABEL) {
-				BackupLog.info("Found a label");
 				exitIf = (LabelNode)instruction;
 			}
 			
 			// We break on return as there's a debug label after the return when running in eclipse.
 			if (insertionPoint != null && instruction.getOpcode() == Opcodes.RETURN) {
-				BackupLog.info("Found return");
+				BackupLog.fine("Found return");
 				break;
 			}
 		}
 		
 		if (insertionPoint == null) {
-			BackupLog.error("Unable to patch GuiSelectWorld.actionPerformed. You won't be able to restore backups.");
+			BackupLog.error("Unable to patch GuiSelectWorld.actionPerformed. You won't be able to restore backups from the in-game menu.");
 			return;
 		}
 		
