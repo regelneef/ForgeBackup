@@ -30,6 +30,7 @@ public class GuiWorldSlotTransformer extends AsmTransformer {
 		tmp.put("parentWorldGui", "parentWorldGui");
 		tmp.put("guiSelectWorldJavaName", "net/minecraft/client/gui/GuiSelectWorld");
 		tmp.put("guiButtonJavaName", "net/minecraft/client/gui/GuiButton");
+		tmp.put("enabledField", "enabled");
 		
 		// Obfuscated version
 		tmp = Maps.newHashMap();
@@ -41,6 +42,7 @@ public class GuiWorldSlotTransformer extends AsmTransformer {
 		tmp.put("parentWorldGui", "a");
 		tmp.put("guiSelectWorldJavaName", "auo");
 		tmp.put("guiButtonJavaName", "atb");
+		tmp.put("enabledField", "g");
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class GuiWorldSlotTransformer extends AsmTransformer {
 						toInject.add(new FieldInsnNode(Opcodes.GETFIELD, mapping.get("javaName"), mapping.get("parentWorldGui"), String.format("L%s;", mapping.get("guiSelectWorldJavaName"))));
 						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, mapping.get("guiSelectWorldJavaName"), "getRestoreButton", String.format("(L%s;)L%s;", mapping.get("guiSelectWorldJavaName"), mapping.get("guiButtonJavaName"))));
 						toInject.add(new VarInsnNode(Opcodes.ILOAD, 3));
-						toInject.add(new FieldInsnNode(Opcodes.PUTFIELD, mapping.get("guiButtonJavaName"), "enabled", "Z"));
+						toInject.add(new FieldInsnNode(Opcodes.PUTFIELD, mapping.get("guiButtonJavaName"), mapping.get("enabledField"), "Z"));
 						
 						method.instructions.insert(method.instructions.get(i), toInject);
 						

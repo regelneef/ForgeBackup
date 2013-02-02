@@ -67,10 +67,6 @@ public abstract class ForgeBackupEvents {
 		catch (NoSuchFieldException e) {}
 	}
 	
-	public static void enableRestoreButton(GuiSelectWorld selectWorld) {
-		
-	}
-
 	public static GuiScreen getBackupListGui(GuiSelectWorld guiSelectWorld, List saves, int selectedWorld) {
 		return null;
 	}
