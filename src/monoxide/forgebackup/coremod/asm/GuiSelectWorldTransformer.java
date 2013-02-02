@@ -7,7 +7,10 @@ import monoxide.forgebackup.BackupLog;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -25,6 +28,7 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 		tmp.put("methodName", "initGui");
 		tmp.put("methodDesc", "()V");
 		tmp.put("callDesc", "(Lnet/minecraft/client/gui/GuiSelectWorld;)V");
+		tmp.put("guiButtonJavaName", "net/minecraft/client/gui/GuiButton");
 		
 		// Obfuscated version
 		tmp = Maps.newHashMap();
@@ -33,6 +37,7 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 		tmp.put("methodName", "A_");
 		tmp.put("methodDesc", "()V");
 		tmp.put("callDesc", "(Lauo;)V");
+		tmp.put("guiButtonJavaName", "atb");
 	}
 	
 	@Override
@@ -59,5 +64,18 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 				}
 			}
 		}
+		
+		addSelectButtonField(classNode, mapping);
+	}
+
+	private void addSelectButtonField(ClassNode classNode, Map<String, String> mapping) {
+		classNode.fields.add(new FieldNode(Opcodes.ACC_PUBLIC, "buttonRestore", String.format("L%s;", mapping.get("guiButtonJavaName")), null, null));
+		
+		MethodNode getter = new MethodNode(Opcodes.ACC_STATIC, "getRestoreButton", String.format("(L%s;)L%s;", mapping.get("javaName"), mapping.get("guiButtonJavaName")), null, null);
+		getter.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
+		getter.instructions.add(new FieldInsnNode(Opcodes.GETFIELD, mapping.get("javaName"), "buttonRestore", String.format("L%s;", mapping.get("guiButtonJavaName"))));
+		getter.instructions.add(new InsnNode(Opcodes.ARETURN));
+		
+		classNode.methods.add(getter);
 	}
 }
