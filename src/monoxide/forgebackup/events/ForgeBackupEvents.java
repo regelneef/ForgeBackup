@@ -23,7 +23,7 @@ public abstract class ForgeBackupEvents {
 	
 	@SideOnly(Side.SERVER)
 	public static JComponent ServerGuiInitialising(DedicatedServer server) {
-		BackupLog.info("Modifying server gui...");
+		BackupLog.fine("Modifying server gui...");
 		
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
 		tabs.add("Status", new ServerGUI(server));
@@ -34,7 +34,7 @@ public abstract class ForgeBackupEvents {
 	
 	@SideOnly(Side.CLIENT)
 	public static void modifyGuiSelectWorld(GuiSelectWorld selectWorld) {
-		BackupLog.info("Modifying world-selection screen...");
+		BackupLog.fine("Modifying world-selection screen...");
 		GuiButton cancelButton = null;
 		
 		for (Object element : selectWorld.controlList) {

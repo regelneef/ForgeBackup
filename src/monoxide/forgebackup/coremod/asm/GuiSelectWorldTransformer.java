@@ -91,10 +91,11 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 				
 				method.instructions.insertBefore(method.instructions.get(i), toInject);
 				
-				BackupLog.fine("Injected our event successfully.");
+				BackupLog.info("Injected our event successfully.");
 				return;
 			}
 		}
+		BackupLog.error("Failed to inject our event into GuiSelectWorld.initGui(). Your minecraft may be very unstable. You should report this bug.");
 	}
 	
 	private void patchActionPerformed(MethodNode method, Map<String, String> mapping) {
@@ -132,7 +133,7 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 		}
 		
 		if (insertionPoint == null) {
-			BackupLog.error("Unable to patch GuiSelectWorld.actionPerformed. You won't be able to restore backups from the in-game menu.");
+			BackupLog.error("Unable to patch GuiSelectWorld.actionPerformed(). You won't be able to restore backups from the in-game menu and your minecraft may be very unstable. You should report this bug.");
 			return;
 		}
 		
@@ -154,7 +155,7 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 		codeToInsert.add(endOfElseIf);
 		
 		method.instructions.insert(insertionPoint, codeToInsert);
-		BackupLog.fine("Successfully inserted our hook.");
+		BackupLog.info("Successfully inserted our hook.");
 	}
 	
 	private void addSelectButtonField(ClassNode classNode, Map<String, String> mapping) {
