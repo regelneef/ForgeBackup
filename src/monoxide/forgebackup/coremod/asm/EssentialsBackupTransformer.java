@@ -27,7 +27,7 @@ public class EssentialsBackupTransformer extends AsmTransformer {
 		for (int i = 0; i < classNode.methods.size();) {
 			MethodNode node = (MethodNode)classNode.methods.get(i);
 			
-			BackupLog.info("Inspecting method: %s", node.name);
+			BackupLog.fine("Inspecting method: %s", node.name);
 			if (!node.name.equals("<init>")) {
 				classNode.methods.remove(i);
 			} else {
