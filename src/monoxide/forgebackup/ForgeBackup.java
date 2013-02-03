@@ -1,5 +1,6 @@
 package monoxide.forgebackup;
 
+import java.io.File;
 import java.util.Timer;
 
 import monoxide.forgebackup.backup.ArchiveBackupTask;
@@ -30,6 +31,7 @@ public class ForgeBackup implements ICommandSender {
 	private BackupConfiguration config;
 	private Timer backupTimer;
 	private String version;
+	public File oldWorld;
 	
 	@Instance("forgebackup")
 	private static ForgeBackup instance;

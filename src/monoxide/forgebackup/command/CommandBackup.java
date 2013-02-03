@@ -1,9 +1,14 @@
 package monoxide.forgebackup.command;
 
+import java.io.File;
+import java.lang.reflect.Field;
+
 import monoxide.forgebackup.ForgeBackup;
 import monoxide.forgebackup.backup.Backup;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class CommandBackup extends CommandBackupBase {
@@ -41,6 +46,21 @@ public class CommandBackup extends CommandBackupBase {
 			backup = new Backup(ForgeBackup.instance().config().getRegularBackupSettings(server));
 		} else if ("full".equals(args[0])) {
 			backup = new Backup(ForgeBackup.instance().config().getFullBackupSettings(server));
+		} else if ("restore".equals(args[0])) {
+			backup = null;
+			
+			for (Field f : MinecraftServer.class.getDeclaredFields()) {
+				if (f.getType() == File.class) {
+					try {
+						f.setAccessible(true);
+						ForgeBackup.instance().oldWorld = (File)f.get(server);
+					}
+					catch (IllegalArgumentException e) {}
+					catch (IllegalAccessException e) {}
+				}
+			}
+			
+			server.initiateShutdown();
 		} else {
 			backup = null;
 			server.getCommandManager().executeCommand(sender, "help " + this.getCommandName());
