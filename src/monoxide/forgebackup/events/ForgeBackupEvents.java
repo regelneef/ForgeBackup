@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import monoxide.forgebackup.BackupLog;
+import monoxide.forgebackup.gui.client.GuiSelectBackup;
 import monoxide.forgebackup.gui.server.ServerPane;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -69,6 +70,8 @@ public abstract class ForgeBackupEvents {
 	}
 	
 	public static GuiScreen getBackupListGui(GuiSelectWorld guiSelectWorld, List<SaveFormatComparator> saves, int selectedWorld) {
-		return null;
+		SaveFormatComparator save = saves.get(selectedWorld);
+		
+		return new GuiSelectBackup(guiSelectWorld, save);
 	}
 }
