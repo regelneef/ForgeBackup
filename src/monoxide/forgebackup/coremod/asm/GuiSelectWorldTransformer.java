@@ -87,7 +87,7 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 				InsnList toInject = new InsnList();
 				
 				toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
-				toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupEvents", "modifyGuiSelectWorld", mapping.get("initGuiCallDesc")));
+				toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupClientEvents", "modifyGuiSelectWorld", mapping.get("initGuiCallDesc")));
 				
 				method.instructions.insertBefore(method.instructions.get(i), toInject);
 				
@@ -149,7 +149,7 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 		codeToInsert.add(new FieldInsnNode(Opcodes.GETFIELD, mapping.get("javaName"), mapping.get("saveList"), "Ljava/util/List;"));
 		codeToInsert.add(new VarInsnNode(Opcodes.ALOAD, 0));
 		codeToInsert.add(new FieldInsnNode(Opcodes.GETFIELD, mapping.get("javaName"), mapping.get("selectedWorld"), "I"));
-		codeToInsert.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupEvents", "getBackupListGui", String.format("(L%s;Ljava/util/List;I)L%s;", mapping.get("javaName"), mapping.get("guiScreenJavaName"))));
+		codeToInsert.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupClientEvents", "getBackupListGui", String.format("(L%s;Ljava/util/List;I)L%s;", mapping.get("javaName"), mapping.get("guiScreenJavaName"))));
 		codeToInsert.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, mapping.get("minecraftJavaName"), mapping.get("displayGuiScreen"), String.format("(L%s;)V", mapping.get("guiScreenJavaName"))));
 		codeToInsert.add(new JumpInsnNode(Opcodes.GOTO, exitIf));
 		codeToInsert.add(endOfElseIf);

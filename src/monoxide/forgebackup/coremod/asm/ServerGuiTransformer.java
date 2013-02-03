@@ -57,7 +57,7 @@ public class ServerGuiTransformer extends AsmTransformer {
 						InsnList toInject = new InsnList();
 						
 						toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
-						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupEvents", "ServerGuiInitialising", mapping.get("callDesc")));
+						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "monoxide/forgebackup/events/ForgeBackupServerEvents", "ServerGuiInitialising", mapping.get("callDesc")));
 						toInject.add(new VarInsnNode(Opcodes.ASTORE, 1));
 						
 						method.instructions.insertBefore(method.instructions.get(i), toInject);

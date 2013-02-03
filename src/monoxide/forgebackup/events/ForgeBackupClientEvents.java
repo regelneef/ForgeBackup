@@ -1,39 +1,20 @@
 package monoxide.forgebackup.events;
 
-import java.awt.Dimension;
 import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JTabbedPane;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import monoxide.forgebackup.BackupLog;
 import monoxide.forgebackup.gui.client.GuiSelectBackup;
-import monoxide.forgebackup.gui.server.ServerPane;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSelectWorld;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.server.gui.ServerGUI;
 import net.minecraft.world.storage.SaveFormatComparator;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class ForgeBackupEvents {
+@SideOnly(Side.CLIENT)
+public class ForgeBackupClientEvents {
 	public static final int RESTORE_BUTTON_ID = 8;
 	
-	@SideOnly(Side.SERVER)
-	public static JComponent ServerGuiInitialising(DedicatedServer server) {
-		BackupLog.fine("Modifying server gui...");
-		
-		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
-		tabs.add("Status", new ServerGUI(server));
-		tabs.add("Backups", new ServerPane(server));
-		tabs.setPreferredSize(new Dimension(1200, 600));
-		return tabs;
-	}
-	
-	@SideOnly(Side.CLIENT)
 	public static void modifyGuiSelectWorld(GuiSelectWorld selectWorld) {
 		BackupLog.fine("Modifying world-selection screen...");
 		GuiButton cancelButton = null;
