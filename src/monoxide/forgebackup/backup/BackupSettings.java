@@ -2,6 +2,7 @@ package monoxide.forgebackup.backup;
 
 import java.io.File;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import monoxide.forgebackup.BackupLog;
 import monoxide.forgebackup.compression.ICompressionHandler;
@@ -12,6 +13,7 @@ import net.minecraft.world.storage.SaveHandler;
 import com.google.common.collect.Lists;
 
 public class BackupSettings {
+	public static final Pattern absolutePattern = Pattern.compile("^(([A-Za-z]:|\\\\)?\\\\|[\\\\/])[^\\\\/]");
 	private final IBackupCleanup cleanup;
 	private final String backupFolder;
 	private final boolean backupWorld;
@@ -97,9 +99,7 @@ public class BackupSettings {
 	}
 	
 	public File getBackupFolder() {
-		File absoluteFile = server.getFile(backupFolder);
-		File folder = absoluteFile.getAbsolutePath().equals(backupFolder) ? absoluteFile : server.getFile(backupFolder);
-		
+		File folder = absolutePattern.matcher(backupFolder).matches() ? new File(backupFolder) : server.getFile(backupFolder);
 		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
 		return new File(folder, saveHandler.getSaveDirectoryName());
 	}
