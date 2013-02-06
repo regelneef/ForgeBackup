@@ -25,34 +25,69 @@ public class BackupConfiguration {
 	@Option(comment = "Interval in minutes between automatic backup attempts.")
 	protected int backupInterval = 15;
 	
-	@Option(comment = "Maximum backups to keep stored. Older backups will be deleted first. -1 will disable auto-cleanups.")
+	@Option(
+		comment =
+			"Maximum backups to keep stored. Older backups will be deleted first.\n" +
+			"-1 will disable automated cleanups and no backups will ever be deleted.\n" +
+			"This option has no effect if you are using the git compression type."
+	)
 	protected int maxBackups = -1;
 	
-	@Option(comment = "Only operators may manually run backups with /backup.")
+	@Option(comment = "If this is set to true, then only operators may manually run backups with `/backup run`.")
 	protected boolean opsOnly = true;
 	
-	@Option(comment = "Allow command blocks to initiate a backup.")
+	@Option(comment = "If this is set to true, then command blocks can be used with all `/backup` commands.")
 	protected boolean commandBlocksAllowed = false;
 	
-	@Option(comment = "Only run automated backups when there is a player connected to the server. No effect in SSP. No effect on long-term backups.")
+	@Option(
+		comment =
+			"Only run automated backups when there is a player connected to the\n" +
+			"server. This option has no effect in single player. Long-term backups\n" +
+			"will always run whether there are players connected or not."
+	)
 	protected boolean backupOnlyWithPlayer = true;
 	
-	@Option(comment = "How much information to output while backing up. 0 = nothing, 1 = normal, 2 = debugging.")
+	@Option(comment = "How much information to send to players while backing up.\n\n" +
+			"0 = nothing\n" +
+			"1 = normal\n" +
+			"2 = debugging."
+	)
 	protected int loggingLevel = 1;
 	
-	@Option(comment = "Should we check online for updates?")
+	@Option(
+		comment =
+			"If this is set to true, then ForgeBackup will check online for updates.\n" +
+			"The update notification will only be sent to the console."
+	)
 	protected boolean checkUpdates = false;
 	
 	////////////////////////////////////////////////////////
 	//                   BACKUP                           //
 	////////////////////////////////////////////////////////
-	@Section(section = Sections.BACKUP, comment = "These settings control what and how things are backed up.")
+	@Section(section = Sections.BACKUP, comment = "These settings control what things are backed up and how.")
 	protected ConfigCategory backup;
 	
-	@Option(section = Sections.BACKUP, comment = "Folder name to store backups in. Each world's backups will be stored in subfolders of this one.")
+	@Option(section = Sections.BACKUP,
+		comment =
+			"Folder name to store backups in. Each world's backups will be stored in\n" +
+			"subfolders of this one. This can be an absolute path.\n\n" +
+			"Examples:\n" +
+			"- backups\n" +
+			"- C:\\backups\n" +
+			"- \\\\server\\backups"
+	)
 	protected String backupFolder = "backups";
 	
-	@Option(section = Sections.BACKUP, comment = "Type of compression to use when storing backups. Valid values: zip, tgz, tbz2, git, none")
+	@Option(section = Sections.BACKUP,
+		comment = 
+			"Type of compression to use when storing backups.\n\n" +
+			"Valid values:\n" +
+			"- zip\n" +
+			"- tgz\n" +
+			"- tbz2\n" +
+			"- git\n" +
+			"- none"
+	)
 	protected CompressionType compression = CompressionType.getDefault();
 	
 	@Option(section = Sections.BACKUP, name = "configuration", comment = "Backup config folder.")
@@ -67,7 +102,16 @@ public class BackupConfiguration {
 	@Option(section = Sections.BACKUP, name = "world", comment = "Backup world folder.")
 	protected boolean backupWorld = true;
 	
-	@Option(section = Sections.BACKUP, comment = "List of dimension id's to *not* backup. Use this to disable dimensions that are large or unneeded.")
+	@Option(section = Sections.BACKUP,
+		comment =
+			"List of dimension id's to *not* backup. Use this to disable dimensions\n" +
+			"that are large or unneeded. Currently it is impossible to disable\n" +
+			"dimension 0 (the Overworld)\n\n" +
+			"Example to disable the nether in backups:\n" +
+			"I:disabledDimensions <\n" +
+			"-1\n" +
+			">"
+	)
 	protected int[] disabledDimensions = new int[] {};
 	
 	@Option(section = Sections.BACKUP, name = "other", comment = "Other files or directories to backup.")
@@ -77,20 +121,38 @@ public class BackupConfiguration {
 	//                   LONGTERM                         //
 	////////////////////////////////////////////////////////
 	@Section(section = Sections.LONGTERM_BACKUP, comment =
-			"These settings control what and how things are backed up when doing an archival backup.\n" +
-			"The file group settings are cumulative with the regular backups. If you select to backup your world in\n" +
-			"the regular backup, it will be enabled for longterm backups no matter what. Disabled dimensions however\n" +
-			"do totally override the default settings."
+			"These settings control what and how things are backed up when doing an\n" +
+			"archival backup. The file group settings are cumulative with the\n" +
+			"regular backups. If you select to backup your world in the regular\n" +
+			"backup, it will be enabled for longterm backups no matter what.\n" +
+			"Disabled dimensions however do totally override the default settings."
 	)
 	protected ConfigCategory longtermBackup;
 	
 	@Option(section = Sections.LONGTERM_BACKUP, name = "enabled", comment = "Whether to enable separate long-term backups.")
 	protected boolean longtermEnabled = false;
 	
-	@Option(section = Sections.LONGTERM_BACKUP, name = "backupFolder", comment = "Folder name to store long-term backups in. Each world's archives will be stored in subfolders of this one.")
+	@Option(section = Sections.LONGTERM_BACKUP, name = "backupFolder",
+		comment =
+			"Folder name to store backups in. Each world's backups will be stored in\n" +
+			"subfolders of this one. This can be an absolute path.\n\n" +
+			"Examples:\n" +
+			"- backups\n" +
+			"- C:\\backups\n" +
+			"- \\\\server\\backups"
+	)
 	protected String longtermBackupFolder = "archives";
 	
-	@Option(section = Sections.LONGTERM_BACKUP, name = "compression", comment = "Type of compression to use when storing backups. Valid values: zip, tgz, tbz2, git, none")
+	@Option(section = Sections.LONGTERM_BACKUP, name = "compression",
+		comment = 
+			"Type of compression to use when storing backups.\n\n" +
+			"Valid values:\n" +
+			"- zip\n" +
+			"- tgz\n" +
+			"- tbz2\n" +
+			"- git\n" +
+			"- none"
+	)
 	protected CompressionType longtermCompression = CompressionType.getDefault();
 	
 	@Option(section = Sections.LONGTERM_BACKUP, name = "configuration", comment = "Backup config folder.")
@@ -105,7 +167,16 @@ public class BackupConfiguration {
 	@Option(section = Sections.LONGTERM_BACKUP, name = "world", comment = "Backup world folder.")
 	protected boolean longtermBackupWorld = true;
 	
-	@Option(section = Sections.LONGTERM_BACKUP, name = "disabledDimensions", comment = "List of dimension id's to *not* backup. Use this to disable dimensions that are large or unneeded.")
+	@Option(section = Sections.LONGTERM_BACKUP, name = "disabledDimensions",
+		comment =
+			"List of dimension id's to *not* backup. Use this to disable dimensions\n" +
+			"that are large or unneeded. Currently it is impossible to disable\n" +
+			"dimension 0 (the Overworld)\n\n" +
+			"Example to disable the nether in backups:\n" +
+			"I:disabledDimensions <\n" +
+			"-1\n" +
+			">"
+	)
 	protected int[] longtermDisabledDimensions = new int[] {};
 	
 	@Option(section = Sections.LONGTERM_BACKUP, comment = "The number of daily archival backups to keep.")
