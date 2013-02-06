@@ -1,5 +1,10 @@
 # Changelog: #
 
+## 1.0.2 ##
+
+* Fixed a bug with absolute paths
+* Expanded on our configuration documentation
+
 ## 1.0.1 ##
 
 * Fix an issue with absolute paths used as a backup path
