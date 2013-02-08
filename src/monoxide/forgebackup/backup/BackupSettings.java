@@ -99,7 +99,7 @@ public class BackupSettings {
 	}
 	
 	public File getBackupFolder() {
-		File folder = absolutePattern.matcher(backupFolder).matches() ? new File(backupFolder) : server.getFile(backupFolder);
+		File folder = absolutePattern.matcher(backupFolder).find() ? new File(backupFolder) : server.getFile(backupFolder);
 		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
 		return new File(folder, saveHandler.getSaveDirectoryName());
 	}
