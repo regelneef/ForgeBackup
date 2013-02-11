@@ -151,7 +151,7 @@
 
         <property name="forge.version" value="${forgebackup.build.forgeversion}" />
         
-        <property name="mod.jar.release" location="${mod.base}/${modname}-universal-${minecraft.version}-${version}.jar" />
+        <property name="mod.jar.release" location="${mod.base}/${modname}-universal-coremod-${minecraft.version}-${version}.jar" />
         
         <condition property="forge.downloaded" value="true">
             <resourceexists>
