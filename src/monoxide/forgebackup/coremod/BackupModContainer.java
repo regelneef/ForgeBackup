@@ -40,7 +40,7 @@ public class BackupModContainer implements ModContainer {
 	private EventBus eventBus;
 	
 	public BackupModContainer() throws InvalidVersionSpecificationException {
-		InputStream modInfo = BackupModContainer.class.getClassLoader().getResourceAsStream("mcmod.info");
+		InputStream modInfo = BackupModContainer.class.getResourceAsStream("/mcmod.info");
 		JsonNode modMetaData = null;
 		try {
 			modMetaData = new JdomParser().parse(new InputStreamReader(modInfo)).getNode(0);
