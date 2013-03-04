@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
+import com.google.common.collect.Lists;
+
 import monoxide.forgebackup.BackupLog;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -108,6 +110,13 @@ public class Backup {
 		
 		List<File> thingsToSave = settings.getFilesToBackup();
 		List<Integer> disabledDimensions = settings.getDisabledDimensions();
+		List<String> dimensionDirectories = Lists.newArrayList();
+		
+		for (int dimension : disabledDimensions) {
+			WorldProvider provider = WorldProvider.getProviderForDimension(dimension);
+			provider.setDimension(dimension);
+			dimensionDirectories.add(provider.getSaveFolder());
+		}
 		
 		settings.getCompressionHandler().openFile(backupsFolder, settings.getBackupFileName());
 		
@@ -116,20 +125,13 @@ public class Backup {
 			if (!current.exists()) { continue; }
 			
 			if (current.isDirectory()) {
-				boolean disabled = false;
-				for (int dimension : disabledDimensions) {
-					WorldProvider provider = DimensionManager.getProvider(dimension);
-					if (provider != null && current.getName().equals(provider.getSaveFolder())) {
-						disabled = true;
-					}
-				}
+				if (dimensionDirectories.contains(current.getName())) 
+				{ continue; }
 				
-				if (!disabled) {
-					settings.getCompressionHandler().addCompressedFile(current);
-					
-					for (File child : current.listFiles()) {
-						thingsToSave.add(child);
-					}
+				settings.getCompressionHandler().addCompressedFile(current);
+				
+				for (File child : current.listFiles()) {
+					thingsToSave.add(child);
 				}
 			} else {
 				settings.getCompressionHandler().addCompressedFile(current);
