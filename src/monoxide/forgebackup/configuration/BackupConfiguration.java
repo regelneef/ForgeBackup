@@ -243,8 +243,12 @@ public class BackupConfiguration {
 	private Configuration config;
 	
 	public BackupConfiguration(File configFile) {
+		config = new Configuration(configFile);
+		reload();
+	}
+	
+	public void reload() {
 		try {
-			config = new Configuration(configFile);
 			config.load();
 			Field[] fields = this.getClass().getDeclaredFields();
 			

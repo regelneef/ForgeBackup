@@ -37,6 +37,12 @@ public class CommandBackup extends CommandBackupBase {
 			return;
 		}
 		
+		if ("reload".equals(args[0])) {
+			ForgeBackup.instance().reloadConfiguration();
+			sender.sendChatToPlayer("Configuration for forgebackup has been reloaded.");
+			return;
+		}
+		
 		if ("run".equals(args[0])) {
 			backup = new Backup(ForgeBackup.instance().config().getRegularBackupSettings(server));
 		} else if ("full".equals(args[0])) {

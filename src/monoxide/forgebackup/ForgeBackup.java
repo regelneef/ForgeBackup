@@ -100,6 +100,13 @@ public class ForgeBackup implements ICommandSender {
 		backupTimer.cancel();
 		BackupLog.info("ForgeBackup stopped.");
 	}
+	
+	public void reloadConfiguration() {
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		config.reload();
+		backupTimer.cancel();
+		backupTimer.scheduleAtFixedRate(new BackupTask(server), config.getBackupInterval() * 60 * 1000, config.getBackupInterval() * 60 * 1000);
+	}
 
 	@Override
 	public String getCommandSenderName() {
