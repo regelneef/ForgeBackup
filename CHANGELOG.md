@@ -1,5 +1,12 @@
 # Changelog: #
 
+## 1.0.3 ##
+
+* Fixed another bug with absolute paths. Should be working perfectly now.
+* Fixed compatibility with ForgeEssentials so that it will work with all versions.
+* Add `/backup reload` command to allow reloading configuration file.
+* Fix issues with disabling Mystcraft dimensions from backing up.
+
 ## 1.0.2 ##
 
 * Fixed a bug with absolute paths
