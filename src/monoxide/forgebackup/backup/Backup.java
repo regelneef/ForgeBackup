@@ -10,7 +10,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.world.MinecraftException;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Backup {
@@ -116,7 +118,8 @@ public class Backup {
 			if (current.isDirectory()) {
 				boolean disabled = false;
 				for (int dimension : disabledDimensions) {
-					if (current.getName().equals(String.format("DIM%d", dimension))) {
+					WorldProvider provider = DimensionManager.getProvider(dimension);
+					if (provider != null && current.getName().equals(provider.getSaveFolder())) {
 						disabled = true;
 					}
 				}
