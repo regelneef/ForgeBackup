@@ -1,5 +1,6 @@
 package monoxide.forgebackup.command;
 
+import monoxide.forgebackup.BackupLog;
 import monoxide.forgebackup.ForgeBackup;
 import monoxide.forgebackup.backup.Backup;
 import net.minecraft.command.ICommandSender;
@@ -58,12 +59,12 @@ public class CommandBackup extends CommandBackupBase {
 				public void run() {
 					backup.run(sender);
 				}
-			}).run();
+			}).start();
 		}
 	}
 	
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/" + this.getCommandName() + " [run|full]";
+		return "/" + this.getCommandName() + " [run|full|reload]";
 	}
 }
