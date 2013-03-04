@@ -131,6 +131,12 @@ public class Backup {
 			} else {
 				settings.getCompressionHandler().addCompressedFile(current);
 			}
+			
+			try {
+				if (thingsToSave.size() % 10 == 0) {
+					Thread.sleep(1);
+				}
+			} catch (InterruptedException e) {}
 		}
 		
 		settings.getCompressionHandler().closeFile();
