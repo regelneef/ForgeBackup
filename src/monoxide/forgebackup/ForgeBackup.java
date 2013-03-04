@@ -88,11 +88,7 @@ public class ForgeBackup implements ICommandSender {
 	public void serverStarted(FMLServerStartedEvent event) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getSaveDirectoryName());
-		backupTimer = new Timer(true);
-		backupTimer.scheduleAtFixedRate(new BackupTask(server), config.getBackupInterval() * 60 * 1000, config.getBackupInterval() * 60 * 1000);
-		if (config().longtermBackupsEnabled()) {
-			backupTimer.schedule(new ArchiveBackupTask(server), /* 30 seconds */ 30 * 1000);
-		}
+		setupTimers(server);
 	}
 	
 	@Subscribe
@@ -105,7 +101,15 @@ public class ForgeBackup implements ICommandSender {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		config.reload();
 		backupTimer.cancel();
+		setupTimers(server);
+	}
+	
+	private void setupTimers(MinecraftServer server) {
+		backupTimer = new Timer(true);
 		backupTimer.scheduleAtFixedRate(new BackupTask(server), config.getBackupInterval() * 60 * 1000, config.getBackupInterval() * 60 * 1000);
+		if (config().longtermBackupsEnabled()) {
+			backupTimer.schedule(new ArchiveBackupTask(server), /* 30 seconds */ 30 * 1000);
+		}
 	}
 
 	@Override
