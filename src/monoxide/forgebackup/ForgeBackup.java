@@ -50,7 +50,7 @@ public class ForgeBackup implements ICommandSender {
 		if (event.getSide() == Side.SERVER) {
 			// Only assign ourselves to the Minecraft logger if we're on the server
 			// If we do this in SSP, our logs will be completely hidden.
-			BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().logger);
+			BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().getServerLogger());
 		}
 		
 		version = event.getModMetadata().version;
@@ -87,7 +87,7 @@ public class ForgeBackup implements ICommandSender {
 	@Subscribe
 	public void serverStarted(FMLServerStartedEvent event) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getSaveDirectoryName());
+		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getWorldDirectoryName());
 		setupTimers(server);
 	}
 	

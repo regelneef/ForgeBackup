@@ -167,7 +167,7 @@ public class BackupModContainer implements ModContainer {
 	@Override
 	public VersionRange acceptableMinecraftVersionRange() {
 		try {
-			return VersionRange.createFromVersionSpec("[1.4.6,1.4.7]");
+			return VersionRange.createFromVersionSpec("[1.5.1]");
 		} catch (InvalidVersionSpecificationException e) {}
 		return null;
 	}

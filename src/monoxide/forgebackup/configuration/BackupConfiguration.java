@@ -265,14 +265,14 @@ public class BackupConfiguration {
 
 	private void migrateOldOptions() {
 		if (config.getCategory(Sections.GENERAL.getName()).containsKey("backupFolder")) {
-			String folder = config.getCategory(Sections.GENERAL.getName()).get("backupFolder").value;
-			config.getCategory(Sections.BACKUP.getName()).set("backupFolder", new Property("backupFolder", folder, Type.STRING));
+			String folder = config.getCategory(Sections.GENERAL.getName()).get("backupFolder").getString();
+			config.getCategory(Sections.BACKUP.getName()).put("backupFolder", new Property("backupFolder", folder, Type.STRING));
 			config.getCategory(Sections.GENERAL.getName()).remove("backupFolder");
 		}
 		
 		if (config.getCategory(Sections.GENERAL.getName()).containsKey("verboseLogging")) {
 			boolean verboseLogging = config.get(Sections.GENERAL.getName(), "verboseLogging", false).getBoolean(false);
-			config.getCategory(Sections.GENERAL.getName()).set("loggingLevel", new Property("loggingLevel", verboseLogging ? "2" : "1", Type.INTEGER));
+			config.getCategory(Sections.GENERAL.getName()).put("loggingLevel", new Property("loggingLevel", verboseLogging ? "2" : "1", Type.INTEGER));
 			config.getCategory(Sections.GENERAL.getName()).remove("verboseLogging");
 		}
 	}
@@ -331,15 +331,15 @@ public class BackupConfiguration {
 				field.set(this, value);
 			} else if (fieldType == String.class) {
 				String value = (String)field.get(this);
-				value = config.get(option.section().getName(), name, value, comment).value;
+				value = config.get(option.section().getName(), name, value, comment).getString();
 				field.set(this, value);
 			} else if (fieldType == String[].class) {
 				String[] value = (String[])field.get(this);
-				value = config.get(option.section().getName(), name, value, comment).valueList;
+				value = config.get(option.section().getName(), name, value, comment).getStringList();
 				field.set(this, value);
 			} else if (fieldType == CompressionType.class) {
 				String value = ((CompressionType)field.get(this)).getName();
-				value = config.get(option.section().getName(), name, value, comment).value;
+				value = config.get(option.section().getName(), name, value, comment).getString();
 				field.set(this, CompressionType.getByName(value));
 			} else {
 				BackupLog.warning("Skipping @Option \"%s\" with unknown type: %s", field.getName(), fieldType.getCanonicalName());
