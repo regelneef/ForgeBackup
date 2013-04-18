@@ -1,23 +1,52 @@
 package monoxide.forgebackup.compression;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import monoxide.forgebackup.BackupLog;
 import net.minecraft.server.MinecraftServer;
 
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import static org.apache.commons.compress.archivers.tar.TarArchiveOutputStream.LONGFILE_POSIX;
+import static org.apache.commons.compress.archivers.tar.TarArchiveOutputStream.BIGNUMBER_POSIX;
 
-public abstract class TarCompressionHandler extends ArchiveCompressionHandler {
-	protected ArchiveOutputStream tarStream;
+public class TarCompressionHandler extends ArchiveCompressionHandler {
+	protected TarArchiveOutputStream tarStream;
 	
 	public TarCompressionHandler(MinecraftServer server) {
 		super(server);
 	}
+
+	protected OutputStream getOutputStream(File backupFolder, String backupFilename) throws IOException {
+		return new BufferedOutputStream(new FileOutputStream(new File(backupFolder, backupFilename)));
+	}
+
+	@Override
+	public String getFileExtension() {
+		return ".tar";
+	}
 	
+	@Override
+	public void openFile(File backupFolder, String backupFilename) throws IOException {
+		try {
+			OutputStream outputStream = getOutputStream(backupFolder, backupFilename);
+			tarStream = (TarArchiveOutputStream) new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, outputStream);
+			//handle cases if there are long file names (over 100 chars) or large files (8Gib+)
+			tarStream.setLongFileMode(LONGFILE_POSIX);
+			tarStream.setBigNumberMode(BIGNUMBER_POSIX);
+		} catch (ArchiveException e) {
+			throw new IOException("Unable to create tar stream.", e);
+		}
+	}
+
 	@Override
 	public void addCompressedFile(File file) throws IOException {
 		TarArchiveEntry entry = new TarArchiveEntry(file);

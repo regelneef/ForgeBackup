@@ -83,6 +83,7 @@ public class BackupConfiguration {
 			"Type of compression to use when storing backups.\n\n" +
 			"Valid values:\n" +
 			"- zip\n" +
+			"- tar\n" +
 			"- tgz\n" +
 			"- tbz2\n" +
 			"- git\n" +
@@ -148,6 +149,7 @@ public class BackupConfiguration {
 			"Type of compression to use when storing backups.\n\n" +
 			"Valid values:\n" +
 			"- zip\n" +
+			"- tar\n" +
 			"- tgz\n" +
 			"- tbz2\n" +
 			"- git\n" +

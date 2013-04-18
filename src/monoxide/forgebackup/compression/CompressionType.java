@@ -8,6 +8,7 @@ import net.minecraft.server.MinecraftServer;
 
 public enum CompressionType {
 	ZIP("zip", ZipCompressionHandler.class),
+	TAR("tar", TarCompressionHandler.class),
 	TAR_GZ("tgz", TarGzCompressionHandler.class),
 	TAR_BZ2("tbz2", TarBzCompressionHandler.class),
 	GIT("git", GitCompressionHandler.class),
