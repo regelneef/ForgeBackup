@@ -1,5 +1,10 @@
 # Changelog: #
 
+## 1.1.0 ##
+
+* Major thanks to cjo9900 for authoring the bump to Minecraft 1.5.1.
+  * ForgeBackup is now for 1.5.1!
+
 ## 1.0.3 ##
 
 * Fixed another bug with absolute paths. Should be working perfectly now.
