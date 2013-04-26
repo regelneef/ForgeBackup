@@ -26,7 +26,7 @@ public class ForgeBackupLoader implements IFMLLoadingPlugin {
 	
 	@Override
 	public String getModContainerClass() {
-		return "monoxide.forgebackup.coremod.BackupModContainer";
+		return null;
 	}
 	
 	@Override
