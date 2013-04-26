@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
-import com.google.common.collect.Lists;
-
 import monoxide.forgebackup.BackupLog;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,7 +12,9 @@ import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
+
+import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Backup {

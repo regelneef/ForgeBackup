@@ -1,6 +1,5 @@
 package monoxide.forgebackup.command;
 
-import monoxide.forgebackup.BackupLog;
 import monoxide.forgebackup.ForgeBackup;
 import monoxide.forgebackup.backup.Backup;
 import net.minecraft.command.ICommandSender;

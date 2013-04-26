@@ -4,9 +4,7 @@ import java.util.Map;
 
 import monoxide.forgebackup.BackupLog;
 
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import com.google.common.collect.Maps;

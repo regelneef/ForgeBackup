@@ -2,8 +2,6 @@ package monoxide.forgebackup.coremod;
 
 import java.util.Map;
 
-import monoxide.forgebackup.BackupLog;
-
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
