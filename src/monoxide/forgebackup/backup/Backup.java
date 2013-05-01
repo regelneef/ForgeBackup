@@ -25,6 +25,14 @@ public class Backup {
 	}
 	
 	public void run(ICommandSender sender) {
+		
+		while (settings.getServer().tickCounter % 900 >= 880 || settings.getServer().tickCounter % 900 < 10)
+		{
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {}
+		}
+		
 		notifyAdmins(sender, "ForgeBackup.backup.start");
 		
 		notifyAdmins(sender, Level.FINE, "ForgeBackup.save.disabled");
