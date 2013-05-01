@@ -86,7 +86,6 @@ public class ForgeBackup implements ICommandSender {
 	
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
-		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		event.registerServerCommand(new CommandBackup(event));
 	}
 	

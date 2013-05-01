@@ -25,7 +25,6 @@ public class Backup {
 	}
 	
 	public void run(ICommandSender sender) {
-		boolean failure = false;
 		notifyAdmins(sender, "ForgeBackup.backup.start");
 		
 		notifyAdmins(sender, Level.FINE, "ForgeBackup.save.disabled");

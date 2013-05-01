@@ -306,7 +306,7 @@ public class BackupConfiguration {
 				name = field.getName();
 			}
 			
-			Class fieldType = field.getType();
+			Class<?> fieldType = field.getType();
 			if (fieldType == boolean.class) {
 				boolean value = field.getBoolean(this);
 				value = config.get(option.section().getName(), name, value, comment).getBoolean(value);
