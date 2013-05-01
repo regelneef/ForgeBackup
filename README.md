@@ -1,4 +1,4 @@
-# ForgeBackup v1.1.0 #
+# ForgeBackup v1.1.1 #
 
 ForgeBackup is a simple mod that sits and backs up your server or single player worlds as you play. No more corrupted worlds due to issues with mods or other issues with your computer, just restore a backup and most of your work will still be saved even if disaster should strike. The initial concept was based heavily on ideas gleaned from BukkitBackup ported to the Minecraft Forge API, however it has now taken on a life of it's own and implements many features not found in the original plugin.
 
@@ -10,7 +10,7 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ### 1.5.1 ###
 
-* [forgebackup-universal-coremod-1.5.1-1.1.0.89.jar][b89]
+* [forgebackup-universal-coremod-1.5.1-1.1.1.94.jar][b94]
 
 ### 1.4.6/1.4.7 ###
 
@@ -54,6 +54,7 @@ I'm not sure of the need for this section since this mod is only required on one
 
 ### 1.5.1 ###
 
+* [forgebackup-universal-coremod-1.5.1-1.1.1.94.jar][b94]
 * [forgebackup-universal-coremod-1.5.1-1.1.0.89.jar][b89]
 
 ### 1.4.6/1.4.7 ###
@@ -72,9 +73,10 @@ I'm not sure of the need for this section since this mod is only required on one
   [b71]: http://bit.ly/11oMJo1
   [b83]: http://bit.ly/ZgCCfr
   [b89]: http://bit.ly/10mcTIf
+  [b94]: http://bit.ly/ZnEAdC
 
   [gh]: https://github.com/monoxide0184/ForgeBackup
   [gh-issues]: https://github.com/monoxide0184/ForgeBackup/issues
   [license]: https://github.com/monoxide0184/ForgeBackup/blob/master/LICENSE.md
-  [irc]: http://esper.net/publicirc.php
+  [irc]: http://webchat.esper.net/?channels=#monoxide
 

@@ -1,5 +1,10 @@
 # Changelog: #
 
+## 1.1.1 ##
+
+* Fixed a warning from FML
+* Other minor bug fixes
+
 ## 1.1.0 ##
 
 * Major thanks to cjo9900 for authoring the bump to Minecraft 1.5.1.
