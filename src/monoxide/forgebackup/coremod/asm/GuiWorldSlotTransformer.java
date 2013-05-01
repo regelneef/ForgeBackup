@@ -9,7 +9,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -34,14 +33,14 @@ public class GuiWorldSlotTransformer extends AsmTransformer {
 		
 		// Obfuscated version
 		tmp = Maps.newHashMap();
-		mappings.put("aup", tmp);
-		tmp.put("javaName", "aup");
+		mappings.put("axv", tmp);
+		tmp.put("javaName", "axv");
 		tmp.put("methodName", "a");
 		tmp.put("methodDesc", "(IZ)V");
 		tmp.put("markerMethodName", "f");
 		tmp.put("parentWorldGui", "a");
-		tmp.put("guiSelectWorldJavaName", "auo");
-		tmp.put("guiButtonJavaName", "atb");
+		tmp.put("guiSelectWorldJavaName", "axu");
+		tmp.put("guiButtonJavaName", "awg");
 		tmp.put("enabledField", "g");
 	}
 

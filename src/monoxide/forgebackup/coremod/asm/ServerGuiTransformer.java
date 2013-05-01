@@ -29,11 +29,11 @@ public class ServerGuiTransformer extends AsmTransformer {
 		
 		// Obfuscated version
 		tmp = Maps.newHashMap();
-		mappings.put("hv", tmp);
-		tmp.put("javaName", "hv");
+		mappings.put("ig", tmp);
+		tmp.put("javaName", "ig");
 		tmp.put("methodName", "a");
-		tmp.put("methodDesc", "(Lho;)V");
-		tmp.put("callDesc", "(Lho;)Ljavax/swing/JComponent;");
+		tmp.put("methodDesc", "(Lhz;)V");
+		tmp.put("callDesc", "(Lhz;)Ljavax/swing/JComponent;");
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public class ServerGuiTransformer extends AsmTransformer {
 		while (methods.hasNext()) {
 			MethodNode method = methods.next();
 			if (method.name.equals(mapping.get("methodName")) && method.desc.equals(mapping.get("methodDesc"))) {
-				BackupLog.fine("Found ServerGUI.initGUI");
+				BackupLog.info("Found ServerGUI.initGUI");
 				
 				for (int i = 0; i < method.instructions.size(); i++) {
 					// Check for the call to initialise a new ServerGUI
@@ -62,7 +62,7 @@ public class ServerGuiTransformer extends AsmTransformer {
 						
 						method.instructions.insertBefore(method.instructions.get(i), toInject);
 						
-						BackupLog.fine("Injected our event successfully.");
+						BackupLog.info("Injected our event successfully.");
 						break;
 					}
 				}

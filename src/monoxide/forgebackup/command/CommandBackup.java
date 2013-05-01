@@ -8,7 +8,6 @@ import monoxide.forgebackup.backup.Backup;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class CommandBackup extends CommandBackupBase {

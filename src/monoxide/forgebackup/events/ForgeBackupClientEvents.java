@@ -15,11 +15,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ForgeBackupClientEvents {
 	public static final int RESTORE_BUTTON_ID = 8;
 	
+	@SuppressWarnings("unchecked")
 	public static void modifyGuiSelectWorld(GuiSelectWorld selectWorld) {
-		BackupLog.fine("Modifying world-selection screen...");
+		BackupLog.info("Modifying world-selection screen...");
 		GuiButton cancelButton = null;
 		
-		for (Object element : selectWorld.controlList) {
+		for (Object element : selectWorld.buttonList) {
 			if (element instanceof GuiButton) {
 				GuiButton button = ((GuiButton)element);
 				button.yPosition -= 24;
@@ -33,13 +34,13 @@ public class ForgeBackupClientEvents {
 		selectWorld.worldSlotContainer.height -= 24;
 		selectWorld.worldSlotContainer.bottom -= 24;
 		
-		selectWorld.field_82316_w.width = selectWorld.buttonSelect.width;
+		selectWorld.buttonRecreate.width = selectWorld.buttonSelect.width;
 		cancelButton.width = selectWorld.buttonSelect.width;
-		cancelButton.xPosition = selectWorld.field_82316_w.xPosition;
+		cancelButton.xPosition = selectWorld.buttonRecreate.xPosition;
 		cancelButton.yPosition += 24;
 		
 		GuiButton restoreButton = new GuiButton(RESTORE_BUTTON_ID, selectWorld.buttonDelete.xPosition, cancelButton.yPosition, 150, 20, "Restore Backup");
-		selectWorld.controlList.add(restoreButton);
+		selectWorld.buttonList.add(restoreButton);
 		restoreButton.enabled = false;
 		try {
 			GuiSelectWorld.class.getField("buttonRestore").set(selectWorld, restoreButton);

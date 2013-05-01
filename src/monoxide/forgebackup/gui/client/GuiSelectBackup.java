@@ -17,13 +17,14 @@ public class GuiSelectBackup extends GuiScreen {
 		parentScreen = guiSelectWorld;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
 		screenTitle = "Select Backup To Restore";
 		backupList = new GuiSlotBackup(mc, this);
 		cancelButton = new GuiButton(0, this.width / 2 + 82, this.height - 28, 72, 20, var1.translateKey("gui.cancel"));
-		controlList.add(cancelButton);
+		buttonList.add(cancelButton);
 	}
 	
 	@Override

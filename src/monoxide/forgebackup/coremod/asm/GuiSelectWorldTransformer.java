@@ -11,7 +11,6 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.FrameNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.IntInsnNode;
@@ -46,16 +45,16 @@ public class GuiSelectWorldTransformer extends AsmTransformer {
 		
 		// Obfuscated version
 		tmp = Maps.newHashMap();
-		mappings.put("auo", tmp);
-		tmp.put("javaName", "auo");
+		mappings.put("axu", tmp);
+		tmp.put("javaName", "axu");
 		tmp.put("initGuiMethodName", "A_");
 		tmp.put("initGuiMethodDesc", "()V");
-		tmp.put("initGuiCallDesc", "(Lauo;)V");
-		tmp.put("guiButtonJavaName", "atb");
+		tmp.put("initGuiCallDesc", "(Laxu;)V");
+		tmp.put("guiButtonJavaName", "awg");
 		tmp.put("actionPerformedMethodName", "a");
 		tmp.put("minecraftJavaName", "net/minecraft/client/Minecraft");
 		tmp.put("displayGuiScreen", "a");
-		tmp.put("guiScreenJavaName", "aul");
+		tmp.put("guiScreenJavaName", "axr");
 		tmp.put("guiScreen.mc", "f");
 		tmp.put("saveList", "o");
 		tmp.put("idField", "f");

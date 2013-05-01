@@ -7,12 +7,9 @@ import monoxide.forgebackup.BackupLog;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
-import org.objectweb.asm.tree.VarInsnNode;
 
 import com.google.common.collect.Maps;
 
@@ -27,7 +24,7 @@ public class DedicatedServerTransformer extends AsmTransformer {
 		
 		// Obfuscated version.
 		tmp = Maps.newHashMap();
-		mappings.put("ho", tmp);
+		mappings.put("hz", tmp);
 		tmp.put("systemExitNow", "p");
 	}
 	
