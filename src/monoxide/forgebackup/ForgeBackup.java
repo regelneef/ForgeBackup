@@ -12,11 +12,15 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StringTranslate;
-
-import com.google.common.eventbus.Subscribe;
-
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
+import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarted;
+import cpw.mods.fml.common.Mod.ServerStarting;
+import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,6 +30,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+@Mod(modid = "forgebackup", name = "ForgeBackup", useMetadata = true)
 public class ForgeBackup implements ICommandSender {
 	
 	private BackupConfiguration config;
@@ -47,19 +52,20 @@ public class ForgeBackup implements ICommandSender {
 		return version;
 	}
 	
-	@Subscribe
+	@PreInit
 	public void preInitialisation(FMLPreInitializationEvent event) {
+		BackupLog.setLogger(event.getModLog());
 		if (event.getSide() == Side.SERVER) {
 			// Only assign ourselves to the Minecraft logger if we're on the server
 			// If we do this in SSP, our logs will be completely hidden.
-			BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().logger);
+			BackupLog.setLoggerParent(FMLCommonHandler.instance().getMinecraftServerInstance().getLogAgent().getServerLogger());
 		}
 		
 		version = event.getModMetadata().version;
 		config = new BackupConfiguration(event.getSuggestedConfigurationFile());
 	}
 	
-	@Subscribe
+	@Init
 	public void initialisation(FMLInitializationEvent event) {
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.start", "en_US", "Starting a new backup.");
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.backup.progress", "en_US", "Creating new backup of your world...");
@@ -73,34 +79,44 @@ public class ForgeBackup implements ICommandSender {
 		LanguageRegistry.instance().addStringLocalization("ForgeBackup.save.enabled", "en_US", "Re-enabling saving...");
 	}
 	
-	@Subscribe
+	@PostInit
 	public void postInitialisation(FMLPostInitializationEvent event) {
 		if (config.shouldCheckForUpdates()) {
 			new Thread(new UpdateThread()).run();
 		}
 	}
 	
-	@Subscribe
+	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
-		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		event.registerServerCommand(new CommandBackup(event));
 	}
 	
-	@Subscribe
+	@ServerStarted
 	public void serverStarted(FMLServerStartedEvent event) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getSaveDirectoryName());
+		BackupLog.info("ForgeBackup starting for world: %s...", server.worldServers[0].getSaveHandler().getWorldDirectoryName());
+		setupTimers(server);
+	}
+	
+	@ServerStopping
+	public void serverStopping(FMLServerStoppingEvent event) {
+		backupTimer.cancel();
+		BackupLog.info("ForgeBackup stopped.");
+	}
+	
+	public void reloadConfiguration() {
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		config.reload();
+		backupTimer.cancel();
+		setupTimers(server);
+	}
+	
+	private void setupTimers(MinecraftServer server) {
 		backupTimer = new Timer(true);
 		backupTimer.scheduleAtFixedRate(new BackupTask(server), config.getBackupInterval() * 60 * 1000, config.getBackupInterval() * 60 * 1000);
 		if (config().longtermBackupsEnabled()) {
 			backupTimer.schedule(new ArchiveBackupTask(server), /* 30 seconds */ 30 * 1000);
 		}
-	}
-	
-	@Subscribe
-	public void serverStopping(FMLServerStoppingEvent event) {
-		backupTimer.cancel();
-		BackupLog.info("ForgeBackup stopped.");
 	}
 
 	@Override

@@ -7,15 +7,19 @@ import cpw.mods.fml.common.FMLLog;
 
 public abstract class BackupLog {
 	
-	static Logger logger;
+	private static Logger logger;
 	
 	static {
-		logger = Logger.getLogger("Backup");
+		logger = Logger.getLogger("forgebackup");
 		logger.setParent(FMLLog.getLogger());	
 	}
 	
 	protected static void setLoggerParent(Logger parent) {
 		logger.setParent(parent);
+	}
+	
+	protected static void setLogger(Logger logger) {
+		BackupLog.logger = logger;
 	}
 	
 	public static Logger getLogger() {

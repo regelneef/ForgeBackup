@@ -1,4 +1,4 @@
-# ForgeBackup v1.0.2 #
+# ForgeBackup v1.1.0 #
 
 ForgeBackup is a simple mod that sits and backs up your server or single player worlds as you play. No more corrupted worlds due to issues with mods or other issues with your computer, just restore a backup and most of your work will still be saved even if disaster should strike. The initial concept was based heavily on ideas gleaned from BukkitBackup ported to the Minecraft Forge API, however it has now taken on a life of it's own and implements many features not found in the original plugin.
 
@@ -8,9 +8,13 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ## Downloads: ##
 
+### 1.5.1 ###
+
+* [forgebackup-universal-coremod-1.5.1-1.1.0.89.jar][b89]
+
 ### 1.4.6/1.4.7 ###
 
-* [forgebackup-universal-1.4.7-1.0.2.71.jar][b71]
+* [forgebackup-universal-coremod-1.4.7-1.0.3.83.jar][b83]
 
 ## Features: ##
 
@@ -29,7 +33,7 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ForgeBackup has a very low surface area that actually touches Minecraft. This means it should be highly compatible with just about any mod out there that isn't also trying to do backups. However, there has been some need for specific patches and so below is a list of other mods we've specifically made changes to accomodate or that we know don't work with Forgebackup.
 
-* ForgeEssentials: ForgeBackup is fully compatible. It overrides and hides the default Backups module from FE if it exists on the server. While ForgeBackup is compatible, there is currently no integration, so you won't be able to control ForgeBackup via ForgeEssentials. This compatibility requires at least ForgeEssentials 1.1.1.
+* ForgeEssentials: ForgeBackup is fully compatible. It overrides and hides the default Backups module from FE if it exists on the server. While ForgeBackup is compatible, there are no plans for integration, so you won't be able to control ForgeBackup via ForgeEssentials.
 
 ## Bug Reports: ##
 
@@ -48,11 +52,16 @@ or ForgeModLoader-server-0.log) from your minecraft folder. Please
 
 I'm not sure of the need for this section since this mod is only required on one side, either the server or the client. Old versions are here for those who want them though.
 
+### 1.5.1 ###
+
+* [forgebackup-universal-coremod-1.5.1-1.1.0.89.jar][b89]
+
 ### 1.4.6/1.4.7 ###
 
-* [forgebackup-universal-1.4.7-1.0.2.71.jar][b71]
-* [forgebackup-universal-1.4.7-1.0.1.63.jar][b63]
-* [forgebackup-universal-1.4.7-1.0.0.58.jar][b58]
+* [forgebackup-universal-coremod-1.4.7-1.0.3.83.jar][b83]
+* [forgebackup-universal-1.4.7-1.0.2.71.jar][b71] (coremod)
+* [forgebackup-universal-1.4.7-1.0.1.63.jar][b63] (coremod)
+* [forgebackup-universal-1.4.7-1.0.0.58.jar][b58] (coremod)
 * [forgebackup-universal-1.4.7-0.4.1.37.jar][b37] (mods folder version)
 * [forgebackup-universal-1.4.7-0.3.1.21.jar][b21] (mods folder version)
 
@@ -61,6 +70,8 @@ I'm not sure of the need for this section since this mod is only required on one
   [b58]: http://bit.ly/WcNWuK
   [b63]: http://bit.ly/11aQGap
   [b71]: http://bit.ly/11oMJo1
+  [b83]: http://bit.ly/ZgCCfr
+  [b89]: http://bit.ly/10mcTIf
 
   [gh]: https://github.com/monoxide0184/ForgeBackup
   [gh-issues]: https://github.com/monoxide0184/ForgeBackup/issues

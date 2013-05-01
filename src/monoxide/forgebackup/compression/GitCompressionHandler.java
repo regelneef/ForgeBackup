@@ -3,7 +3,6 @@ package monoxide.forgebackup.compression;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import monoxide.forgebackup.BackupLog;

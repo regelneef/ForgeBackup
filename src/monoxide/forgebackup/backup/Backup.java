@@ -10,7 +10,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.world.MinecraftException;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+
+import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Backup {
@@ -21,7 +25,14 @@ public class Backup {
 	}
 	
 	public void run(ICommandSender sender) {
-		boolean failure = false;
+		
+		while (settings.getServer().tickCounter % 900 >= 880 || settings.getServer().tickCounter % 900 < 10)
+		{
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {}
+		}
+		
 		notifyAdmins(sender, "ForgeBackup.backup.start");
 		
 		notifyAdmins(sender, Level.FINE, "ForgeBackup.save.disabled");
@@ -106,6 +117,13 @@ public class Backup {
 		
 		List<File> thingsToSave = settings.getFilesToBackup();
 		List<Integer> disabledDimensions = settings.getDisabledDimensions();
+		List<String> dimensionDirectories = Lists.newArrayList();
+		
+		for (int dimension : disabledDimensions) {
+			WorldProvider provider = WorldProvider.getProviderForDimension(dimension);
+			provider.setDimension(dimension);
+			dimensionDirectories.add(provider.getSaveFolder());
+		}
 		
 		settings.getCompressionHandler().openFile(backupsFolder, settings.getBackupFileName());
 		
@@ -114,19 +132,13 @@ public class Backup {
 			if (!current.exists()) { continue; }
 			
 			if (current.isDirectory()) {
-				boolean disabled = false;
-				for (int dimension : disabledDimensions) {
-					if (current.getName().equals(String.format("DIM%d", dimension))) {
-						disabled = true;
-					}
-				}
+				if (dimensionDirectories.contains(current.getName())) 
+				{ continue; }
 				
-				if (!disabled) {
-					settings.getCompressionHandler().addCompressedFile(current);
-					
-					for (File child : current.listFiles()) {
-						thingsToSave.add(child);
-					}
+				settings.getCompressionHandler().addCompressedFile(current);
+				
+				for (File child : current.listFiles()) {
+					thingsToSave.add(child);
 				}
 			} else {
 				settings.getCompressionHandler().addCompressedFile(current);

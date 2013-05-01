@@ -101,7 +101,7 @@ public class BackupSettings {
 	public File getBackupFolder() {
 		File folder = absolutePattern.matcher(backupFolder).find() ? new File(backupFolder) : server.getFile(backupFolder);
 		ISaveHandler saveHandler = server.worldServers[0].getSaveHandler();
-		return new File(folder, saveHandler.getSaveDirectoryName());
+		return new File(folder, saveHandler.getWorldDirectoryName());
 	}
 	
 	public String getBackupFileName() {
@@ -118,9 +118,9 @@ public class BackupSettings {
 	
 		if (willBackupWorld()) {
 			if (saveHandler instanceof SaveHandler) {
-				thingsToSave.add(((SaveHandler)saveHandler).getSaveDirectory());
+				thingsToSave.add(((SaveHandler)saveHandler).getWorldDirectory());
 			} else {
-				thingsToSave.add(server.getFile(saveHandler.getSaveDirectoryName()));
+				thingsToSave.add(server.getFile(saveHandler.getWorldDirectoryName()));
 			}
 		}
 		
