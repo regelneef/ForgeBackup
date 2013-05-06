@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 	"monoxide.forgebackup.coremod",
 	"monoxide.forgebackup.coremod.asm",
 })
-@MCVersion("1.5.1")
+@MCVersion("1.5.2")
 public class ForgeBackupLoader implements IFMLLoadingPlugin {
 	@Override
 	public String[] getLibraryRequestClass() {
