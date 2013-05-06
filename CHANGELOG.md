@@ -1,5 +1,9 @@
 # Changelog: #
 
+## 1.1.2 ##
+
+* Bump to 1.5.2
+
 ## 1.1.1 ##
 
 * Fixed a warning from FML

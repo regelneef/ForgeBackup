@@ -8,9 +8,11 @@ Just download MinecraftForge and the appropriate version of this mod for your ve
 
 ## Downloads: ##
 
-### 1.5.1 ###
+For other versions, see the old versions section below.
 
-* [forgebackup-universal-coremod-1.5.1-1.1.1.94.jar][b94]
+### 1.5.2 ###
+
+* [forgebackup-universal-coremod-1.5.2-1.1.2.98.jar][b98]
 
 ### 1.4.6/1.4.7 ###
 
@@ -52,6 +54,10 @@ or ForgeModLoader-server-0.log) from your minecraft folder. Please
 
 I'm not sure of the need for this section since this mod is only required on one side, either the server or the client. Old versions are here for those who want them though.
 
+### 1.5.2 ###
+
+* [forgebackup-universal-coremod-1.5.2-1.1.2.98.jar][b98]
+
 ### 1.5.1 ###
 
 * [forgebackup-universal-coremod-1.5.1-1.1.1.94.jar][b94]
@@ -74,6 +80,7 @@ I'm not sure of the need for this section since this mod is only required on one
   [b83]: http://bit.ly/ZgCCfr
   [b89]: http://bit.ly/10mcTIf
   [b94]: http://bit.ly/ZnEAdC
+  [b98]: http://bit.ly/10ddS6J
 
   [gh]: https://github.com/monoxide0184/ForgeBackup
   [gh-issues]: https://github.com/monoxide0184/ForgeBackup/issues
